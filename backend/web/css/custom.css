@@ -1,0 +1,14 @@
+/* CSS Document */
+.content {
+	padding: 10px 30px 0 !important;
+}
+#footer {background-color: inherit !important;}
+
+.btn.btn-success {
+	background: #79C137;
+	border-color: #79C137;
+}
+
+.color-column {
+	white-space: nowrap;
+}
