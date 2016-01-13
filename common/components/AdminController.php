@@ -21,10 +21,10 @@ abstract class AdminController extends \common\components\BaseController
 		
 		if(\Yii::$app->user->isGuest)
         {
-            echo "string";
-            die();
 			$this->redirect('/site/login');
+            \Yii::$app->end();
         }
+
 		if(\Yii::$app->user->identity->getRole() == 'user')
 			$this->redirect('/');
         if (\Yii::$app->user->isGuest && $_SERVER['REQUEST_URI'] != $admin_url)
