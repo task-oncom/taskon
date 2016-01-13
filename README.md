@@ -1,4 +1,5 @@
 Yii 2 Advanced Application Template
+Каркас Арт Проект
 ===================================
 
 Yii 2 Advanced Application Template is a skeleton Yii 2 application best for
