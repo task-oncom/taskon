@@ -19,7 +19,7 @@ abstract class AdminController extends \common\components\BaseController
 
         $admin_url = $this->url('/users/userAdmin/login');
 		
-		if(\Yii::$app->user->isGuest)
+		if(\Yii::$app->user->isGuest || empty(\Yii::$app->user->identity))
 			$this->redirect('/site/login');
 		if(\Yii::$app->user->identity->getRole() == 'user')
 			$this->redirect('/');
