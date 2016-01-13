@@ -7,9 +7,9 @@ return [
         ],
 	'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=mfo',
-            'username' => 'root',
-            'password' => '',
+            'dsn' => 'mysql:host=localhost;dbname=framework',
+            'username' => 'framework',
+            'password' => 'T57Rrf9mfEfme7ys',
             'charset' => 'utf8',
         ],
         'mailer' => [
