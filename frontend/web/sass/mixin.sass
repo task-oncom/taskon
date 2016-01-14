@@ -1,0 +1,55 @@
+
+//width
+=r($min_width, $max_width)
+	@media only screen and (min-width: $min_width+ "px") and (max-width: $max_width+ "px")
+		@content
+//height
+=rh($height)
+	@media only screen and (max-height: $height+ "px")
+		@content
+=cover
+	background-size: cover
+	-moz-background-size: cover
+	-webkit-background-size: cover
+	-o-background-size: cover
+=br($radius)
+	border-radius: $radius
+	-moz-border-radius: $radius
+	-webkit-border-radius: $radius
+	-o-border-radius: $radius
+	-ms-border-radius: $radius
+// Градиент с верху вниз
+=g($color1, $color2)
+	+background-image(linear-gradient($color1, $color2))
+// Градиент с лева на право
+=gh($color1, $color2)
+	+background-image(linear-gradient(left, $color1, $color2))
+
+=opacity($opacity) 
+	opacity: $opacity
+	$opacity-ie: $opacity * 100
+	filter: alpha(opacity=$opacity-ie) //IE8
+
+=font($alias, $name)
+	@font-face 
+		font-family: $alias
+		src: url("../fonts/#{$name}/#{$name}.eot")
+		src: url("../fonts/#{$name}/#{$name}.eot?#iefix") format("embedded-opentype"), url("../fonts/#{$name}/#{$name}.woff") format("woff"), url("../fonts/#{$name}/#{$name}.ttf") format("truetype")
+		font-style: normal
+		font-weight: normal
+=transition($what)
+	-moz-transition: $what
+	-o-transition: $what
+	-webkit-transition: $what
+	-ms-transition: $what
+	transition: $what
+	
+=keyframes($name)
+	@-webkit-keyframes #{$name}
+		@content
+	@-moz-keyframes #{$name}
+		@content
+	@-ms-keyframes #{$name}
+		@content
+	@keyframes #{$name}
+		@content

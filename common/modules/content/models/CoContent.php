@@ -106,12 +106,21 @@ class CoContent extends \common\components\ActiveRecordModel
      */
     public function getContent() {
         $content = $this->text;
+        $content = \common\components\AppManager::prepareWidget($content);
+        $blocks = CoBlocks::find()->all();
+        $arrWhatReplace = [];
+        $arrReplace = [];
+        foreach($blocks as $block) 
+        {
+            $arrWhatReplace[] = '{' . $block->name . '}';
+            $arrReplace[] = $block->text;
+        }
 
-        return $content;
+        return str_replace($arrWhatReplace, $arrReplace, $content);
     }
 
     public function beforeSave($insert) {
-        $this->text = str_replace("../../../source/","http://taskon.soc-zaim.ru/source/",$this->text);
+        $this->text = str_replace("../../../source/","/source/",$this->text);
         return parent::beforeSave($insert);
     }
 }

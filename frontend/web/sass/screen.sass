@@ -1,0 +1,5257 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+
+@import "compass/reset"
+
+@import "mixin"
+
+html.js .loader
+	background: none repeat scroll 0 0 #ffffff
+	bottom: 0
+	height: 100%
+	left: 0
+	position: fixed
+	right: 0
+	top: 0
+	width: 100%
+	z-index: 9999
+	.loader_inner
+		background-image: url(../images/preloader.gif)
+		+cover
+		background-repeat: no-repeat
+		background-position: center center
+		background-color: #fff
+		height: 60px
+		width: 60px
+		margin-top: -30px
+		margin-left: -30px
+		left: 50%
+		top: 50%
+		position: absolute
+*
+	box-sizing: border-box
+	outline: none!important
+
+.clearfix
+	&:before,
+	&:after 
+		content: " "
+		display: table
+	&:after
+		clear: both
+body
+	background: #344555
+	font-size: 17px
+	color: #f9f9fa
+	font-family: "RobotoRegular"
+	position: relative
+	overflow-x: hidden
+.hidden
+	display: none
+strong
+	font-family: "RobotoBold"
+.container
+	+r(768,970)
+		width: 750px
+	+r(480,767)
+		width: 450px
+	+r(320,479)
+		width: 300px
+header
+	background: #262E38
+	width: 100%
+	min-height: 81px
+	+r(320,970)
+		min-height: 60px
+a.logo
+	height: 34px
+	display: block
+	margin-top: 24px
+	+r(320,970)
+		margin-top: 14px
+		
+.top_phone
+	font-size: 21px
+	font-family: "RobotoLight"
+	float: right
+	margin-top: 26px
+	&:before
+		content: ''
+		background: url(../images/icon/phone.png)
+		width: 18px
+		height: 18px
+		display: inline-block
+		vertical-align: middle
+		margin-right: 14px
+		margin-top: -2px
+	+r(320,970)
+		display: none
+
+.top_nav
+	height: 37px
+	line-height: 37px
+	display: block
+	float: left
+	ul
+		li
+			float: left
+			a
+				color: #fff
+				font-size: 15px
+				display: block
+				float: left
+				padding: 0px 12px
+				height: 38px
+				line-height: 34px
+				border: 2px solid transparent
+				+br(5px)
+				margin-top: 20px
+				+transition(border 0.3s linear 0.1s)
+				+r(768,970)
+					display: block
+					float: none
+					text-align: center
+				+r(480,768)
+					display: block
+					float: none
+					text-align: center
+				+r(320,479)
+					display: block
+					float: none
+					text-align: center
+				&:hover
+					border: 2px solid #fff
+					text-decoration: none
+				&:active
+					text-decoration: none
+					border: 2px solid #fff
+				&:focus
+					text-decoration: none
+					border: 2px solid #fff
+			.act_bt
+				background: #fff
+				color: #303e48
+				border: 2px solid #262E38
+				+transition(all 0.3s linear 0.1s)
+				&:hover
+					border: 2px solid #fff
+					background: none
+					color: #fff
+	+r(768,970)
+		height: auto
+		display: none
+		li
+			float: none!important
+	+r(480,767)
+		height: auto
+		display: none
+		li
+			float: none!important
+	+r(320,479)
+		height: auto
+		display: none
+		li
+			float: none!important
+
+
+.lang_check
+	height: 37px
+	line-height: 37px
+	display: block
+	float: left
+	margin-top: 20px
+	a
+		color: #fff
+		font-size: 15px
+		display: block
+		padding: 0px 12px
+		height: 38px
+		line-height: 34px
+		border: 2px solid transparent
+		+br(5px)
+		+transition(border 0.3s linear 0.1s)
+		&:hover
+			border: 2px solid #fff
+			text-decoration: none
+		&:active
+			text-decoration: none
+			border: 2px solid #fff
+		&:focus
+			text-decoration: none
+			border: 2px solid #fff
+		&:last-child
+			background: #fff
+			text-decoration: none
+			color: #262E38
+			z-index: 555
+			position: relative
+	+r(320,970)
+		display: none
+a.d_menu_hide
+	display: none!important
+a.show_d_menu
+	display: block!important
+
+.icon-arrowDown
+	&:before
+		content: ''
+		background: url(../images/icon/arrow_down.png)
+		width: 6px
+		height: 3px
+		display: inline-block
+		vertical-align: middle
+		margin-right: 10px
+		margin-top: -2px
+.icon-arrowRight
+	&:before
+		content: ''
+		background: url(../images/icon/arrow_right.png) no-repeat
+		width: 6px
+		height: 6px
+		display: inline-block
+		vertical-align: middle
+		margin-right: 10px
+		margin-top: -2px
+.showitems
+	display: block
+	+r(480,767)
+		width: 300px
+		margin-left: 10px
+.section1
+	min-height: 781px
+	position: relative
+	background: url(../images/sec1bg.png) no-repeat top center
+	width: 100%
+	+cover
+	+r(480,767)
+		min-height: 360px
+	+r(320,479)
+		min-height: 360px
+		padding-bottom: 40px
+	&__title
+		font-size: 32px
+		font-weight: normal
+		font-family: "RobotoBold"
+		line-height: 45px
+		letter-spacing: 0.02em
+		margin-top: 115px
+		margin-bottom: 45px
+		+r(768,970)
+			font-size: 28px
+			margin-top: 86px
+		+r(480,767)
+			font-size: 19px
+			line-height: 33px
+			margin-top: 52px
+			text-align: center
+		+r(320,479)
+			font-size: 19px
+			line-height: 29px
+			margin-top: 40px
+			text-align: center
+	.container
+		position: relative
+		.p2
+			background: url(../images/parallax/p3.png) no-repeat 50% 50%
+			position: absolute
+			top: 498px
+			left: 390px
+			width: 151px
+			height: 105px
+			+r(768,970)
+				display: none
+			+r(480,767)
+				display: none
+			+r(320,479)
+				display: none
+	.p1
+		background: url(../images/blikkk.png) no-repeat 50% 50%
+		position: absolute
+		top: -92px
+		left: -92px
+		width: 250px
+		height: 210px
+		+r(768,970)
+			display: none
+		+r(480,767)
+			display: none
+		+r(320,479)
+			display: none
+.slogan
+	font-size: 20px
+	line-height: 30px
+	+r(768,970)
+		font-size: 17px
+	+r(480,767)
+		display: block
+		text-align: center
+	+r(320,479)
+		font-size: 15px
+		display: block
+		text-align: center
+a.toggle_bottom
+	display: block
+	font-size: 20px
+	color: #fff
+	width: 201px
+	height: 47px
+	border: 2px solid #fff
+	text-align: center
+	line-height: 40px
+	+br(50px)
+	margin-top: 197px
+	float: left
+	+transition(all 0.3s linear 0.1s)
+	&:hover, &:active, &:focus
+		color: #000
+		text-decoration: none
+		background: #fff
+	+r(768,970)
+		margin-top: 68px
+	+r(480,767)
+		float: none
+		margin: 30px auto
+	+r(320,479)
+		float: none
+		margin: 50px auto 0px
+
+.icon-arrowDown2
+	&:after
+		content: ''
+		background: url(../images/icon/arrow_down2.png)
+		width: 31px
+		height: 13px
+		display: inline-block
+		vertical-align: middle
+		margin-left: 13px
+		+transition(all 0.3s linear 0.1s)
+a.toggle_bottom
+	&:hover
+
+		.icon-arrowDown2
+			&:after
+
+				background: url(../images/icon/arrow_down_black.png)
+.bt_line
+	background: url(../images/bt_line.png) no-repeat center center
+	width: 233px
+	height: 204px
+	display: block
+	margin-top: 217px
+	float: left
+	+r(768,970)
+		display: none
+	+r(480,767)
+		display: none
+	+r(320,479)
+		display: none
+.section2
+	.container
+		position: relative
+		.p3
+			background: url(../images/parallax/p3.png) no-repeat 50% 50%
+			position: absolute
+			top: 185px
+			left: 187px
+			width: 151px
+			height: 105px
+			z-index: 99
+			+r(768,970)
+				display: none
+			+r(480,767)
+				display: none
+			+r(320,479)
+				display: none
+		.p4
+			background: url(../images/parallax/p3.png) no-repeat 50% 50%
+			position: absolute
+			top: 189px
+			right: 94px
+			width: 151px
+			height: 105px
+			z-index: 99
+			+r(768,970)
+				display: none
+			+r(480,767)
+				display: none
+			+r(320,479)
+				display: none
+
+.section_h2
+	font-size: 32px
+	color: #fff
+	font-weight: normal
+	font-family: "RobotoBold"
+	text-align: center
+	+r(480,767)
+		font-size: 26px
+	+r(320,479)
+		font-size: 22px
+.fl
+	float: left
+.green_title
+	margin-top: 268px
+	text-align: center
+	+r(768,970)
+		margin-top: 330px
+	+r(480,767)
+		margin-top: 330px
+	+r(320,479)
+		margin-top: 330px
+	span
+		font-size: 32px
+		font-weight: normal
+		font-family: "RobotoBold"
+		color: #060709
+		line-height: 53px
+		background: #ACED03
+		padding: 3px 10px
+		+r(320,479)
+			font-size: 20px
+.desctop_line
+	background: url(../images/desctop_line.png) no-repeat center center
+	width: 265px
+	height: 191px
+	float: right
+	margin-top: 62px
+	margin-right: 66px
+	position: relative
+	span
+		font-size: 17px
+		font-family: "RobotoBold"
+		color: #d9e2ec
+		position: absolute
+		top: 7px
+		right: 92px
+		text-align: right
+		width: 150px
+		line-height: 25px
+		+r(320,479)
+			position: relative
+			top: 0
+			right: 0
+			text-align: center
+			width: 265px
+			display: block
+	+r(768,970)
+		margin-right: 154px
+		margin-bottom: -63px
+	+r(320,479)
+		background: none
+		margin-right: 0
+		margin-bottom: 0
+		height: 77px
+.mac_win
+	width: 438px
+	margin-top: -60px
+	float: left
+	+r(768,970)
+		float: none
+		margin: 0 auto
+	+r(320,479)
+		width: 265px
+		float: none
+		margin: 0 auto
+		img
+			width: 100%
+			height: auto
+.mobile_line
+	background: url(../images/mobile_line.png) no-repeat center center
+	width: 271px
+	height: 191px
+	margin-top: 62px
+	margin-left: 29px
+	float: left
+	position: relative
+	span
+		font-size: 17px
+		font-family: "RobotoBold"
+		color: #d9e2ec
+		position: absolute
+		top: 7px
+		left: 89px
+		text-align: left
+		width: 150px
+		line-height: 25px
+		+r(320,479)
+			position: relative
+			top: 0
+			left: 0
+			text-align: center
+			width: 265px
+			display: block
+	+r(768,970)
+		margin-left: 77px
+		margin-bottom: -71px
+	+r(320,479)
+		background: none
+		margin-left: 0
+		margin-bottom: 0
+		height: 77px
+.app_block
+	width: 497px
+	height: 438px
+	margin-top: -71px
+	margin-left: 30px
+	float: left
+	+r(768,970)
+		height: auto
+		float: none
+		margin: 0 auto
+	+r(320,479)
+		width: 265px
+		float: none
+		margin: 0 auto
+		img
+			width: 100%
+			height: auto
+.section3
+	margin-top: 129px
+	position: relative
+	.container
+		position: relative
+		.p5
+			background: url(../images/parallax/p4.png) no-repeat 50% 50%
+			position: absolute
+			top: 17px
+			left: -105px
+			width: 101px
+			height: 92px
+			z-index: 99
+			+r(768,970)
+				display: none
+			+r(480,767)
+				display: none
+			+r(320,479)
+				display: none
+	.p6
+		background: url(../images/parallax/p5.png) no-repeat 50% 50%
+		position: absolute
+		top: 540px
+		left: 0px
+		width: 337px
+		height: 279px
+		z-index: 99
+		+r(768,970)
+			display: none
+		+r(480,767)
+			display: none
+		+r(320,479)
+			display: none
+	.p7
+		background: url(../images/parallax/p6.png) no-repeat 50% 50%
+		position: absolute
+		top: 480px
+		right: 0px
+		width: 279px
+		height: 421px
+		z-index: 99
+		+r(768,970)
+			display: none
+		+r(480,767)
+			display: none
+		+r(320,479)
+			display: none
+.mackup_block
+	position: relative
+	width: 595px
+	height: 742px
+	+r(768,970)
+		margin: 0 auto 
+	+r(480,767)
+		width: 450px
+	+r(320,479)
+		width: 265px
+		height: 420px
+.mackup_item1, .mackup_item2, .mackup_item3
+	position: absolute
+.mackup_item1
+	width: 452px
+	height: 550px
+	z-index: 3
+	+transition(all 1s linear 0.2s)
+	&_off
+		top: 243px
+		left: 60px
+	&_on
+		top: 28px
+		left: -32px
+	+r(480,767)
+		width: 450px
+		img
+			width: 100%
+			height: auto
+	+r(320,479)
+		width: 265px
+		img
+			width: 100%
+			height: auto
+
+.mackup_item2
+	width: 461px
+	height: 552px
+	z-index: 2
+	+transition(all 1s linear 0.2s)
+	&_off
+		top: 261px
+		left: 59px
+	&_on
+		top: 159px
+		left: 10px
+	+r(480,767)
+		width: 450px
+		img
+			width: 100%
+			height: auto
+	+r(320,479)
+		width: 265px
+		img
+			width: 100%
+			height: auto
+
+.mackup_item3
+	width: 474px
+	height: 547px
+	top: 292px
+	left: 65px
+	z-index: 1
+	+transition(left 0.5s linear)
+	&_off
+		top: 292px
+		left: 65px
+	&_on
+		top: 292px
+		left: 65px
+	+r(480,767)
+		width: 450px
+		img
+			width: 100%
+			height: auto
+	+r(320,479)
+		width: 265px
+		img
+			width: 100%
+			height: auto
+.mackup_hover1
+	+transition(left 0.5s linear)
+	left: 20px!important
+.mackup_hover2
+	+transition(left 0.5s linear)
+	left: 50px!important
+.mackup_hover3
+	+transition(left 0.5s linear)
+	left: 90px!important
+.mackup_text
+	font-size: 20px
+	color: #fff
+	width: 265px
+	line-height: 25px
+	+r(768,970)
+		margin: 0 auto
+	+r(480,767)
+		margin: 0 auto
+	+r(320,479)
+		margin: 0 auto
+.txt_interface
+	margin-top: 137px
+	+transition(opacity 1s linear 0.2s)
+	+r(480,767)
+		margin-top: 30px
+	&:before
+		content: ''
+		background: url(../images/interface_before.png)
+		width: 140px
+		height: 13px
+		display: inline-block
+		vertical-align: middle
+		margin-left: -152px
+		margin-right: 10px
+		+transition(width 1s linear 0.2s)
+		+r(768,970)
+			display: none
+		+r(480,767)
+			display: none
+		+r(320,479)
+			display: none
+	&_off
+		opacity: 0
+		&:before
+			width: 0px
+	&_on
+		opacity: 1
+		&:before
+			width: 140px
+.txt_admin
+	margin-top: 108px
+	+transition(opacity 1s linear 0.2s)
+	+r(480,767)
+		margin-top: 30px
+	+r(320,479)
+		margin-top: 40px
+	&:before
+		content: ''
+		background: url(../images/admin_before.png)
+		width: 100px
+		height: 13px
+		display: inline-block
+		vertical-align: middle
+		margin-left: -109px
+		margin-right: 10px
+		+transition(width 1s linear 0.2s)
+		+r(768,970)
+			display: none
+		+r(480,767)
+			display: none
+		+r(320,479)
+			display: none
+	&_off
+		opacity: 0
+		&:before
+			width: 0px
+	&_on
+		opacity: 1
+		&:before
+			width: 100px
+.txt_lock
+	margin-top: 85px
+	+transition(opacity 1s linear 0.2s)
+	+r(480,767)
+		margin-top: 30px
+	+r(320,479)
+		margin-top: 40px
+	&:before
+		content: ''
+		background: url(../images/lock_before.png)
+		width: 50px
+		height: 13px
+		display: inline-block
+		vertical-align: middle
+		margin-left: -63px
+		margin-right: 10px
+		+transition(width 1s linear 0.2s)
+		+r(768,970)
+			display: none
+		+r(480,767)
+			display: none
+		+r(320,479)
+			display: none
+	&_off
+		opacity: 0
+		&:before
+			width: 0px
+	&_on
+		opacity: 1
+		&:before
+			width: 50px
+.txt_server
+	margin-top: 82px
+	+transition(opacity 1s linear 0.2s)
+	+r(480,767)
+		margin-top: 30px
+	+r(320,479)
+		margin-top: 40px
+	&:before
+		content: ''
+		background: url(../images/server_before.png)
+		width: 320px
+		height: 198px
+		display: inline-block
+		vertical-align: top
+		margin-left: -332px
+		margin-right: 10px
+		margin-top: 16px
+		+transition(width 1s linear 0.2s)
+		+r(768,970)
+			display: none
+		+r(480,767)
+			display: none
+		+r(320,479)
+			display: none
+	&_off
+		opacity: 0
+		&:before
+			width: 0px
+	&_on
+		opacity: 1
+		&:before
+			width: 320px
+.lh
+	line-height: 52px
+	+r(320,479)
+		line-height: 39px
+.section4
+	margin-top: 93px
+	background: url(../images/testing_bg.png) no-repeat 50% 100%
+	width: 100%
+	min-height: 802px
+	position: relative
+	z-index: 2
+	+r(320,479)
+		min-height: 610px
+.section5
+	width: 100%
+	min-height: 804px
+	background: url(../images/data_bg.jpg) no-repeat 50% 50%
+	+cover
+	position: relative
+	z-index: 1
+	margin-top: -309px
+	+r(768,970)
+		padding-bottom: 40px
+	+r(480,767)
+		padding-bottom: 40px
+	+r(320,479)
+		padding-bottom: 40px
+ul.ul_check 
+	margin-top: 29px
+	margin-left: -11px
+	+r(320,767)
+		background: rgba(52,69,85,0.7)
+	li
+		background: url(../images/ul_check.png) no-repeat left center
+		height: 33px
+		line-height: 33px
+		padding-left: 38px
+		font-size: 17px
+		color: #f9f9fa
+		+r(768,970)
+			font-size: 14px
+		+r(320,479)
+			line-height: 14px
+			font-size: 13px
+	+r(320,768)
+		margin-top: 29px
+		&:last-child
+			margin-top: 0px
+.cif
+	font-size: 60px
+	font-family: "RobotoBold"
+	text-align: center
+	margin-top: 83px
+
+.name_cif
+	font-size: 17px
+	font-family: "RobotoBold"
+	text-align: center
+	display: block
+	line-height: 24px
+.section6
+	background: #fff url(../images/section6_bg.png) no-repeat center center
+	+cover
+	width: 100%
+	min-height: 972px
+	padding-bottom: 187px
+	&_title
+		font-size: 32px
+		color: #3c4755
+		line-height: 44px
+		text-align: center
+		display: block
+		margin-top: 114px
+		font-family: "RobotoBold"
+		+r(480,767)
+			font-size: 27px
+			line-height: 35px
+			margin-top: 62px
+		+r(320,479)
+			font-size: 19px
+			line-height: 32px
+			margin-top: 34px
+.inteface_1
+	width: 643px
+	height: 577px
+	margin-top: 98px
+	margin-left: -76px
+	position: relative
+	+r(768,970)
+		margin: 90px auto 0px
+	+r(480,767)
+		width: 450px
+		margin: 140px auto 0px
+		img
+			width: 100%
+			height: auto
+	+r(320,479)
+		width: 265px
+		margin: 40px auto 0px
+		height: 270px
+		img
+			width: 100%
+			height: auto
+.inteface_2
+	width: 647px
+	height: 468px
+	margin-top: 324px
+	margin-left: -146px
+	position: relative
+	+r(768,970)
+		margin: 100px auto 0px
+	+r(480,767)
+		width: 450px
+		margin: 214px auto 0px
+		img
+			width: 100%
+			height: auto
+	+r(320,479)
+		width: 265px
+		margin: 40px auto 0px
+		height: 250px
+		img
+			width: 100%
+			height: auto
+.inteface_3
+	height: 262px
+	width: 262px
+	margin-top: -191px
+	margin-left: -66px
+	position: relative
+	+r(768,970)
+		margin-left: 24px
+	+r(480,767)
+		margin-top: -280px
+		margin-left: -27px
+	+r(320,479)
+		width: 265px
+		margin: -155px auto 0px
+		img
+			width: 100%
+			height: auto
+
+.inteface_4
+	height: 166px
+	width: 269px
+	margin-top: -95px
+	margin-left: 40px
+	z-index: 3
+	position: relative
+	+r(480,767)
+		margin: -174px auto 0px
+	+r(320,479)
+		width: 265px
+		margin: -53px auto
+		img
+			width: 100%
+			height: auto
+.if_info1
+	line-height: 21px
+	color: #405a5c
+	font-size: 17px
+	width: 220px
+	position: absolute
+	top: -55px
+	left: 102px
+	display: block
+	&:before
+		width: 28px
+		height: 319px
+		content: ''
+		background: url(../images/if_info1_before.png)
+		display: block
+		vertical-align: top
+		float: left
+		margin-right: -18px
+		z-index: 4
+		position: relative
+	+r(480,767)
+		font-size: 15px
+		top: -123px
+		left: 57px
+	+r(320,479)
+		display: none
+.if_info2
+	line-height: 21px
+	color: #405a5c
+	font-size: 17px
+	width: 260px
+	position: absolute
+	top: -57px
+	right: -43px
+	display: block
+	&:before
+		width: 22px
+		height: 183px
+		content: ''
+		background: url(../images/if_info2_before.png)
+		display: block
+		vertical-align: top
+		float: left
+		margin-right: -1px
+		z-index: 4
+		position: relative
+	+r(480,767)
+		font-size: 15px
+		top: -67px
+		right: 117px
+		&:before
+			float: right
+			margin-right: 18px
+	+r(320,479)
+		display: none
+.if_info4
+	line-height: 21px
+	color: #405a5c
+	font-size: 17px
+	width: 260px
+	position: absolute
+	top: 201px
+	right: 7px
+	display: block
+	&:before
+		width: 53px
+		height: 161px
+		content: ''
+		background: url(../images/if_info4_before.png)
+		display: inline-block
+		vertical-align: bottom
+		margin-right: -35px
+		margin-top: -124px
+		z-index: 4
+		position: relative
+		float: left
+	+r(480,767)
+		font-size: 15px
+		top: 214px
+		&:before
+			margin-top: -143px
+	+r(320,479)
+		display: none
+.if_info3
+	line-height: 21px
+	color: #405a5c
+	font-size: 17px
+	width: 267px
+	position: absolute
+	top: 245px
+	right: -47px
+	display: block
+	&:before
+		width: 22px
+		height: 143px
+		content: ''
+		background: url(../images/if_info3_before.png)
+		display: inline-block
+		vertical-align: bottom
+		margin-right: -11px
+		margin-top: -117px
+		z-index: 4
+		position: relative
+		float: left
+	+r(480,767)
+		font-size: 15px
+	+r(320,479)
+		display: none
+.if_info5
+	line-height: 21px
+	color: #405a5c
+	font-size: 17px
+	width: 260px
+	position: absolute
+	top: -69px
+	right: 65px
+	display: block
+	&:before
+		width: 22px
+		height: 209px
+		content: ''
+		background: url(../images/if_info5_before.png)
+		display: block
+		vertical-align: top
+		float: left
+		margin-right: 3px
+		z-index: 4
+		position: relative
+	+r(480,767)
+		font-size: 15px
+		top: -107px
+		right: 198px
+		&:before
+			float: right
+	+r(320,479)
+		display: none
+.bx-wrapper
+	.bx-pager
+		+r(768,970)
+			bottom: -30px!important
+.bx-viewport
+	+r(320,767)
+		height: 429px!important
+.others_project
+	position: absolute
+	top: 90px
+	left: -486px
+	width: 440px
+	+r(768,970)
+		left: -372px
+		width: 345px
+	+r(320,767)
+		display: none
+	&__title
+		font-size: 32px
+		color: #3e4957
+		font-family: "RobotoBold"
+		+r(320,479)
+			font-size: 25px
+	&__subtitle
+		font-size: 25px
+		line-height: 35px
+		color: #494949
+		display: block
+		margin-top: 25px
+		+r(480,767)
+			font-size: 19px
+			line-height: 24px
+		+r(320,479)
+			font-size: 21px
+			line-height: 26px
+	+r(320,479)
+		margin-top: 40px
+	&__txt
+		font-size: 14px
+		color: #000
+		line-height: 25px
+		display: block
+		margin-top: 16px
+		margin-bottom: 30px
+		+r(320,479)
+			font-size: 13px
+			line-height: 21px
+			margin-bottom: 10px
+	&__bt
+		width: 167px
+		height: 47px
+		border: 2px solid #00BCE7
+		+br(50px)
+		color: #00BCE7
+		display: block
+		text-align: center
+		line-height: 40px
+		font-size: 20px
+		float: left
+		+transition(all 0.3s linear 0.1s)
+		&:hover
+			text-decoration: none
+			color: #fff
+			background: #00BCE7
+		&:active
+			text-decoration: none
+			color: #fff
+			background: #00BCE7
+		&:focus
+			text-decoration: none
+			color: #fff
+			background: #00BCE7
+		+r(320,479)
+			float: none
+			margin: 0 auto
+	&__link
+		font-size: 16px
+		color: #56bbe5
+		text-decoration: underline
+		float: left
+		margin-left: 68px
+		margin-top: 17px
+		&:hover
+			text-decoration: none
+			color: #00BCE7
+		&:active
+			text-decoration: none
+			color: #00BCE7
+		&:focus
+			text-decoration: none
+			color: #00BCE7
+		+r(768,970)
+			margin-left: 30px
+.project_tit
+	margin-top: 145px
+.project_ft
+	bottom: -360px
+	position: relative
+	+r(768,970)
+		bottom: -462px
+.project_st
+	position: relative
+.bx-wrapper .bx-prev
+	+r(320,479)
+		left: 0
+.bx-wrapper .bx-next
+	+r(320,479)
+		right: 0
+
+.section7
+	width: 100%
+	min-height: 628px
+	background: url(../images/section7_bg.jpg) no-repeat center center
+	+cover
+	+r(320,479)
+		padding-bottom: 40px
+.geentxt
+	margin-top: 74px
+	+r(320,479)
+		margin-top: 40px
+	span
+		font-size: 32px
+		font-weight: normal
+		font-family: "RobotoBold"
+		color: #060709
+		line-height: 55px
+		background: #ACED03
+		padding: 0px 12px 6px
+		+r(480,767)
+			font-size: 22px
+			line-height: 41px
+		+r(320,479)
+			font-size: 14px
+			line-height: 30px
+.code_block
+	margin-top: 45px
+	&__icon
+		width: 154px
+		float: left
+		margin-left: -35px
+		+r(320,479)
+			float: none
+			margin: 0 auto
+	&__txt
+		font-size: 17px
+		color: #fff
+		line-height: 22px
+		float: left
+		width: 322px
+		margin-top: 45px
+		+r(480,767)
+			font-size: 16px
+			width: 300px
+			background: #394D5C
+		+r(320,479)
+			font-size: 16px
+			width: 265px
+			background: #394D5C
+			float: none
+			margin: 0 auto
+.section8
+	background: #fff
+.section8_down
+	background: url(../images/section8_down_bg.png) no-repeat center center
+	width: 100%
+	height: 100px
+	margin: 0 auto
+	+r(480,767)
+		height: 100px
+.section8_title
+	font-size: 32px
+	color: #495868
+	font-family: "RobotoBold"
+	line-height: 49px
+	text-align: center
+	display: block
+	margin-top: 106px
+	+r(320,479)
+		margin-top: 40px
+		font-size: 15px
+		line-height: 27px
+	&__green
+		background: #ACED03
+		padding: 4px 10px
+	+r(768,970)
+		font-size: 28px
+	+r(480,767)
+		font-size: 16px
+		line-height: 34px
+		margin-top: 36px
+.sup_block
+	margin-top: 60px
+	&__item1
+		margin-left: -17px
+		width: 377px
+		float: left
+		position: relative
+		+r(480,767)
+			margin: 0 auto
+			float: none
+		+r(320,479)
+			width: 265px
+			margin: 0 auto
+			float: none
+			img
+				width: 100%
+				height: auto
+	&__item2
+		width: 394px
+		float: left
+		margin-left: -106px
+		margin-top: 16px
+		position: relative
+		+r(480,767)
+			margin: 0 auto
+			float: none
+		+r(320,479)
+			width: 265px
+			margin: 0 auto
+			float: none
+			img
+				width: 100%
+				height: auto
+	&__item3
+		width: 378
+		float: left
+		margin-left: -86px
+		margin-top: 29px
+		position: relative
+		+r(768,970)
+			margin-left: 0
+		+r(480,767)
+			margin: 0 auto
+			float: none
+		+r(320,479)
+			width: 265px
+			margin: 80px auto 0px
+			float: none
+			img
+				width: 100%
+				height: auto
+	&__info1 
+		font-family: "RobotoBold"
+		font-size: 14px
+		color: #495868
+		position: absolute
+		top: -28px
+		left: 113px
+		&:before
+			width: 23px
+			height: 35px
+			content: ''
+			background: url(../images/sup_block__info1_before.png)
+			display: block
+			vertical-align: top
+			float: left
+			margin-right: 13px
+			z-index: 4
+			position: relative
+			margin-top: 4px
+	&__info2 
+		font-family: "RobotoBold"
+		font-size: 14px
+		color: #495868
+		position: absolute
+		top: -30px
+		left: 133px
+		&:before
+			width: 23px
+			height: 35px
+			content: ''
+			background: url(../images/sup_block__info1_before.png)
+			display: block
+			vertical-align: top
+			float: left
+			margin-right: 13px
+			z-index: 4
+			position: relative
+			margin-top: 4px
+	&__info3
+		font-family: "RobotoBold"
+		font-size: 14px
+		color: #495868
+		position: absolute
+		top: -30px
+		left: 123px
+		&:before
+			width: 23px
+			height: 35px
+			content: ''
+			background: url(../images/sup_block__info1_before.png)
+			display: block
+			vertical-align: top
+			float: left
+			margin-right: 13px
+			z-index: 4
+			position: relative
+			margin-top: 4px
+	&__info4
+		font-family: "RobotoBold"
+		font-size: 23px
+		line-height: 33px
+		color: #3d515b
+		position: absolute
+		bottom: 52px
+		left: -231px
+		text-align: right
+		&:after
+			width: 34px
+			height: 25px
+			content: ''
+			background: url(../images/sup_block__info4_after.png)
+			display: block
+			vertical-align: top
+			float: right
+			margin-right: -40px
+			z-index: 4
+			position: relative
+			margin-top: -53px
+		+r(480,767)
+			bottom: 76px
+			left: 10px
+		+r(320,479)
+			font-size: 15px
+			line-height: 16px
+			bottom: -17px
+			left: 0px
+	&__info5
+		font-family: "RobotoBold"
+		font-size: 14px
+		line-height: 18px
+		color: #3e525c
+		position: absolute
+		bottom: -2px
+		left: -175px
+		text-align: left
+		&:after
+			width: 34px
+			height: 25px
+			content: ''
+			background: url(../images/sup_block__info5_after.png)
+			display: block
+			vertical-align: top
+			float: right
+			margin-right: -43px
+			z-index: 4
+			position: relative
+			margin-top: -7px
+		+r(320,479)
+			bottom: -20px
+			left: -130px
+.noti_mail
+	width: 132px
+	float: right
+	margin-right: 186px
+	margin-top: -145px
+	position: relative
+	+r(768,970)
+		margin-top: 96px
+		margin-right: 90px
+	+r(480,767)
+		margin: 0 auto
+		margin-right: 60px
+		float: none
+	+r(320,479)
+		margin-right: 0px
+		margin-top: 0px
+.section9
+	&__title
+		font-size: 32px
+		font-family: "RobotoBold"
+		line-height: 49px
+		text-align: center
+		display: block
+		margin-top: 40px
+		+r(768,970)
+			font-size: 27px
+		+r(480,767)
+			font-size: 23px
+			line-height: 34px
+		+r(320,479)
+			line-height: 30px
+			font-size: 16px
+	&__green
+		color: #495868
+		background: #ACED03
+		padding: 0px 10px
+.link_primer
+	width: 756px
+	margin-top: 0px
+	position: relative
+	&__play
+		display: block
+		position: absolute
+		top: 0
+		bottom: 0
+		left: 0
+		right: 0
+		width: 174px
+		height: 174px
+		margin: auto
+		&:hover
+			text-decoration: none
+		&:focus
+			text-decoration: none
+		&:active
+			text-decoration: none
+		+r(320,479)
+			height: 108px
+	&__icon
+		background: url(../images/icon/elips_play.png) no-repeat center center
+		width: 97px
+		height: 97px
+		display: block
+		margin: 0 auto
+		+r(480,767)
+			width: 76px
+			height: 76px
+			+cover
+		+r(320,479)
+			width: 50px
+			height: 50px
+			+cover
+	&__text
+		font-size: 18px
+		color: #fff
+		line-height: 26px
+		text-align: center
+		display: block
+	+r(768,970)
+		width: 720px
+		img
+			width: 100%
+			height: auto
+	+r(480,767)
+		width: 420px
+		img
+			width: 100%
+			height: auto
+	+r(320,479)
+		width: 265px
+		img
+			width: 100%
+			height: auto
+.bg_proj
+	font-size: 35px
+	line-height: 50px
+	margin-top: 53px
+	font-family: "RobotoBold"
+	text-align: center
+	display: block
+	+r(480,767)
+		font-size: 27px
+		line-height: 43px
+		margin-top: 29px
+	+r(320,479)
+		font-size: 24px
+		line-height: 40px
+		margin-top: 40px
+	&__green
+		color: #495868
+		background: #ACED03
+		padding: 0px 10px
+	&__info
+		font-size: 17px
+		line-height: 22px
+		display: block
+		text-align: center
+		margin-top: 46px
+		+r(768,970)
+			font-size: 15px
+		+r(320,479)
+			font-size: 16px
+			line-height: 22px
+.table_people_bg
+	background: url(../images/table_people_bg.png) no-repeat center center
+	width: 773px
+	height: 954px
+	margin-top: 122px
+	margin-left: 32px
+	position: relative
+	z-index: 1
+	+r(768,970)
+		width: 530px
+		margin: 120px auto
+		background: none
+	+r(480,767)
+		width: 252px
+		margin: 100px auto
+		background: none
+	+r(320,479)
+		width: 252px
+		margin: 100px auto
+		background: none
+.gen_director
+	background: url(../images/gen_d_bg.png) no-repeat center center
+	width: 265px
+	height: 98px
+	position: absolute
+	top: -63px
+	right: 231px
+	span
+		color: #3c4755
+		font-size: 17px
+		top: 21px
+		left: 26px 
+		position: relative
+		display: block
+		text-align: center
+		width: 188px
+.ruk_project
+	background: url(../images/peop_green_big.png) no-repeat center center
+	width: 265px
+	height: 98px
+	position: absolute
+	top: 62px
+	right: 127px
+	span
+		color: #3c4755
+		font-size: 17px
+		top: 21px
+		left: 26px
+		position: relative
+		display: block
+		text-align: center
+		width: 194px
+.ved_devel
+	background: url(../images/peop_green.png) no-repeat center center
+	width: 265px
+	height: 98px
+	position: absolute
+	top: 175px
+	right: 384px
+	span
+		color: #3c4755
+		font-size: 17px
+		top: 21px
+		left: 26px
+		position: relative
+		display: block
+		text-align: center
+		width: 188px
+.men_market
+	background: url(../images/peop_green.png) no-repeat center center
+	width: 265px
+	height: 98px
+	position: absolute
+	top: 175px
+	right: 127px
+	line-height: 20px
+	span
+		color: #3c4755
+		top: 10px
+		left: 26px
+		position: relative
+		display: block
+		text-align: center
+		width: 188px
+.art_direct
+	background: url(../images/peop_green.png) no-repeat center center
+	width: 265px
+	height: 98px
+	position: absolute
+	top: 175px
+	right: -129px
+	span
+		color: #3c4755
+		font-size: 17px
+		top: 21px
+		left: 26px
+		position: relative
+		display: block
+		text-align: center
+		width: 188px
+.programis
+	background: url(../images/peop_green_big.png) no-repeat center center
+	width: 265px
+	height: 98px
+	position: absolute
+	top: 276px
+	right: 387px
+	span
+		color: #3c4755
+		font-size: 17px
+		top: 21px
+		left: 26px
+		position: relative
+		display: block
+		text-align: center
+		width: 194px
+.men_kontext
+	background: url(../images/peop_green.png) no-repeat center center
+	width: 265px
+	height: 98px
+	position: absolute
+	top: 275px
+	right: 127px
+	line-height: 20px
+	span
+		color: #3c4755
+		top: 10px
+		left: 20px
+		position: relative
+		display: block
+		text-align: center
+		width: 203px
+.web_designer
+	background: url(../images/peop_green.png) no-repeat center center
+	width: 265px
+	height: 98px
+	position: absolute
+	top: 275px
+	right: -129px
+	span
+		color: #3c4755
+		font-size: 17px
+		top: 21px
+		left: 26px
+		position: relative
+		display: block
+		text-align: center
+		width: 188px
+.an_data
+	background: url(../images/peop_green.png) no-repeat center center
+	width: 265px
+	height: 98px
+	position: absolute
+	top: 380px
+	right: 385px
+	span
+		color: #3c4755
+		font-size: 17px
+		top: 21px
+		left: 26px
+		position: relative
+		display: block
+		text-align: center
+		width: 188px
+.an_ceo
+	background: url(../images/peop_green.png) no-repeat center center
+	width: 265px
+	height: 98px
+	position: absolute
+	top: 380px
+	right: 127px
+	span
+		color: #3c4755
+		font-size: 17px
+		top: 21px
+		left: 26px
+		position: relative
+		display: block
+		text-align: center
+		width: 188px
+.des_interf
+	background: url(../images/peop_green.png) no-repeat center center
+	width: 265px
+	height: 98px
+	position: absolute
+	top: 380px
+	right: -129px
+	span
+		color: #3c4755
+		font-size: 17px
+		top: 12px
+		left: 26px
+		position: relative
+		display: block
+		text-align: center
+		width: 194px
+.contents
+	background: url(../images/peop_green_big.png) no-repeat center center
+	width: 265px
+	height: 98px
+	position: absolute
+	top: 482px
+	right: 127px
+	span
+		color: #3c4755
+		font-size: 17px
+		top: 21px
+		left: 26px
+		position: relative
+		display: block
+		text-align: center
+		width: 188px
+.testirov
+	background: url(../images/peop_green_big.png) no-repeat center center
+	width: 265px
+	height: 98px
+	position: absolute
+	top: 482px
+	right: 386px
+	span
+		color: #3c4755
+		font-size: 17px
+		top: 21px
+		left: 26px
+		position: relative
+		display: block
+		text-align: center
+		width: 188px
+.verstal
+	background: url(../images/peop_green_big.png) no-repeat center center
+	width: 265px
+	height: 98px
+	position: absolute
+	top: 588px
+	right: 386px
+	span
+		color: #3c4755
+		font-size: 17px
+		top: 21px
+		left: 26px
+		position: relative
+		display: block
+		text-align: center
+		width: 188px
+.anti_ddos
+	background: url(../images/peop_blue.png) no-repeat center center
+	width: 246px
+	height: 93px
+	position: absolute
+	bottom: -73px
+	right: -127px
+	span
+		color: #3c4755
+		font-size: 16px
+		top: 0px
+		left: 6px
+		position: relative
+		display: block
+		text-align: center
+		width: 212px
+		height: 59px
+		line-height: 58px
+.pen_tester
+	background: url(../images/peop_blue.png) no-repeat center center
+	width: 246px
+	height: 93px
+	position: absolute
+	bottom: 16px
+	right: -127px
+	span
+		color: #3c4755
+		font-size: 16px
+		top: 0px
+		left: 6px
+		position: relative
+		display: block
+		text-align: center
+		width: 212px
+		height: 59px
+		line-height: 58px
+.nach_bez
+	background: url(../images/peop_blue.png) no-repeat center center
+	width: 246px
+	height: 93px
+	position: absolute
+	bottom: 113px
+	right: -127px
+	span
+		color: #3c4755
+		font-size: 16px
+		top: 7px
+		left: 6px
+		position: relative
+		display: block
+		text-align: center
+		width: 212px
+		height: 51px
+		line-height: 20px
+.o_slug_podderg
+	background: url(../images/peop_blue_big.png) no-repeat center center
+	width: 252px
+	height: 99px
+	position: absolute
+	bottom: 12px
+	right: 98px
+	span
+		color: #3c4755
+		font-size: 16px
+		top: 7px
+		left: 6px
+		position: relative
+		display: block
+		text-align: center
+		width: 212px
+		height: 51px
+		line-height: 20px
+.m_slug_podderg
+	background: url(../images/peop_blue.png) no-repeat center center
+	width: 246px
+	height: 93px
+	position: absolute
+	bottom: 113px
+	right: 103px
+	span
+		color: #3c4755
+		font-size: 16px
+		top: 7px
+		left: 6px
+		position: relative
+		display: block
+		text-align: center
+		width: 212px
+		height: 51px
+		line-height: 20px
+.pr_manager
+	background: url(../images/peop_blue.png) no-repeat center center
+	width: 246px
+	height: 93px
+	position: absolute
+	bottom: -72px
+	right: 335px
+	span
+		color: #3c4755
+		font-size: 16px
+		top: 0px
+		left: 6px
+		position: relative
+		display: block
+		text-align: center
+		width: 212px
+		height: 59px
+		line-height: 58px
+.m_prodag
+	background: url(../images/peop_blue.png) no-repeat center center
+	width: 246px
+	height: 93px
+	position: absolute
+	bottom: 18px
+	right: 335px
+	span
+		color: #3c4755
+		font-size: 16px
+		top: 7px
+		left: 6px
+		position: relative
+		display: block
+		text-align: center
+		width: 212px
+		height: 51px
+		line-height: 20px
+.n_prodag
+	background: url(../images/peop_blue.png) no-repeat center center
+	width: 246px
+	height: 93px
+	position: absolute
+	bottom: 112px
+	right: 335px
+	span
+		color: #3c4755
+		font-size: 16px
+		top: 7px
+		left: 6px
+		position: relative
+		display: block
+		text-align: center
+		width: 212px
+		height: 51px
+		line-height: 20px
+.a_baz
+	background: url(../images/peop_blue.png) no-repeat center center
+	width: 246px
+	height: 93px
+	position: absolute
+	bottom: -72px
+	right: 565px
+	span
+		color: #3c4755
+		font-size: 16px
+		top: 7px
+		left: 6px
+		position: relative
+		display: block
+		text-align: center
+		width: 212px
+		height: 51px
+		line-height: 20px
+.admins
+	background: url(../images/peop_blue_big.png) no-repeat center center
+	width: 252px
+	height: 99px
+	position: absolute
+	bottom: 12px
+	right: 559px
+	span
+		color: #3c4755
+		font-size: 16px
+		top: 0px
+		left: 6px
+		position: relative
+		display: block
+		text-align: center
+		width: 212px
+		height: 59px
+		line-height: 58px
+.r_datacentr
+	background: url(../images/peop_blue.png) no-repeat center center
+	width: 246px
+	height: 93px
+	position: absolute
+	bottom: 112px
+	right: 564px
+	span
+		color: #3c4755
+		font-size: 16px
+		top: 7px
+		left: 6px
+		position: relative
+		display: block
+		text-align: center
+		width: 212px
+		height: 51px
+		line-height: 20px
+.down_bg_last
+	background: url(../images/down_bg_last.png) no-repeat center center
+	+cover
+	width: 100%
+	height: 608px
+	margin-top: -176px
+	position: relative
+	+r(320,479)
+		height: 470px
+.inf_comanda
+	font-size: 22px
+	width: 680px
+	margin-top: 100px
+	text-align: center
+	line-height: 29px
+	margin-left: 40px
+	+r(480,767)
+		font-size: 14px
+		width: 420px
+		margin-top: 124px
+		line-height: 24px
+		margin-left: 0px
+	+r(320,479)
+		font-size: 12px
+		width: 265px
+		line-height: 20px
+		float: none
+		margin-left: 0px
+
+	&__big
+		font-size: 58px
+		font-family: "RobotoBold"
+.edu
+	width: 114px
+	margin: 30px auto
+
+.btn-default
+	background-image: linear-gradient(to top, #fdd000 0%, #fff04e 100%)
+	box-shadow: 2px 3.5px 5px rgba(0, 0, 0, 0.12)
+	color: #908505
+	border: none
+	border-bottom: 4px solid #D2BF00
+	width: 282px
+	height: 80px
+	+br(10px)
+	font-size: 26px
+	&:hover
+		background-image: linear-gradient(to top, #fde654 0%, #fef77d 100%)
+		box-shadow: 2px 3.5px 5px rgba(0, 0, 0, 0.12)
+		color: #908505
+		border-bottom: 4px solid #D2BF00
+	&:focus
+		background-image: linear-gradient(to top, #fde654 0%, #fef77d 100%)
+		box-shadow: 2px 3.5px 5px rgba(0, 0, 0, 0.12)
+		color: #908505
+		border-bottom: 4px solid #D2BF00
+	&:active
+		background-image: linear-gradient(to top, #f4db15 0%, #fbd20d 100%)
+		box-shadow: 2px 3.5px 5px rgba(0, 0, 0, 0.12)
+		color: #908505
+		border: none
+		border-top: 4px solid #D2BF00
+	+r(320,479)
+		width: 250px
+		height: 60px
+		font-size: 20px
+.calk_form
+	width: 100%
+	background: #fff
+	+br(8px)
+	padding: 37px 68px
+	margin-top: 119px
+	box-shadow: 0 0 46px rgba(0, 0, 2, 0.14)
+	margin-bottom: 80px
+	position: relative
+	+r(320,479)
+		padding: 10px
+		margin-bottom: 40px
+	&__title
+		color: #3c4755
+		font-size: 47px
+		font-family: "RobotoBold"
+		+r(320,479)
+			font-size: 25px
+			text-align: center
+			display: block
+			margin-top: 10px
+	&_subtitle
+		color: #3c4755
+		font-size: 16px
+		font-family: "RobotoBold"
+		display: block
+		margin-top: 10px
+.footer_form
+	width: 276px
+	margin-top: 25px
+	+r(320,479)
+		width: 250px
+		margin-top: 20px
+	&__input
+		background: #F1F1F1
+		border: none
+		margin-bottom: 24px
+		width: 276px
+		height: 50px
+		+br(10px)
+		padding: 0px 14px
+		color: #3c4755
+		+r(320,479)
+			width: 250px
+		&::-webkit-input-placeholder
+			color: #c1c1c1
+			font-size: 16px
+			opacity: 1
+		&:-moz-placeholder
+			color: #c1c1c1
+			font-size: 16px
+			opacity: 1
+		&::-moz-placeholder
+			color: #c1c1c1
+			font-size: 16px
+			opacity: 1
+		&:-ms-input-placeholder
+			color: #c1c1c1
+			font-size: 16px
+			opacity: 1
+	&__textarea
+		background: #F1F1F1
+		border: none
+		width: 276px
+		height: 90px
+		+br(10px)
+		padding: 14px
+		color: #3c4755
+		margin-bottom: 30px
+		+r(320,479)
+			width: 250px
+		&::-webkit-input-placeholder
+			color: #c1c1c1
+			font-size: 16px
+			opacity: 1
+		&:-moz-placeholder
+			color: #c1c1c1
+			font-size: 16px
+			opacity: 1
+		&::-moz-placeholder
+			color: #c1c1c1
+			font-size: 16px
+			opacity: 1
+		&:-ms-input-placeholder
+			color: #c1c1c1
+			font-size: 16px
+			opacity: 1
+.foot_mail
+	font-size: 27px
+	display: block
+	margin-top: 16px
+	color: #fff
+	text-decoration: underline
+	&:hover, &:active, &:focus
+		color: #fff
+		text-decoration: none
+	&:before
+		content: ''
+		background: url(../images/icon/mail.png)
+		width: 21px
+		height: 18px
+		display: inline-block
+		vertical-align: middle
+		margin-right: 17px
+		margin-top: -2px
+	+r(768,970)
+		font-size: 20px
+	+r(480,767)
+		margin: 20px 0px
+		text-align: center
+	+r(320,479)
+		margin: 20px 0px
+		text-align: center
+a.zvonok_bt
+	display: block
+	width: 259px
+	height: 60px
+	border: 3px solid #FFFFFF
+	+br(50px)
+	text-align: center
+	line-height: 52px
+	font-size: 20px
+	color: #fff
+	margin-left: 4px
+	+transition(all 0.3s linear 0.1s)
+	+r(480,767)
+		margin: 0 auto
+	+r(320,479)
+		margin: 0 auto
+	span
+		&:before
+			content: ''
+			background: url(../images/icon/phone2.png)
+			width: 22px
+			height: 22px
+			display: inline-block
+			vertical-align: middle
+			margin-right: 14px
+			margin-top: -2px
+			+transition(all 0.3s linear 0.1s)
+	&:hover, &:active, &:focus
+		color: #000
+		text-decoration: none
+		background: #fff
+		span
+			&:before
+				background: url(../images/icon/phone_black.png)
+	
+.foot_phone
+	font-size: 26px
+	font-family: "RobotoLight"
+	float: left
+	margin-top: 21px
+	margin-left: 31px
+	&:before
+		content: ''
+		background: url(../images/icon/phone.png)
+		width: 18px
+		height: 18px
+		display: inline-block
+		vertical-align: middle
+		margin-right: 14px
+		margin-top: -2px
+	+r(768,970)
+		font-size: 20px
+	+r(480,767)
+		display: block
+		text-align: center
+		float: none
+	+r(320,479)
+		display: block
+		text-align: center
+		float: none
+		margin-left: 0
+.footbottom_line
+	margin: 50px 0px
+	+r(480,767)
+		margin-top: 70px
+	+r(320,479)
+		margin: 20px 0px 40px
+.foot_logo
+	+r(320,479)
+		display: block
+		width: 192px
+		margin: 20px auto
+.taskon
+	display: block
+	width: 100px
+	margin: -5px 0px 5px 36px
+	+r(480,767)
+		margin: 20px auto 0px
+	+r(320,479)
+		margin: 20px auto 0px
+.copyring
+	font-size: 11px
+	margin-left: 4px
+	a
+		color: #fff
+	+r(480,767)
+		margin: 0
+		text-align: center
+	+r(320,479)
+		margin: 0
+		text-align: center
+.social_link
+	margin-left: 41px
+	margin-top: 3px
+	li
+		float: left
+		margin-right: 15px
+		+r(768,970)
+			margin-right: 8px
+		+r(320,479)
+			margin-right: 27px
+			margin-bottom: 10px
+		&:last-child
+			margin-right: 0
+
+.soc_item
+	width: 44px
+	height: 44px
+	+br(50%)
+	background: #fff
+	display: block
+	text-align: center
+	font-size: 24px
+	line-height: 40px
+	color: #283C4C
+	&:hover
+		background: #FFE600
+		color: #283C4C
+		text-decoration: none
+	&:focus
+		background: #FFE600
+		color: #283C4C
+		text-decoration: none
+	&:active
+		background: #00CDE0
+		color: #283C4C
+		text-decoration: none
+footer
+	width: 100%
+	background: url(../images/footer_bg.png) no-repeat center center
+	+cover
+.set
+	position: relative
+	width: 357px
+	+r(768,970)
+		margin-left: 73px
+	+r(480,767)
+		margin-top: -60px
+	+r(320,479)
+		margin-top: 148px
+		margin-left: -20px
+		img
+			width: 100%
+			height: auto
+.set1
+	position: absolute
+	top: -101px
+	right: 30px
+.set2
+	position: absolute
+	top: -102px
+	right: 136px
+.set3
+	position: absolute
+	top: -93px
+	right: 191px
+.set4
+	position: absolute
+	top: -131px
+	right: 178px
+.set5
+	position: absolute
+	top: -92px
+	right: 227px
+.set6
+	position: absolute
+	top: -183px
+	right: 227px
+.set7
+	position: absolute
+	top: -234px
+	right: 218px
+.set1_hover
+	animation-name: set_hover
+	animation-duration: 0.5s
+	animation-iteration-count: infinite
+.set2_hover
+	animation-name: set_hover
+	animation-duration: 0.5s
+	animation-iteration-count: infinite
+.set3_hover
+	animation-name: set_hover
+	animation-duration: 0.5s
+	animation-iteration-count: infinite
+.set4_hover
+	animation-name: set_hover
+	animation-duration: 0.5s
+	animation-iteration-count: infinite
+.set5_hover
+	animation-name: set_hover
+	animation-duration: 0.5s
+	animation-iteration-count: infinite
+.set6_hover
+	animation-name: set_hover
+	animation-duration: 0.5s
+	animation-iteration-count: infinite
+.set7_hover
+	animation-name: set_hover
+	animation-duration: 0.5s
+	animation-iteration-count: infinite
++keyframes(set_hover)
+	0%
+		transform: rotateZ(0deg)
+	50%
+		transform: rotateZ(-3deg)
+	100%
+		transform: rotateZ(3deg)
+.mob_v
+	+r(768,970)
+		position: relative
+		float: left
+		top: 0px
+		left: 0px
+		right: 0px
+		bottom: 0px
+		width: 262px
+	+r(480,767)
+		position: relative
+		float: left
+		top: 0px
+		left: 0px
+		right: 0px
+		bottom: 0px
+		width: 262px
+	+r(320,479)
+		position: relative
+		float: left
+		top: 0px
+		left: 0px
+		right: 0px
+		bottom: 0px
+		width: 262px
+.bx-wrapper .bx-prev
+	+r(480,767)
+		left: 4px
+.foot_logo
+	+r(480,767)
+		display: block
+		width: 192px
+		height: 51px
+		margin: 0px auto 20px
+.puls
+	width: 658px
+	margin-left: -271px
+	margin-top: 84px
+	display: block
+	height: 317px
+	background: url(../images/puls.png) no-repeat left center
+	position: relative
+	+transition(width 1s linear 0.2s)
+	&_off
+		opacity: 0
+		width: 0px
+	&_on
+		opacity: 1
+		width: 658px
+	+r(768,970)
+		margin-left: -372px
+	+r(480,767)
+		display: none
+	+r(320,479)
+		display: none
+.puls_point
+	width: 21px
+	height: 21px
+	background: url(../images/puls_point.png) no-repeat left center
+	position: absolute
+	top: 204px
+	right: 160px
+	+transition(all 0.3s linear 0.7s)
+	&_off
+		opacity: 0
+		top: 224px
+	&_on
+		opacity: 1
+		top: 255px
+	+r(480,767)
+		display: none
+	+r(320,479)
+		display: none
+.file-upload
+	position: relative
+	overflow: hidden
+	width: 185px
+	height: 44px
+	+br(50px)
+	text-align: center
+	color: #b39b02
+	font-size: 16px
+	text-align: center
+	background-image: linear-gradient(to top, #fdd000 0%, #fff04e 100%)
+	box-shadow: 2px 3.5px 5px rgba(0, 0, 0, 0.12)
+	color: #908505
+	border: none
+	border-bottom: 4px solid #D2BF00
+	margin: 0 auto
+	&:hover
+		background-image: linear-gradient(to top, #fde654 0%, #fef77d 100%)
+		box-shadow: 2px 3.5px 5px rgba(0, 0, 0, 0.12)
+		color: #908505
+		border-bottom: 4px solid #D2BF00
+	&:focus
+		background-image: linear-gradient(to top, #fde654 0%, #fef77d 100%)
+		box-shadow: 2px 3.5px 5px rgba(0, 0, 0, 0.12)
+		color: #908505
+		border-bottom: 4px solid #D2BF00
+	&:active
+		background-image: linear-gradient(to top, #f4db15 0%, #fbd20d 100%)
+		box-shadow: 2px 3.5px 5px rgba(0, 0, 0, 0.12)
+		color: #908505
+		border: none
+		border-top: 4px solid #D2BF00
+	input[type="file"]
+		display: none
+	label 
+		display: block
+		position: absolute
+		top: 0
+		left: 0
+		width: 100%
+		height: 100%
+		cursor: pointer
+	span 
+		line-height: 36px
+.filename
+	background: #F8F8F8
+	border: 0
+	font-size: 14px
+	color: #aeaeae
+	height: 25px
+	width: 185px
+	text-align: center
+	margin: 0px auto 20px
+	display: block
+.file-upload_block
+	width: 494px
+	height: 314px
+	background: #F8F8F8
+	position: absolute
+	right: 72px
+	top: 135px
+	border: 2px dotted #DFDFDF
+	+br(8px)
+	+r(768,970)
+		width: 270px
+	+r(480,767)
+		width: 100%
+		height: 200px
+		position: relative
+		right: 0px
+		top: 0px
+		margin-bottom: 20px
+	+r(320,479)
+		width: 250px
+		height: 176px
+		position: relative
+		right: 0px
+		top: 0px
+		margin-bottom: 20px
+.file_drop
+	color: #aeaeae
+	font-size: 14px
+	line-height: 26px
+	text-align: center
+.file_upload_bt
+	width: 264px
+	height: 150px
+	position: absolute
+	top: 0
+	left: 0
+	right: 0
+	bottom: 0
+	margin: auto
+	+r(320,479)
+		width: 250px
+.popup
+	width: 383px
+	background: #fff
+	margin: 0 auto
+	position: relative
+	+br(8px)
+	padding: 50px 58px 40px
+	&__title
+		font-size: 31px
+		color: #698387
+		text-align: center
+		display: block
+		margin-bottom: 25px
+	&__subtittle
+		font-size: 15px
+		color: #698387
+		line-height: 24px
+		display: block
+		text-align: center
+		margin-bottom: 34px
+	+r(320,479)
+		width: 300px
+		height: 411px
+		padding: 40px 20px
+.mfp-close-btn-in
+	.mfp-close
+		color: #5C8488
+		font-weight: bold
+.input_st
+	width: 264px
+	height: 44px
+	background: #F5F5F5
+	border: none
+	+br(50px)
+	margin-bottom: 34px
+	color: #698387
+	font-size: 16px
+	padding: 0px 18px
+	&::-webkit-input-placeholder
+		color: #698387
+		font-size: 16px
+		opacity: 1
+	&:-moz-placeholder
+		color: #698387
+		font-size: 16px
+		opacity: 1
+	&::-moz-placeholder
+		color: #698387
+		font-size: 16px
+		opacity: 1
+	&:-ms-input-placeholder
+		color: #698387
+		font-size: 16px
+		opacity: 1
+.field-input.input-error
+	background: #fff url(../images/icon-fail.png) no-repeat 96% center
+	border: 1px solid #E9A2A2
+
+.popup_bt_send
+	width: 256px
+	height: 47px
+	+br(50px)
+	text-align: center
+	color: #b39b02
+	font-size: 16px
+	background-image: linear-gradient(to top, #fdd000 0%, #fff04e 100%)
+	box-shadow: 2px 3.5px 5px rgba(0, 0, 0, 0.12)
+	color: #908505
+	border: none
+	border-bottom: 4px solid #D2BF00
+	margin: 0 auto
+	&:hover, &:focus
+		background-image: linear-gradient(to top, #fde654 0%, #fef77d 100%)
+		box-shadow: 2px 3.5px 5px rgba(0, 0, 0, 0.12)
+		color: #908505
+		border-bottom: 4px solid #D2BF00
+	&:active
+		background-image: linear-gradient(to top, #f4db15 0%, #fbd20d 100%)
+		box-shadow: 2px 3.5px 5px rgba(0, 0, 0, 0.12)
+		color: #908505
+		border: none
+		border-top: 4px solid #D2BF00
+.phone_hover_foot
+	background: url(../images/phone_hover_bg.png) no-repeat center center
+	width: 222px
+	height: 88px
+	display: none
+	position: absolute
+	top: -76px
+	right: 56px
+	color: #3c4755
+	font-family: "RobotoLight"
+	font-size: 14px
+	line-height: 21px
+	text-align: center
+	padding-top: 15px
+.show_phone_inf
+	display: block
+.phone_hover_head
+	background: url(../images/phone_hover2.png) no-repeat center center
+	width: 222px
+	height: 88px
+	display: none
+	position: absolute
+	top: 58px
+	right: -14px
+	color: #3c4755
+	font-family: "RobotoLight"
+	font-size: 14px
+	line-height: 21px
+	text-align: center
+	padding-top: 25px
+	z-index: 4
+.show_phone_inf_head
+	display: block
+.show_phone_inf, .show_phone_inf_head
+	+r(480,767)
+		display: none
+	+r(320,479)
+		display: none
+.work
+	font-size: 14px
+	text-align: center
+.txtbtnclose
+	width: 50px
+	height: 15px
+	position: absolute
+	top: 15px
+	right: 36px
+	color: #698387
+	font-size: 12px
+	display: none
+.hoverclose
+	display: block!important
+.inpt_err
+	color: red
+.menu
+	width: 260px
+	height: 100vh
+	z-index: 9999
+	position: fixed
+	top: 0
+	right: -260px
+	background: #333942
+	-webkit-transition: right 0.5s ease-out 0.4s
+	-moz-transition: right 0.5s ease-out 0.4s
+	-o-transition: right 0.5s ease-out 0.4s
+	transition: right 0.5s ease-out 0.4s
+	display: none
+	+r(320,970)
+		display: block
+.menu_active
+	right: 0px
+
+.menu ul 
+	list-style: none
+
+.menu ul li
+	padding-left: 20px
+	height: 42px
+	line-height: 40px
+	border-bottom: 1px solid #2D323A
+	display: block
+	&:hover
+		background: #93A5BD
+
+.menu ul li
+	&:last-child 
+		margin-bottom: 0
+
+.menu ul li a 
+	font-size: 15px
+	color: #fff
+	text-decoration: none
+	display: block
+
+.menu ul li a
+	&:hover 
+		color: #181818
+.phone_menu
+	font-size: 21px
+	font-family: "RobotoLight"
+	height: 60px
+	line-height: 60px
+	padding-left: 20px
+	background: #262E38
+	&:before
+		content: ''
+		background: url(../images/icon/phone.png)
+		width: 18px
+		height: 18px
+		display: inline-block
+		vertical-align: middle
+		margin-right: 14px
+		margin-top: -2px
+.toggle_block
+	width: 60px
+	height: 60px
+	position: absolute
+	background: #22252B
+	left: -60px
+.toggle-mnu 
+	display: block
+	width: 60px
+	height: 60px
+	padding: 19px 16px 16px
+	span:after, span:before 
+		content: ""
+		position: absolute
+		left: 0
+		top: 9px
+	span:after
+		top: 18px
+	span 
+		position: relative
+		display: block
+	span, span:after, span:before
+		width: 100%
+		height: 2px
+		background-color: #fff
+		transition: all 0.3s
+		backface-visibility: hidden
+		+br(2px)
+	&.on
+		span
+			background: transparent
+
+	&.on 
+		span
+			&:before 
+				-webkit-transform: rotate(45deg) translate(-1px, 0px)
+				-ms-transform: rotate(45deg) translate(-1px, 0px)
+				-o-transform: rotate(45deg) translate(-1px, 0px)
+				transform: rotate(45deg) translate(-1px, 0px)
+
+	&.on
+		span
+			&:after 
+				-webkit-transform: rotate(-45deg) translate(6px, -7px)
+				-ms-transform: rotate(-45deg) translate(6px, -7px)
+				-o-transform: rotate(-45deg) translate(6px, -7px)
+				transform: rotate(-45deg) translate(6px, -7px)
+.mackup_section1
+	background: url(../images/mockup_section1.png) no-repeat center center
+	width: 665px
+	height: 631px
+	position: absolute
+	bottom: -47px
+	right: 0
+	+r(480,767)
+		display: none
+	+r(320,479)
+		display: none
+.p8
+	background: url(../images/parallax/p7.png) no-repeat center center
+	width: 243px
+	height: 168px
+	position: absolute
+	bottom: 243px
+	right: 355px
+	+r(768,970)
+		display: none
+	+r(480,767)
+		display: none
+	+r(320,479)
+		display: none
+.p9
+	background: url(../images/parallax/p8.png) no-repeat center center
+	width: 230px
+	height: 160px
+	position: absolute
+	bottom: 372px
+	right: 258px
+	+r(768,970)
+		display: none
+	+r(480,767)
+		display: none
+	+r(320,479)
+		display: none
+.p10
+	background: url(../images/parallax/p9.png) no-repeat center center
+	width: 207px
+	height: 143px
+	position: absolute
+	bottom: 506px
+	right: 174px
+	+r(768,970)
+		display: none
+	+r(480,767)
+		display: none
+	+r(320,479)
+		display: none
+.fbicon
+	&:before
+		content: ''
+		background: url(../images/icon/fb.png)
+		width: 9px
+		height: 19px
+		display: inline-block
+		vertical-align: middle
+		margin-right: 2px
+		margin-top: -2px
+.gplusicon
+	&:before
+		content: ''
+		background: url(../images/icon/gplus.png)
+		width: 23px
+		height: 22px
+		display: inline-block
+		vertical-align: middle
+		margin-right: 2px
+		margin-top: -2px
+.bx-wrapper
+	+r(320,479)
+		height: 311px!important
+		img
+			height: auto
+.video_sec
+	width: 100%
+	min-height: 500px
+	background: url(../images/video_bg.png) no-repeat center center
+	position: relative
+	+cover
+	+r(768,970)
+		min-height: 491px
+	+r(480,767)
+		min-height: 435px
+	+r(320,479)
+		min-height: 500px
+.video_title
+	font-size: 29px
+	font-family: "RobotoBold"
+	line-height: 41px
+	font-weight: normal
+	margin-top: 110px
+	+r(768,970)
+		font-size: 22px
+		line-height: 37px
+		margin-top: 107px
+	+r(480,767)
+		font-size: 17px
+		line-height: 26px
+		margin-top: 72px
+		text-align: center
+	+r(320,479)
+		font-size: 14px
+		line-height: 27px
+		margin-top: 90px
+		text-align: center
+.video_btn
+	display: block
+	color: #fff
+	border: 2px solid #fff
+	border-radius: 50px
+	margin-top: 153px
+	height: 65px
+	width: 339px
+	line-height: 58px
+	font-size: 18px
+	text-align: center
+	+transition(all 0.3s linear 0.1s)
+	&:hover, &:active, &:focus
+		color: #000
+		text-decoration: none
+		background: #fff
+	+r(768,970)
+		margin-top: 92px
+	+r(480,767)
+		margin: 97px auto 0px
+	+r(320,479)
+		width: 270px
+		font-size: 14px
+		margin-top: 90px
+.icon-pres
+	&:before
+		content: ''
+		background: url(../images/icon/icon_pres.png)
+		width: 24px
+		height: 29px
+		display: inline-block
+		vertical-align: middle
+		margin-right: 14px
+		margin-top: -3px
+		+transition(all 0.3s linear 0.1s)
+.video_btn
+	&:hover, &:active, &:focus
+		.icon-pres
+			&:before
+				background: url(../images/icon/icon_pres_black.png)
+.about_sec
+	width: 100%
+	background: #fff
+	p
+		/* text-indent: 18px */
+		font-size: 16px
+		color: #252624
+		line-height: 24px
+		margin-bottom: 24px
+		letter-spacing: 0.7px		
+		+r(320,479)
+			font-size: 14px
+			color: #252624
+			line-height: 22px
+
+.about_title
+	display: block
+	font-size: 25px
+	color: #6f99ab
+	margin-top: 48px
+	margin-bottom: 30px
+.about_hide_btn
+	font-size: 14px
+	color: #0097e6
+	cursor: pointer
+	border-bottom: 2px dotted #0097e6
+	display: inline-block
+	padding-bottom: 3px
+	margin-bottom: 10px
+.about_img 
+	margin-top: 25px
+	margin-bottom: 35px
+	img
+		width: 100%
+		height: auto
+.resident_sec
+	width: 100%
+	min-height: 772px
+	background: #fff url(../images/resident_bg.png) no-repeat center center
+	+cover
+	position: relative
+	+r(768,970)
+		padding-bottom: 40px
+	+r(480,767)
+		padding-bottom: 40px
+	+r(320,479)
+		padding-bottom: 40px
+.res_title
+	font-size: 34px
+	font-family: "RobotoBold"
+	color: #2c3441
+	margin-top: 92px
+	display: inline-block
+	margin-bottom: 20px
+	&:after
+		content: ''
+		background: url(../images/innopolis_logo.png)
+		width: 198px
+		height: 45px
+		display: inline-block
+		vertical-align: middle
+		margin-left: 14px
+		margin-top: -1px
+		+r(320,479)
+			margin-left: 0
+			margin-top: 5px
+	+r(768,970)
+		display: block
+		text-align: center
+	+r(480,767)
+		display: block
+		text-align: center
+		font-size: 28px
+	+r(320,479)
+		display: block
+		text-align: center
+		font-size: 28px
+		margin-top: 40px
+.res_text
+	font-size: 18px
+	line-height: 26px
+	color: #2c3441
+	margin-bottom: 80px
+	+r(768,970)
+		text-align: center
+	+r(480,767)
+		text-align: center
+		font-size: 17px
+	+r(320,479)
+		text-align: center
+		font-size: 17px
+.sup_work_block
+	+r(768,970)
+		display: block
+		margin: 0 auto
+		width: 490px
+	+r(480,767)
+		display: block
+		margin: 0 auto
+		width: 434px
+	+r(320,479)
+		display: block
+		margin: 0 auto
+		width: 270px
+.sup_work_title
+	display: block
+	color: #2c3441
+	font-size: 25px
+	margin-bottom: 21px
+	+r(768,970)
+		text-align: center
+	+r(480,767)
+		text-align: center
+	+r(320,479)
+		text-align: center
+.sup_work_item
+	border-bottom: 1px solid #9EC3CB
+	padding-bottom: 20px
+	width: 490px
+	margin-bottom: 8px
+	&:last-child
+		border-bottom: none
+		margin-top: 24px
+	+r(480,767)
+		width: 434px
+	+r(320,479)
+		width: 270px
+.sup_work_name
+	font-size: 16px
+	line-height: 24px
+	color: #376681
+	display: inline-block
+	width: 360px
+	+r(480,767)
+		width: 275px
+	+r(320,479)
+		width: 270px
+		display: block
+		text-align: center
+.sup_work_logo
+	display: inline-block
+	position: relative
+	top: 10px
+	width: 124px
+	mix-blend-mode: multiply
+	img
+		width: 100%
+		height: auto
+	+r(320,479)
+		display: block
+		margin: 0 auto
+.taskon_bl
+	width: 245px
+	height: 272px
+	margin-left: 38px
+	+r(768,970)
+		margin: 0 auto
+	+r(480,767)
+		margin: 0 auto
+	+r(320,479)
+		margin: 0 auto
+.about_project_link
+	display: inline-block
+	font-size: 14px
+	color: #0097e6
+	text-decoration: underline
+	position: relative
+	top: 19px
+	left: 69px
+	&:hover
+		color: #0097e6
+		text-decoration: none
+	+r(768,970)
+		top: 0
+		left: 0
+		width: 140px
+		margin: 20px auto 0px
+		display: block
+	+r(480,767)
+		top: 0
+		left: 0
+		width: 140px
+		margin: 20px auto 0px
+		display: block
+	+r(320,479)
+		top: 0
+		left: 0
+		width: 140px
+		margin: 20px auto 0px
+		display: block
+.about_p1
+	position: absolute
+	top: -74px
+	left: 46px
+	width: 335px
+	height: 424px
+	background: url(../images/parallax/about_p1.png) no-repeat center center
+	+r(320,1900)
+		display: none
+.about_p2
+	position: absolute
+	bottom: -78px
+	left: 173px
+	width: 278px
+	height: 240px
+	background: url(../images/parallax/about_p2.png) no-repeat center center
+	+r(320,1900)
+		display: none
+.about_p3
+	position: absolute
+	bottom: -101px
+	right: 284px
+	width: 284px
+	height: 240px
+	background: url(../images/parallax/about_p3.png) no-repeat center center
+	+r(320,1900)
+		display: none
+.about_p4
+	position: absolute
+	top: 210px
+	right: 57px
+	width: 301px
+	height: 194px
+	background: url(../images/parallax/about_p4.png) no-repeat center center
+	+r(320,1900)
+		display: none
+.dep_sec
+	background: #fff
+	padding-top: 62px
+	padding-bottom: 40px
+.dep_title
+	display: block
+	font-size: 34px
+	color: #2c3441
+	font-family: "RobotoBold"
+	margin-bottom: 59px
+	+r(320,479)
+		text-align: center
+.dep_block
+	display: block
+	background: url(../images/dep_block_bg.png) no-repeat 5% 69%
+	position: relative
+	+r(320,970)
+		background: none
+.dep_item
+	width: 870px
+	margin-top: 20px
+	margin-left: 75px
+	&_first
+		width: 100%
+	+r(320,970)
+		width: 100%
+		margin-left: 0
+.dep_item__d
+	background: url(../images/dep_item_bg.png) no-repeat center center
+	width: 272px
+	height: 104px
+	display: block
+	float: left
+	&_name
+		display: block
+		width: 230px
+		margin-left: 7px
+		padding-top: 5px
+		height: 67px
+		text-align: center
+		line-height: 59px
+		font-size: 17px
+		font-family: "RobotoBold"
+		margin-left: 7px
+		&_first
+			display: block
+			width: 230px
+			margin-left: 7px
+			padding-top: 5px
+			height: 67px
+			text-align: center
+			line-height: 59px
+			font-size: 17px
+			font-family: "RobotoBold"
+			margin-left: 7px
+	+r(480,767)
+		float: none
+		margin: 0 auto
+	+r(320,479)
+		float: none
+		margin: 0 auto
+			
+.dep_item__txt
+	font-size: 16px
+	color: #4f7f96
+	line-height: 25px
+	display: block
+	margin-left: -1px
+	float: left
+	margin-top: 2px
+	width: 537px
+	&_first
+		font-size: 16px
+		color: #4f7f96
+		line-height: 25px
+		display: block
+		margin-left: -1px
+		float: left
+		margin-top: 2px
+		width: 600px
+		+r(768,970)
+			width: 445px
+		+r(480,767)
+			width: 100%
+			text-align: center
+		+r(320,479)
+			width: 100%
+			text-align: center
+			font-size: 14px
+	+r(768,970)
+		width: 445px
+	+r(480,767)
+		width: 100%
+		text-align: center		
+	+r(320,479)
+		width: 100%
+		text-align: center
+		font-size: 14px
+.d_lst
+	margin-top: 15px
+.dep_block__hide
+	background: url(../images/dep_block__hide.png) no-repeat 5% 0%
+	padding-top: 30px
+	position: relative
+	top: -34px
+	+r(320,970)
+		background: none
+.dep_block_hide__btn
+	font-size: 14px
+	color: #0097e6
+	cursor: pointer
+	border-bottom: 2px dotted #0097e6
+	display: inline-block
+	padding-bottom: 3px
+	margin-bottom: 10px
+	position: relative
+	left: 117px
+	+r(768,970)
+		left: 40px
+	+r(480,767)
+		left: 0px
+		width: 160px
+		text-align: center
+		margin: 0 auto 10px
+		display: block
+	+r(320,479)
+		left: 0px
+		width: 160px
+		text-align: center
+		margin: 0 auto 10px
+		display: block
+.line_hide
+	background-image: linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,0.4) 100%)
+	height: 92px
+	width: 940px
+	position: absolute
+	bottom: 8px
+	+r(768,970)
+		width: 100%
+	+r(480,767)
+		width: 100%
+		bottom: 2px
+	+r(320,479)
+		width: 100%
+		bottom: 2px
+.rev_title
+	font-size: 34px
+	color: #2c3441
+	font-family: "RobotoBold"
+	margin-bottom: 38px
+	display: block
+.rev_sec
+	padding-top: 46px
+	background: #fff url(../images/rev_bg.png) no-repeat bottom center
+	padding-bottom: 40px
+.rev_img
+	width: 194px
+	height: 270px
+	box-shadow: 4px 0px 10px rgba(0,0,0,0.19)
+	+r(480,767)
+		margin: 0 auto 30px
+	+r(320,479)
+		margin: 0 auto 30px
+.rev_name
+	font-size: 25px
+	color: #3a5763
+	margin-bottom: 15px
+	+r(480,767)
+		text-align: center
+	+r(320,479)
+		text-align: center
+		font-size: 22px
+.rev_txt
+	font-size: 16px
+	line-height: 25px
+	color: #4f7f96
+.rev_txt_hide
+	font-size: 16px
+	line-height: 25px
+	color: #4f7f96
+.line_hide_rev
+	background-image: linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,0.4) 100%)
+	height: 45px
+	width: 100%
+	position: absolute
+	bottom: 33px
+.rev__hide__btn
+	font-size: 14px
+	color: #0097e6
+	cursor: pointer
+	border-bottom: 2px dotted #0097e6
+	display: inline-block
+	padding-bottom: 3px
+	margin-bottom: 10px
+	position: relative
+	left: 0px
+	top: 10px
+.rev_video_block
+	margin: 54px 0 15px
+.rev_video
+	width: 417px
+	img
+		width: 100%
+		height: auto
+	+r(768,970)
+		margin: 0 auto 20px
+	+r(480,767)
+		margin: 0 auto 20px
+	+r(320,479)
+		width: 270px
+		margin: 0 auto 20px
+.rev_video_name
+	font-size: 25px
+	color: #3a5763
+	line-height: 35px
+	margin-top: -11px
+	+r(768,970)
+		text-align: center
+	+r(480,767)
+		text-align: center
+	+r(320,479)
+		text-align: center
+		margin-top: 0
+		font-size: 19px
+		line-height: 24px
+.rev_video_desc
+	font-size: 16px
+	color: #4f7f96
+	line-height: 25px
+	margin-top: 21px
+	+r(768,970)
+		text-align: center
+	+r(480,767)
+		text-align: center
+	+r(320,479)
+		font-size: 15px
+		text-align: center
+.all_rev__btn
+	position: relative
+	overflow: hidden
+	width: 232px
+	height: 52px
+	line-height: 47px
+	
+	+br(50px)
+	text-align: center
+	color: #b39b02
+	font-size: 18px
+	text-align: center
+	background-image: linear-gradient(to top, #fdd000 0%, #fff04e 100%)
+	box-shadow: 2px 3.5px 5px rgba(0, 0, 0, 0.12)
+	color: #908505
+	border: none
+	border-bottom: 4px solid #D2BF00
+	margin: 57px auto 38px
+	display: block
+	&:hover, &:focus, 
+		background-image: linear-gradient(to top, #fde654 0%, #fef77d 100%)
+		box-shadow: 2px 3.5px 5px rgba(0, 0, 0, 0.12)
+		color: #908505
+		border-bottom: 4px solid #D2BF00
+		text-decoration: none
+	&:active
+		background-image: linear-gradient(to top, #f4db15 0%, #fbd20d 100%)
+		box-shadow: 2px 3.5px 5px rgba(0, 0, 0, 0.12)
+		color: #908505
+		border: none
+		border-top: 4px solid #D2BF00
+		text-decoration: none
+.audit_sec
+	background: #fff
+	padding-top: 90px
+.audit_img
+	height: 248px
+	width: 182px
+	box-shadow: 4px 0px 10px rgba(0,0,0,0.19)
+	+r(480,767)
+		margin: 0 auto 30px
+	+r(320,479)
+		margin: 0 auto 30px
+.audit_title
+	font-size: 34px
+	color: #2c3441
+	font-family: "RobotoBold"
+	+r(768,970)
+		font-size: 30px
+	+r(480,767)
+		font-size: 25px
+		text-align: center
+	+r(320,479)
+		font-size: 25px
+		text-align: center
+.audit_txt
+	font-size: 22px
+	line-height: 31px
+	color: #6e6e6e
+	margin-top: 34px
+	+r(480,767)
+		font-size: 20px
+	+r(320,479)
+		font-size: 17px
+		text-align: center
+.audit_bg
+	background: url(../images/audit_bg.png) no-repeat bottom right
+	height: 345px
+	+r(480,767)
+		height: auto
+		padding-bottom: 40px
+	+r(320,479)
+		height: auto
+		padding-bottom: 40px
+		background: none
+.our_partners
+	background: #fff
+.our_p_title
+	font-size: 34px
+	color: #2c3441
+	font-family: "RobotoBold"
+	margin-top: -3px
+	display: block
+.tr_foot
+	background: url(../images/tr_foot.png) no-repeat bottom center
+	width: 100%
+	height: 145px
+	margin-bottom: 80px
+.part_item
+	margin-top: 67px
+.part_txt
+	font-size: 15px
+	color: #000
+	line-height: 21px
+	margin-top: 48px
+.part_logo
+	height: 70px
+.school_sec
+	width: 100%
+	min-height: 630px
+	background: #fff url(../images/school_sec_bg.png) no-repeat bottom center
+	+cover
+	position: relative
+	+r(320,479)
+		min-height: 524px
+	&_title
+		font-size: 49px
+		color: #566e6e
+		font-weight: normal
+		text-align: center
+		font-family: "RobotoBold"
+		margin-top: 174px
+		+r(768,970)
+			font-size: 45px
+		+r(480,767)
+			font-size: 34px
+			margin-top: 136px
+			line-height: 40px
+		+r(320,479)
+			font-size: 28px
+			margin-top: 75px
+			line-height: 40px
+	&_slogan
+		font-size: 26px
+		color: #334849
+		line-height: 35px
+		display: block
+		text-align: center
+		margin-top: 49px
+		+r(768,970)
+			font-size: 23px
+		+r(480,767)
+			font-size: 23px
+		+r(320,479)
+			font-size: 16px
+			line-height: 31px
+.mouse
+	background: url(../images/icon/mouse_icon.png) no-repeat center center
+	width: 56px
+	height: 87px
+	position: absolute
+	bottom: 37px
+	left: 0
+	right: 0
+	margin: auto
+	cursor: pointer
+.mouse_point
+	background: url(../images/icon/mouse_point.png) no-repeat center center
+	width: 12px
+	height: 25px
+	position: relative
+	left: 22px
+	top: 22px
+.mouse_hover
+	animation-name: mouse_hover
+	animation-duration: 0.7s
+	animation-iteration-count: infinite
+	animation-timing-function: linear
++keyframes(mouse_hover)
+	0%
+		top: 20px
+	50%
+		top: 22px
+	100%
+		top: 24px
+.video_block
+	background: #fff
+	width: 100%
+	padding-top: 90px
+	&__title
+		font-size: 25px
+		color: #6f99ab
+		text-align: center
+		background: url(../images/video_block_title__bg.png) no-repeat bottom center
+		width: 100%
+		height: 83px
+.bl_video
+	margin-top: 46px
+	margin-bottom: 100px
+	&__item
+		margin-left: 13px
+		margin-bottom: 36px
+		+r(320,479)
+			margin-left: 0
+		&_title
+			font-size: 24px
+			color: #567f90
+			line-height: 35px
+			margin-bottom: 41px
+			+r(480,767)
+				font-size: 18px
+				line-height: 25px
+				text-align: center
+			+r(320,479)
+				font-size: 14px
+				line-height: 21px
+				text-align: center
+		&_foot
+			float: left
+			width: 100%
+			color: #3c4755
+			margin-top: 30px
+			border-bottom: 5px dotted #E8E8E8
+			padding-bottom: 12px
+		&_video
+			width: 253px
+			display: block
+			float: left
+			position: relative
+			+r(480,767)
+				float: none
+				margin: 0 auto 20px
+			+r(320,479)
+				float: none
+				margin: 0 auto 20px
+			&_hover
+				background: url(../images/icon/video_play.png)
+				width: 48px
+				height: 48px
+				position: absolute
+				top: 0
+				bottom: 0
+				left: 0
+				right: 0
+				margin: auto
+				display: none
+		&_txt
+			display: block
+			float: left
+			margin-left: 59px
+			+r(768,970)
+				margin-left: 13px
+			+r(480,767)
+				margin-left: 13px
+			+r(320,479)
+				margin-left: 0
+.video_txt__list
+	font-size: 17px
+	color: #536b79
+	position: relative
+	+r(480,767)
+		font-size: 13px
+	+r(320,479)
+		font-size: 15px
+	li
+		height: 31px
+		line-height: 10px
+		+r(320,479)
+			height: 45px
+			line-height: 14px
+			padding-left: 17px
+		&:before
+			content: ''
+			background: url(../images/icon/video_txt__list.png)
+			width: 16px
+			height: 12px
+			display: inline-block
+			vertical-align: middle
+			margin-right: 12px
+			margin-top: -1px
+			+r(320,479)
+				margin-left: -16px
+				margin-right: 0
+.list_hide_btn, .list_hide2_btn, .list_hide3_btn, .list_hide4_btn, .list_hide5_btn
+	font-size: 14px
+	color: #0097e6
+	cursor: pointer
+	border-bottom: 2px dotted #0097e6
+	display: inline-block
+	padding-bottom: 5px
+	margin-bottom: 10px
+	position: relative
+	left: 0px
+	top: -8px
+.list_hide_rev, .list_hide2_rev, .list_hide3_rev, .list_hide4_rev, .list_hide5_rev
+	background-image: linear-gradient(to top, rgba(255,255,255,1) 0%, rgba(255,255,255,0.4) 100%)
+	height: 45px
+	width: 100%
+	position: absolute
+	bottom: 0px
+.date_video
+	display: block
+	float: left
+	&:before
+		content: ''
+		background: url(../images/icon/date_video.png)
+		width: 25px
+		height: 25px
+		display: inline-block
+		vertical-align: middle
+		margin-right: 14px
+		margin-top: -5px
+	+r(320,479)
+		float: none
+		margin: 0px 0px 20px
+		text-align: center
+.time_video
+	display: block
+	float: left
+	margin-left: 50px
+	&:before
+		content: ''
+		background: url(../images/icon/time_video.png)
+		width: 23px
+		height: 27px
+		display: inline-block
+		vertical-align: middle
+		margin-right: 14px
+		margin-top: -5px
+	+r(320,479)
+		float: none
+		margin: 0px 0px 20px
+		text-align: center
+.video_subsc_btn
+	position: relative
+	overflow: hidden
+	width: 188px
+	height: 52px
+	line-height: 47px
+	+br(50px)
+	text-align: center
+	color: #b39b02
+	font-size: 18px
+	text-align: center
+	background-image: linear-gradient(to top, #fdd000 0%, #fff04e 100%)
+	box-shadow: 2px 3.5px 5px rgba(0, 0, 0, 0.12)
+	color: #908505
+	border: none
+	border-bottom: 4px solid #D2BF00
+	margin-right: 22px
+	display: block
+	float: right
+	top: -13px
+	+r(480,767)
+		float: none
+		margin: 0px auto 30px
+		top: 20px
+	+r(320,479)
+		float: none
+		margin: 0 auto
+		top: 0
+	&:hover, &:focus, 
+		background-image: linear-gradient(to top, #fde654 0%, #fef77d 100%)
+		box-shadow: 2px 3.5px 5px rgba(0, 0, 0, 0.12)
+		color: #908505
+		border-bottom: 4px solid #D2BF00
+		text-decoration: none
+	&:active
+		background-image: linear-gradient(to top, #f4db15 0%, #fbd20d 100%)
+		box-shadow: 2px 3.5px 5px rgba(0, 0, 0, 0.12)
+		color: #908505
+		border: none
+		border-top: 4px solid #D2BF00
+		text-decoration: none
+.video_foot_line
+	width: 277px
+	height: 1px
+	background: #D1DBDF
+	position: relative
+	float: left
+	left: 35px
+	top: 12px
+	+r(768,970)
+		width: 60px
+	+r(480,767)
+		display: none
+	+r(320,479)
+		display: none
+.school_p1
+	position: absolute
+	top: 72px
+	left: 83px
+	width: 301px
+	height: 194px
+	background: url(../images/parallax/school_p1.png) no-repeat center center
+	+r(320,1600)
+		display: none
+.school_p2
+	position: absolute
+	bottom: -19px
+	left: 83px
+	width: 490px
+	height: 330px
+	background: url(../images/parallax/school_p2.png) no-repeat center center
+	+r(320,1600)
+		display: none
+.school_p3
+	position: absolute
+	top: 22px
+	right: 91px
+	width: 344px
+	height: 424px
+	background: url(../images/parallax/school_p3.png) no-repeat center center
+	+r(320,1600)
+		display: none
+.school_p4
+	position: absolute
+	bottom: 11px
+	right: 246px
+	width: 284px
+	height: 230px
+	background: url(../images/parallax/school_p4.png) no-repeat center center
+	+r(320,1600)
+		display: none
+.minkom
+	top: -8px
+.keys_kns
+	background: #fff
+	padding-top: 76px
+	h2
+		font-size: 25px
+		color: #494949
+		font-family: "RobotoBold"
+		+r(320,479)
+			font-size: 18px
+	p
+		font-size: 17px
+		color: #494949
+		line-height: 32px
+		margin-top: 25px
+		margin-bottom: 25px
+		+r(320,767)
+			font-size: 15px
+			line-height: 27px
+.keys_title
+	color: #494949
+	font-size: 34px
+	font-family: "RobotoBold"
+	font-weight: normal
+	margin-bottom: 61px
+	+r(320,479)
+		font-size: 26px
+		text-align: center
+.keys_list
+	margin-top: 18px
+	li
+		font-size: 17px
+		color: #494949
+		line-height: 32px
+		&:before
+			content: ''
+			background: url(../images/icon/video_txt__list.png)
+			width: 16px
+			height: 12px
+			display: inline-block
+			vertical-align: middle
+			margin-right: 12px
+			margin-top: -1px
+		+r(320,767)
+			font-size: 15px
+			line-height: 29px
+.gif_post
+	width: 724px
+	margin: -25px auto 0px
+	img
+		width: 100%
+		height: auto
+	+r(320,767)
+		width: 100%
+.logica
+	width: 804px
+	margin: 0 auto 25px
+	img
+		width: 100%
+		height: auto
+	+r(320,970)
+		width: 100%
+.keys_step
+	span
+		font-size: 20px
+		color: #fff
+		background: #00569F
+		padding: 8px
+		display: block
+		float: left
+	h3
+		font-size: 20px
+		font-weight: normal
+		color: #353535
+		display: block
+		float: left
+		height: 36px
+		line-height: 36px
+		margin-left: 20px
+		+r(320,767)
+			margin-left: 0
+			line-height: 23px
+		+r(320,479)
+			height: auto
+.shem_item1
+	width: 470px
+	float: left
+	position: relative
+	z-index: 3
+	img
+		width: 100%
+		height: auto
+	+r(768,970)
+		width: 350px
+	+r(320,768)
+		width: 100%
+
+.shem_item2
+	width: 470px
+	float: right
+	position: relative
+	z-index: 1
+	top: -100px
+	img
+		width: 100%
+		height: auto
+	+r(768,970)
+		width: 350px
+	+r(320,768)
+		width: 100%
+		top: -50px
+.shem_arrow
+	background: url(../images/icon/shem_arrow.png) no-repeat center center
+	width: 135px
+	height: 104px
+	float: left
+	position: relative
+	z-index: 2
+	top: 200px
+	left: -50px
+	+r(320,768)
+		display: none
+.shem6
+	position: relative
+	width: 893px
+	margin: 0 auto 30px
+	img
+		width: 100%
+		height: auto
+	+r(320,970)
+		width: 100%
+.shem6_line
+	position: absolute
+	left: 0
+	top: -97px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem6_line.png)
+		width: 125px
+		height: 128px
+		display: block
+		vertical-align: middle
+		position: relative
+		top: 130px
+		left: -10px
+	+r(320,768)
+		display: none
+.shem7
+	position: relative
+	width: 550px
+	margin: 0 auto 30px
+	img
+		width: 100%
+		height: auto
+	+r(320,768)
+		width: 100%
+.shem7_line
+	position: absolute
+	left: -182px
+	top: 140px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	+r(768,970)
+		left: -94px
+	&:before
+		content: ''
+		background: url(../images/shem7_line.png)
+		width: 256px
+		height: 51px
+		display: block
+		vertical-align: middle
+		position: relative
+		top: 58px
+		left: -10px
+	+r(320,768)
+		display: none
+.shem8
+	position: relative
+	width: 100%
+	margin: 0 auto 30px
+	img
+		width: 100%
+		height: auto
+.shem8_line
+	position: absolute
+	left: 269px
+	top: 72px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem8_line.png)
+		width: 12px
+		height: 76px
+		display: block
+		vertical-align: middle
+		position: relative
+		top: 19px
+		left: -14px
+		+r(768,970)
+			top: 38px
+	+r(768,970)
+		top: 30px
+	+r(320,768)
+		display: none
+
+.shem9
+	position: relative
+	width: 671px
+	margin: 0 auto 30px
+	img
+		width: 100%
+		height: auto
+	+r(320,768)
+		width: 100%
+.shem10
+	position: relative
+	width: 569px
+	margin: 0 auto 60px
+	img
+		width: 100%
+		height: auto
+	+r(320,768)
+		width: 100%
+.shem10_line
+	position: absolute
+	left: 368px
+	top: 96px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem10_line.png)
+		width: 12px
+		height: 86px
+		display: block
+		vertical-align: middle
+		position: relative
+		top: 19px
+		left: -14px
+	+r(320,768)
+		display: none
+		
+.shem11
+	position: relative
+	width: 100%
+	margin: 0 auto 60px
+	img
+		width: 100%
+		height: auto
+.shem11_line
+	position: absolute
+	left: 495px
+	top: 107px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem10_line.png)
+		width: 12px
+		height: 86px
+		display: block
+		vertical-align: middle
+		position: relative
+		top: 19px
+		left: -14px
+		+r(768,970)
+			top: 38px
+	+r(768,970)
+		left: 379px
+		top: 55px
+	+r(320,768)
+		display: none
+.shema_block
+	position: relative
+.shem12
+	width: 460px
+	position: relative
+	left: 0
+	top: 0
+	float: left
+	img
+		width: 100%
+		height: auto
+	+r(768,970)
+		float: none
+		margin: 20px auto
+	+r(320,768)
+		width: 100%
+		float: none
+		margin: 20px auto
+.shem13
+	width: 460px
+	position: relative
+	right: 0
+	top: 0
+	float: right
+	img
+		width: 100%
+		height: auto
+	+r(768,970)
+		float: none
+		margin: 0px auto 20px
+	+r(320,768)
+		width: 100%
+		float: none
+		margin: 0px auto 20px
+.keys_formula
+	font-size: 24px
+	color: #567f90
+	font-family: "RobotoBold"
+	line-height: 40px
+	background: #E3ECF4
+	padding: 10px 15px
+	width: 530px
+	height: 100px
+	+r(320,768)
+		font-size: 18px
+		width: 100%
+		height: auto
+.primer_formula
+	font-style: italic
+	color: #353535
+	font-size: 16px
+	margin-top: 15px
+	display: block
+.primer_bl
+	font-size: 20px
+	color: #353535
+	line-height: 33px
+	font-family: "RobotoLight"
+	margin-top: 10px
+	margin-bottom: 50px
+	b
+		font-weight: bold
+.shem14
+	width: 651px
+	position: relative
+	margin: 0 auto 25px
+	img
+		width: 100%
+		height: auto
+	+r(320,768)
+		width: 100%
+.shem15
+	width: 100%
+	position: relative
+	margin: 100px auto 25px
+	img
+		width: 100%
+		height: auto
+	+r(320,768)
+		margin: 25px auto
+.shem15_line1
+	position: absolute
+	left: 244px
+	top: -170px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem15_line1.png)
+		width: 12px
+		height: 127px
+		display: block
+		vertical-align: middle
+		position: relative
+		top: 130px
+		left: -14px
+	+r(768,970)
+		left: 186px
+		top: -190px
+	+r(320,768)
+		display: none
+.shem15_line2
+	position: absolute
+	left: 581px
+	top: -278px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem15_line2.png)
+		width: 12px
+		height: 197px
+		display: block
+		vertical-align: middle
+		position: relative
+		top: 200px
+		left: -14px
+	+r(768,970)
+		left: 443px
+		top: -305px
+	+r(320,768)
+		display: none
+.shem15_line3
+	position: absolute
+	left: 704px
+	top: -214px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem15_line3.png)
+		width: 12px
+		height: 166px
+		display: block
+		vertical-align: middle
+		position: relative
+		top: 168px
+		left: -14px
+	+r(768,970)
+		left: 542px
+		top: -241px
+	+r(320,768)
+		display: none
+.shem16
+	width: 100%
+	position: relative
+	margin: 100px auto 100px
+	img
+		width: 100%
+		height: auto
+	+r(320,768)
+		margin: 25px auto
+.shem16_line1
+	position: absolute
+	left: 383px
+	top: -239px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem16_line1.png)
+		width: 12px
+		height: 172px
+		display: block
+		vertical-align: middle
+		position: relative
+		top: 175px
+		left: -14px
+	+r(768,970)
+		left: 295px
+		top: -268px
+	+r(320,768)
+		display: none
+.shem16_line2
+	position: absolute
+	right: 0px
+	top: -350px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem16_line2.png)
+		width: 114px
+		height: 270px
+		display: block
+		vertical-align: middle
+		position: relative
+		top: 274px
+		left: -14px
+	+r(768,970)
+		top: -349px
+	+r(320,768)
+		display: none
+.shem16_line3
+	position: absolute
+	right: 68px
+	bottom: -45px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem16_line3.png)
+		width: 12px
+		height: 74px
+		display: block
+		vertical-align: middle
+		position: relative
+		top: 17px
+		left: -14px
+	+r(768,970)
+		right: 1px
+		bottom: -60px
+	+r(320,768)
+		display: none
+.shem16_line4
+	position: absolute
+	right: 454px
+	bottom: -53px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem16_line4.png)
+		width: 97px
+		height: 148px
+		display: block
+		vertical-align: middle
+		position: relative
+		top: 17px
+		left: -14px
+	+r(768,970)
+		right: 321px
+		bottom: -76px
+	+r(320,768)
+		display: none
+.shem_exel
+	width: 663px
+	margin: 0 auto 25px
+	img
+		width: 100%
+		height: auto
+	+r(320,768)
+		width: 100%
+.shem17
+	width: 551px
+	position: relative
+	margin: 0 auto 100px
+	img
+		width: 100%
+		height: auto
+	+r(320,768)
+		width: 100%
+		margin: 25px auto
+.shem17_line1
+	position: absolute
+	right: -328px
+	top: 52px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem17_line1.png)
+		width: 301px
+		height: 46px
+		display: block
+		vertical-align: middle
+		position: relative
+		top: 46px
+		left: -313px
+	+r(768,970)
+		right: -164px
+		top: 65px
+	+r(320,768)
+		display: none
+.shem17_line2
+	position: absolute
+	right: -8px
+	bottom: -66px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem17_line2.png)
+		width: 12px
+		height: 106px
+		display: block
+		vertical-align: middle
+		position: relative
+		top: 40px
+		left: -14px
+	+r(320,768)
+		display: none
+.shem18
+	width: 908px
+	position: relative
+	margin: 60px auto 25px
+	img
+		width: 100%
+		height: auto
+	+r(320,970)
+		width: 100%
+		margin: 25px auto
+.shem18_line1
+	position: absolute
+	right: 281px
+	top: -130px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem18_line1.png)
+		width: 12px
+		height: 86px
+		display: block
+		vertical-align: middle
+		position: relative 
+		top: 90px
+		left: -14px
+	+r(768,970)
+		right: 147px
+	+r(320,768)
+		display: none
+.shem19
+	width: 935px
+	position: relative
+	margin: 60px auto 25px
+	img
+		width: 100%
+		height: auto
+	+r(320,970)
+		width: 100%
+		margin: 25px auto
+.shem19_line1
+	position: absolute
+	left: 166px
+	top: -93px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem19_line1.png)
+		width: 12px
+		height: 56px
+		display: block
+		vertical-align: middle
+		position: relative 
+		top: 60px
+		left: -14px
+	+r(320,768)
+		display: none
+.shem19_line2
+	position: absolute
+	right: 86px
+	top: -109px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem19_line2.png)
+		width: 200px
+		height: 64px
+		display: block
+		vertical-align: middle
+		position: relative 
+		top: 111px
+		left: 0px
+	+r(320,768)
+		display: none
+.shem19_line3
+	position: absolute
+	left: 162px
+	bottom: 0px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem19_line3.png)
+		width: 86px
+		height: 26px
+		display: block
+		vertical-align: middle
+		position: relative 
+		top: 16px
+		left: -95px
+	+r(320,768)
+		display: none
+.shem20
+	width: 100%
+	position: relative
+	margin: 100px auto
+	img
+		width: 100%
+		height: auto
+	+r(320,768)
+		margin: 25px auto
+.shem20_line1
+	position: absolute
+	left: 125px
+	top: -254px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem20_line1.png)
+		width: 12px
+		height: 203px
+		display: block
+		vertical-align: middle
+		position: relative 
+		top: 205px
+		left: -14px
+	+r(320,768)
+		display: none
+.shem20_line2
+	position: absolute
+	left: 365px
+	bottom: -50px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem20_line2.png)
+		width: 12px
+		height: 101px
+		display: block
+		vertical-align: middle
+		position: relative 
+		top: 17px
+		left: -14px
+	+r(768,970)
+		left: 280px
+	+r(320,768)
+		display: none
+.shem21
+	width: 480px 
+	position: relative
+	margin: 25px auto 50px
+	img
+		width: 100%
+		height: auto
+	+r(320,768)
+		width: 100%
+		margin: 25px auto
+.shem21_line1
+	position: absolute
+	right: -225px
+	top: 80px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem21_line1.png)
+		width: 206px
+		height: 44px
+		display: block
+		vertical-align: middle
+		position: relative 
+		top: 42px
+		left: -213px
+	+r(768,970)
+		right: -119px
+	+r(320,768)
+		display: none
+.shem21_line2
+	position: absolute
+	left: 183px
+	bottom: -8px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem21_line2.png)
+		width: 12px
+		height: 93px
+		display: block
+		vertical-align: middle
+		position: relative 
+		top: 17px
+		left: -14px
+	+r(320,768)
+		display: none
+.shem22
+	width: 100% 
+	position: relative
+	margin: 50px auto 150px
+	img
+		width: 100%
+		height: auto
+	+r(320,768)
+		margin: 25px auto
+.shem22_line1
+	position: absolute
+	right: 216px
+	top: -169px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem22_line1.png)
+		width: 12px
+		height: 126px
+		display: block
+		vertical-align: middle
+		position: relative 
+		top: 130px
+		left: -14px
+	+r(768,970)
+		right: 140px
+		top: -175px
+	+r(320,768)
+		display: none
+.shem22_line2
+	position: absolute
+	right: 93px
+	bottom: -109px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem22_line2.png)
+		width: 236px
+		height: 336px
+		display: block
+		vertical-align: middle
+		position: relative 
+		top: 17px
+		left: -14px
+	+r(768,970)
+		right: 66px
+		bottom: -138px
+	+r(320,768)
+		display: none
+.shem23
+	width: 100% 
+	position: relative
+	margin: 80px auto 150px
+	img
+		width: 100%
+		height: auto
+	+r(320,768)
+		margin: 25px auto
+.shem23_line1
+	position: absolute
+	left: 113px
+	top: -354px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem23_line1.png)
+		width: 248px
+		height: 309px
+		display: block
+		vertical-align: middle
+		position: relative 
+		top: 312px
+		left: -14px
+	+r(768,970)
+		left: 54px
+		top: -391px
+	+r(320,768)
+		display: none
+.shem23_line2
+	position: absolute
+	right: 70px
+	top: -100px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem23_line2.png)
+		width: 12px
+		height: 86px
+		display: block
+		vertical-align: middle
+		position: relative 
+		top: 90px
+		left: -14px
+	+r(768,970)
+		right: 32px
+	+r(320,768)
+		display: none
+.shem23_line3
+	position: absolute
+	left: 297px
+	bottom: -50px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem23_line3.png)
+		width: 12px
+		height: 136px
+		display: block
+		vertical-align: middle
+		position: relative 
+		top: 18px
+		left: -14px
+	+r(768,970)
+		left: 230px
+	+r(320,768)
+		display: none
+.shem24
+	width: 100% 
+	position: relative
+	margin: 80px auto 50px
+	img
+		width: 100%
+		height: auto
+	+r(320,768)
+		margin: 25px auto
+.shem24_line1
+	position: absolute
+	right: 177px
+	bottom: -12px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem24_line1.png)
+		width: 193px
+		height: 174px
+		display: block
+		vertical-align: middle
+		position: relative 
+		top: 38px
+		left: -14px
+	+r(768,970)
+		right: 120px
+	+r(320,768)
+		display: none
+.shem25
+	width: 100% 
+	position: relative
+	margin: 80px auto 150px
+	img
+		width: 100%
+		height: auto
+	+r(320,768)
+		margin: 25px auto
+.shem25_line1
+	position: absolute
+	left: 134px
+	bottom: -118px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem25_line1.png)
+		width: 12px
+		height: 274px
+		display: block
+		vertical-align: middle
+		position: relative 
+		top: 18px
+		left: -14px
+	+r(768,970)
+		left: 50px
+		bottom: -94px
+	+r(320,768)
+		display: none
+.shem25_line2
+	position: absolute
+	left: 165px
+	bottom: -92px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem25_line2.png)
+		width: 12px
+		height: 385px
+		display: block
+		vertical-align: middle
+		position: relative 
+		top: 38px
+		left: -14px
+	+r(768,970)
+		left: 122px
+		bottom: -145px
+	+r(320,768)
+		display: none
+.shem25_line3
+	position: absolute
+	right: 435px
+	bottom: -62px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem25_line3.png)
+		width: 140px
+		height: 250px
+		display: block
+		vertical-align: middle
+		position: relative 
+		top: 20px
+		left: 96px
+	+r(768,970)
+		right: 352px
+		bottom: -93px
+	+r(320,768)
+		display: none
+.shem25_line4
+	position: absolute
+	right: 253px
+	bottom: -45px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem25_line4.png)
+		width: 122px
+		height: 112px
+		display: block
+		vertical-align: middle
+		position: relative 
+		top: 20px
+		left: -12px
+	+r(768,970)
+		right: 187px
+	+r(320,768)
+		display: none
+.shem25_line5
+	position: absolute
+	right: 21px
+	bottom: -114px
+	font-size: 16px
+	color: #567f90
+	line-height: 21px
+	&:before
+		content: ''
+		background: url(../images/shem25_line5.png)
+		width: 12px
+		height: 298px
+		display: block
+		vertical-align: middle
+		position: relative 
+		top: 38px
+		left: -12px
+	+r(768,970)
+		right: -5px
+		bottom: -124px
+	+r(320,768)
+		display: none
+.shem26
+	width: 100% 
+	position: relative
+	margin: 25px auto
+	img
+		width: 100%
+		height: auto
+.section1_cont
+	width: 100%
+	min-height: 511px
+	background: url(../images/section1_cont.jpg) no-repeat center center
+	+cover
+	z-index: 1
+	+r(320,768)
+		padding-bottom: 40px
+	h1
+		color: #2d3642
+		font-family: "RobotoBold"
+		font-size: 29px
+		line-height: 41px
+		margin-top: 47px
+		font-weight: normal
+.cont_block
+	border-left: 1px solid #fff
+	padding-left: 32px
+	margin-top: 76px
+	&__city
+		color: #2d3642
+		font-size: 29px
+	&__phone
+		margin-top: 48px
+		color: #3c4755
+		font-size: 17px
+		margin-bottom: 16px
+	&__link_pp
+		font-size: 17px
+		margin-top: 34px
+		margin-left: 32px
+		a
+			border-bottom: 2px dotted #1192b2
+			padding-bottom: 1px
+			+transition(all 0.1s linear 0.1s)
+			color: #1192b2
+			&:before
+				content: ''
+				background: url(../images/icon/call_blue.png)
+				width: 18px
+				height: 18px
+				display: inline-block
+				vertical-align: middle
+				position: relative
+				top: 3px
+				left: 4px
+				margin-right: 16px
+				margin-left: -32px
+				+transition(all 0.1s linear 0.1s)
+			&:hover, &:active, &:focus
+				color: #3bb893
+				border-bottom: 2px dotted #3bb893
+				text-decoration: none
+				&:before
+					background: url(../images/icon/call_blue_hover.png)
+	&__email
+		margin-top: 34px
+		color: #3c4755
+		font-size: 17px
+		margin-bottom: 16px
+	&__adr
+		margin-top: 32px
+		color: #3c4755
+		font-size: 17px
+		margin-bottom: 14px
+		line-height: 20px
+.view_sheme_link
+	border-bottom: 2px dotted #1192b2
+	padding-bottom: 1px
+	+transition(all 0.1s linear 0.1s)
+	color: #1192b2
+	margin-left: 35px
+	&:hover, &:active, &:focus
+		color: #3bb893
+		border-bottom: 2px dotted #3bb893
+		text-decoration: none
+.sect_support_cont
+	background: #fff
+	padding-top: 50px
+	h1
+		color: #2d3642
+		font-family: "RobotoBold"
+		font-size: 29px
+		line-height: 41px
+		font-weight: normal
+.support_block
+	border-left: 1px solid #E3E3E3
+	padding-left: 30px
+	margin-top: 43px
+	padding-bottom: 50px
+	&__phones
+		font-size: 17px
+		font-family: "RobotoBold"
+		color: #3c4755
+		&_itm
+			font-size: 17px
+			color: #3c4755
+			margin-top: 20px
+	&__link_pp
+		font-size: 17px
+		margin-top: 36px
+		margin-left: 29px
+		a
+			border-bottom: 2px dotted #1192b2
+			padding-bottom: 1px
+			+transition(all 0.1s linear 0.1s)
+			color: #1192b2
+			&:before
+				content: ''
+				background: url(../images/icon/call_blue.png)
+				width: 18px
+				height: 18px
+				display: inline-block
+				vertical-align: middle
+				position: relative
+				top: 1px
+				left: 6px
+				margin-right: 16px
+				margin-left: -32px
+				+transition(all 0.1s linear 0.1s)
+			&:hover, &:active, &:focus
+				color: #3bb893
+				border-bottom: 2px dotted #3bb893
+				text-decoration: none
+				&:before
+					background: url(../images/icon/call_blue_hover.png)
+	&__txt
+		color: #525252
+		font-size: 17px
+		font-weight: 400
+		line-height: 25px
+	&__link_pv
+		font-size: 17px
+		margin-top: 22px
+		margin-left: 42px
+		a
+			border-bottom: 2px dotted #1192b2
+			padding-bottom: 1px
+			+transition(all 0.1s linear 0.1s)
+			color: #1192b2
+			&:before
+				content: ''
+				background: url(../images/icon/pv_icon.png)
+				width: 24px
+				height: 24px
+				display: inline-block
+				vertical-align: middle
+				position: relative
+				top: 1px
+				left: 6px
+				margin-right: 20px
+				margin-left: -47px
+				+transition(all 0.1s linear 0.1s)
+			&:hover, &:active, &:focus
+				color: #3bb893
+				border-bottom: 2px dotted #3bb893
+				text-decoration: none
+				&:before
+					background: url(../images/icon/pv_icon_hover.png)
+.sect_cont_forma
+	background: #fff
+	padding-top: 47px
+	h1
+		color: #2d3642
+		font-family: "RobotoBold"
+		font-size: 29px
+		line-height: 41px
+		font-weight: normal
+.sect_cont_block
+	margin-top: 34px
+	padding: 40px
+	background-color: #f1f1f1
+	width: 100%
+	position: relative
+	+r(320,479)
+		padding: 10px
+.sect_cont_form
+	width: 276px
+	+r(320,767)
+		margin: 0 auto
+	+r(320,479)
+		width: 250px
+		margin-top: 20px
+	&__input
+		background-color: #fdfdfd
+		border: 1px solid rgba(0, 0, 2, 0.04)
+		margin-bottom: 24px
+		width: 276px
+		height: 50px
+		+br(10px)
+		padding: 0px 14px
+		color: #83999e
+		font-size: 16px
+		+r(320,479)
+			width: 250px
+		&::-webkit-input-placeholder
+			color: #83999e
+			font-size: 16px
+			opacity: 1
+			font-weight: 400
+		&:-moz-placeholder
+			color: #83999e
+			font-size: 16px
+			opacity: 1
+			font-weight: 400
+		&::-moz-placeholder
+			color: #83999e
+			font-size: 16px
+			opacity: 1
+			font-weight: 400
+		&:-ms-input-placeholder
+			color: #83999e
+			font-size: 16px
+			opacity: 1
+			font-weight: 400
+	&__textarea
+		background-color: #fdfdfd
+		border: 1px solid rgba(0, 0, 2, 0.04)
+		width: 276px
+		height: 90px
+		+br(10px)
+		padding: 14px
+		color: #83999e
+		font-size: 16px
+		margin-bottom: 30px
+		+r(320,479)
+			width: 250px
+		&::-webkit-input-placeholder
+			color: #83999e
+			font-size: 16px
+			opacity: 1
+		&:-moz-placeholder
+			color: #83999e
+			font-size: 16px
+			opacity: 1
+		&::-moz-placeholder
+			color: #83999e
+			font-size: 16px
+			opacity: 1
+		&:-ms-input-placeholder
+			color: #83999e
+			font-size: 16px
+			opacity: 1
+.filename_cs
+	background: #DBE3E7
+	border: 0
+	font-size: 14px
+	color: #aeaeae
+	height: 25px
+	width: 185px
+	text-align: center
+	margin: 0px auto 20px
+	display: block
+.file-upload_block_cs
+	width: 494px
+	height: 314px
+	background: #DBE3E7
+	position: absolute
+	right: 57px
+	top: 40px
+	border: 2px dotted #F1F1F0
+	+br(8px)
+	+r(768,970)
+		width: 270px
+	+r(480,767)
+		width: 100%
+		height: 200px
+		position: relative
+		right: 0px
+		top: 0px
+		margin-bottom: 20px
+	+r(320,479)
+		width: 250px
+		height: 176px
+		position: relative
+		right: 0px
+		top: 0px
+		margin-bottom: 20px
+.file_drop_cs
+	color: #83999e
+	font-size: 14px
+	line-height: 26px
+	text-align: center
+.file_upload_bt_cs
+	width: 264px
+	height: 150px
+	position: absolute
+	top: 0
+	left: 0
+	right: 0
+	bottom: 0
+	margin: auto
+	+r(320,479)
+		width: 250px
+.file-upload_cs
+	position: relative
+	overflow: hidden
+	width: 185px
+	height: 44px
+	+br(50px)
+	text-align: center
+	color: #b39b02
+	font-size: 16px
+	text-align: center
+	background-image: linear-gradient(to top, #fdd000 0%, #fff04e 100%)
+	box-shadow: 2px 3.5px 5px rgba(0, 0, 0, 0.12)
+	color: #908505
+	border: none
+	border-bottom: 4px solid #D2BF00
+	margin: 0 auto
+	&:hover
+		background-image: linear-gradient(to top, #fde654 0%, #fef77d 100%)
+		box-shadow: 2px 3.5px 5px rgba(0, 0, 0, 0.12)
+		color: #908505
+		border-bottom: 4px solid #D2BF00
+	&:focus
+		background-image: linear-gradient(to top, #fde654 0%, #fef77d 100%)
+		box-shadow: 2px 3.5px 5px rgba(0, 0, 0, 0.12)
+		color: #908505
+		border-bottom: 4px solid #D2BF00
+	&:active
+		background-image: linear-gradient(to top, #f4db15 0%, #fbd20d 100%)
+		box-shadow: 2px 3.5px 5px rgba(0, 0, 0, 0.12)
+		color: #908505
+		border: none
+		border-top: 4px solid #D2BF00
+	input[type="file"]
+		display: none
+	label 
+		display: block
+		position: absolute
+		top: 0
+		left: 0
+		width: 100%
+		height: 100%
+		cursor: pointer
+	span 
+		line-height: 36px
+.sect_map
+	background: #fff
+	padding-top: 34px
+	h1
+		color: #2d3642
+		font-family: "RobotoBold"
+		font-size: 29px
+		line-height: 41px
+		font-weight: normal
+	.tabs
+		margin-top: 12px
+	.tab_map
+		cursor: pointer
+		font-size: 18px
+		font-family: "RobotoBold"
+		margin-left: 25px
+		color: #3aade9
+		border-bottom: 2px dotted #3aade9
+		&:before
+			content: ''
+			background: #E3E3E3
+			width: 1px
+			height: 85px
+			display: inline-block
+			vertical-align: middle
+			position: relative
+			top: 20px
+			left: -24px
+			+r(320,479)
+				width: 0
+				height: 0
+		+r(320,479)
+			margin-left: 0
+	.active
+		color: #3d3d3d
+		border: none
+	.tab_item
+		color: #000
+		img
+			width: 100%
+			height: auto
+	.tab_kaz
+		margin-left: 386px !important
+		+r(480,767)
+			margin-left: 120px !important
+		+r(320,479)
+			margin-left: 10px !important
+	.tab_content
+		margin-top: 20px
+.keis_slider
+	div
+		position: relative
+.mbYTP_wrapper
+	&:before
+		display: block
+		content: ""
+		width: 100%
+		height: 100%
+		position: absolute
+		background-color: rgba(0,0,0,.6)
+		z-index: 10

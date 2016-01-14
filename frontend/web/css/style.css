@@ -1,0 +1,14 @@
+.clearfix:before,
+.clearfix:after {
+	content: " ";
+	display: table;
+}
+.clearfix:after {
+	clear: both;
+}
+/* ============================================================
+  Основное
+============================================================ */
+.hidden {
+	display: none;
+}

@@ -19,8 +19,6 @@ return [
         'request' => ['class' => 'common\modules\request\Module',],
 	    'faq' => ['class' => 'common\modules\faq\Module'],
         'main' => ['class' => 'common\modules\main\main'],
-        'scoring' => ['class' => 'common\modules\scoring\Scoring',],
-        'paysys' => ['class' => 'common\modules\paysys\Module',],
     ],
     'components' => [
         'user' => [
@@ -64,16 +62,7 @@ return [
                 'yii\web\JqueryAsset' => [
                     'sourcePath' => null,
                     'js' => [
-                        'js/jquery-2.1.3.js',
-                        'js/jquery.range.js',
-                        'js/jquery.datepicker.js',
-                        'js/jquery.tooltipster.js',
-                        'js/jquery.formstyler.js',
-                        'js/jquery.fancybox.js',
-                        //'js/jquery.mask.js',
-                        'js/masked-input.js',
-                        'js/scripts.js',
-                        'js/accounting.js'
+                        '/js/libs/jquery/jquery-1.11.2.min.js'
                     ],
                     'jsOptions' => [
                         //'position' => \yii\web\View::POS_HEAD,
