@@ -80,6 +80,7 @@ tinymce.init({
     selector: "textarea",theme: "modern",
     language: "ru_RU",
     custom_elements: "emstart,emend,header,main,span",
+    extended_valid_elements: "span[id|name|class|style]",
     height: '350px',
     menubar: "edit insert view format table tools",
     plugins: [
