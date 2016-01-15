@@ -60,21 +60,21 @@ return [
 		'assetManager'=>[
 			'linkAssets' => true,
             'bundles' => [
+            	'yii\web\JqueryAsset' => [
+                    'sourcePath' => null,
+                    'js' => [
+                         'plugins/jquery/jquery-1.9.1.min.js',
+                    ],
+					'jsOptions' => [
+						'position' => \yii\web\View::POS_END,
+					],
+                ],
                 'yii\web\YiiAsset' => [
 				],
 				'yii\bootstrap\BootstrapPluginAsset' => [
 					'js' => [
 					],
 				],
-				'yii\web\JqueryAsset' => [
-                    'sourcePath' => null,
-                    'js' => [
-                         'plugins/jquery/jquery-1.9.1.min.js',
-                    ],
-					'jsOptions' => [
-						'position' => \yii\web\View::POS_BEGIN,
-					],
-                ],
 				'yii\jui\JuiAsset' => [
                     'sourcePath' => null,
                     'js' => [
