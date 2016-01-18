@@ -27,7 +27,7 @@ AppAsset::register($this);
 
         <nav class="menu">
             <div class="toggle_block"><a href="#" class="toggle-mnu"><span></span></a></div>
-            <div class="phone_menu">8 800 123 45 67</div>
+            <div class="phone_menu">8-495-961-42-29</div>
             <ul>
                 <li><a href="/about" class="link">О компании</a></li>
                 <li><a href="#" class="link">Кейсы</a></li>
