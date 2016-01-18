@@ -59,7 +59,7 @@ AppAsset::register($this);
                         </div>
                     </div>
                     <div class="col-md-3 col-xs-3 col-sm-12">
-                        <span class="top_phone">8 800 123 45 67</span>
+                        <span class="top_phone">8-495-961-42-29</span>
                         <div class="phone_hover_head">Стоимость звонка 0 руб,<br/> в том числе с мобильного</div>
                     </div>
                 </div>
