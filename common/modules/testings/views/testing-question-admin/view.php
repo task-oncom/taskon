@@ -13,13 +13,13 @@ use common\modules\testings\models\TestingQuestion;
 
     <p>
         <?= Html::a(Yii::t('content', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <!-- <?= Html::a(Yii::t('content', 'Delete'), ['delete', 'id' => $model->id], [
+        <?= Html::a(Yii::t('content', 'Delete'), ['delete', 'id' => $model->id], [
             'class' => 'btn btn-danger',
             'data' => [
                 'confirm' => Yii::t('content', 'Are you sure you want to delete this item?'),
                 'method' => 'post',
             ],
-        ]) ?> -->
+        ]) ?>
     </p>
 
     <?= DetailView::widget([

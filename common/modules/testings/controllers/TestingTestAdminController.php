@@ -6,6 +6,7 @@ use Yii;
 use common\components\AdminController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 use common\modules\testings\models\TestingTest;
 use common\modules\testings\models\SearchTestingTest;
@@ -20,7 +21,7 @@ class TestingTestAdminController extends AdminController
             'Update' => 'Редактирование теста',
             'Delete' => 'Удаление теста',
             'Manage' => 'Управление тестами',
-			'ImportTests' => 'Импорт вопросов и ответов к ним',
+			'Import-tests' => 'Импорт вопросов и ответов к ним',
         );
     }
 
@@ -113,119 +114,131 @@ class TestingTestAdminController extends AdminController
 
 	public function actionImportTests($id)
 	{
-		$model = $this->findModel($id);
-		$form = new \common\components\BaseForm('/common/modules/testings/forms/TestingImportCSVForm', $model);
-		$params = ['form' => $form, 'model' => $model];
+		$model = new TestingTest;
 
-		if($model->load(Yii::$app->request->post()))
+		$model->scenario = 'upload';
+
+		Yii::$app->controller->page_title = 'Импорт вопросов и ответов к ним';
+        Yii::$app->controller->breadcrumbs = [
+            'Импорт вопросов и ответов к ним',
+        ];
+		
+		$params = ['model' => $model];
+
+		if(Yii::$app->request->isPost && $model->load(Yii::$app->request->post()))
 		{
-			$csv_file = CUploadedFile::getInstance($model, 'csv_file');
+			$model->csv_file = UploadedFile::getInstance($model, 'csv_file');
 
-			$resource = CSVHelper::open($csv_file->tempName);
+            if ($model->upload()) 
+            {
+				$resource = CSVHelper::open($csv_file->tempName);
 
-			try {
-				$log = [];
-
-				set_time_limit(60*3); // Максимальное время выполнения скрипта - 3 минуты
-
-				$questionsCount = 0; // Кол-во загруженных вопросов
-				$gammasCount = 0; // Кол-во гамм (не только созданных)
-
-				while ($data = CSVHelper::fgetcsv($resource)) 
+				try 
 				{
-					// если в файле пошли пустые строки, то выходим из цикла
-					if (count($data) < 2) break;
+					$log = [];
 
-					// извлечение переменных из CSV
-					$gamma_type = trim($data[0]);
-					// если первый столбец не указывает на цифры 1 или 2 (строительная и промышленная гаммы) - вся строка неправильная
-					if (($gamma_type <> '1') && ($gamma_type <> '2')) continue;
-					$gamma_name = trim(preg_replace('/\s+/', ' ',$data[1]));
-					$q_name = trim(preg_replace('/\s+/', ' ',$data[2]));
-					$q_type = trim(preg_replace('/\s+/', ' ',$data[3]));
-					$a_name = trim(preg_replace('/\s+/', ' ',$data[4]));
-					$a_isright = trim($data[5]);
-					$author = trim($data[6]);
+					set_time_limit(60*3); // Максимальное время выполнения скрипта - 3 минуты
 
-					// поиск или создание гаммы
-					if ($gamma_name <> '') {
+					$questionsCount = 0; // Кол-во загруженных вопросов
+					$gammasCount = 0; // Кол-во гамм (не только созданных)
 
-						$gammasCount++;
+					while ($data = CSVHelper::fgetcsv($resource)) 
+					{
+						// если в файле пошли пустые строки, то выходим из цикла
+						if (count($data) < 2) break;
 
-						$cr1 = new CDbCriteria;
+						// извлечение переменных из CSV
+						$gamma_type = trim($data[0]);
+						// если первый столбец не указывает на цифры 1 или 2 (строительная и промышленная гаммы) - вся строка неправильная
+						if (($gamma_type <> '1') && ($gamma_type <> '2')) continue;
+						$gamma_name = trim(preg_replace('/\s+/', ' ',$data[1]));
+						$q_name = trim(preg_replace('/\s+/', ' ',$data[2]));
+						$q_type = trim(preg_replace('/\s+/', ' ',$data[3]));
+						$a_name = trim(preg_replace('/\s+/', ' ',$data[4]));
+						$a_isright = trim($data[5]);
+						$author = trim($data[6]);
 
-						$cr1->addCondition('type = :main_gamma');
-						$cr1->addCondition('name = :gamma');
+						// поиск или создание гаммы
+						if ($gamma_name <> '') {
 
-						$cr1->params = array(
-							':main_gamma' => $gamma_type,
-							':gamma' => $gamma_name,
-						);
+							$gammasCount++;
 
-						$gamma = TestingGamma::model()->find($cr1);
+							$cr1 = new CDbCriteria;
 
-						if ($gamma === null) {
-							$gamma = new TestingGamma;
-							$gamma->name = $gamma_name;
-							$gamma->type = $gamma_type;
-							//$log[] = 'Гамма '.$gamma_name.' создана.';
-						} else {
-							//$log[] = 'Гамма '.$gamma_name.' уже существует.';
+							$cr1->addCondition('type = :main_gamma');
+							$cr1->addCondition('name = :gamma');
+
+							$cr1->params = array(
+								':main_gamma' => $gamma_type,
+								':gamma' => $gamma_name,
+							);
+
+							$gamma = TestingGamma::model()->find($cr1);
+
+							if ($gamma === null) {
+								$gamma = new TestingGamma;
+								$gamma->name = $gamma_name;
+								$gamma->type = $gamma_type;
+								//$log[] = 'Гамма '.$gamma_name.' создана.';
+							} else {
+								//$log[] = 'Гамма '.$gamma_name.' уже существует.';
+							}
+
+							if ($gamma->save()) {
+								//$log[] = 'Гамма "'.$gamma_name.'" сохранена.';
+							} else {
+								$log[] = 'Ошибка при сохранении гаммы "'.$gamma_name.'"';
+							}
 						}
 
-						if ($gamma->save()) {
-							//$log[] = 'Гамма "'.$gamma_name.'" сохранена.';
+						// создание вопроса
+						if ($q_name <> '') {
+
+							$question = new TestingQuestion;
+							$question->text = $q_name;
+							$question->type = $q_type;
+							$question->test_id = $model->id;
+							$question->gamma_id = $gamma->id;
+							$question->author = $author;
+
+							if ($question->save()) {
+								//$log[] = 'Вопрос "'.$q_name.'" сохранен.';
+								$questionsCount++;
+							} else {
+								$log[] = 'Ошибка при сохранении вопроса "'.$q_name.'"';
+							}
+
+						}
+
+						// создание ответа
+						$answer = new TestingAnswer;
+						$answer->text = $a_name;
+						if (($a_isright == 'да') || ($a_isright == 'Да') || ($a_isright == 'ДА') || ($a_isright == 'y') || ($a_isright == 'yes') || ($a_isright == 'Y')) {
+							$answer->is_right = TestingAnswer::IS_RIGHT;
 						} else {
-							$log[] = 'Ошибка при сохранении гаммы "'.$gamma_name.'"';
+							$answer->is_right = TestingAnswer::IS_NOT_RIGHT;
+						}
+						$answer->question_id = $question->id;
+
+						if ($answer->save()) {
+							//$log[] = 'Ответ "'.$a_name.'" сохранен.';
+						} else {
+							$log[] = 'Ошибка при сохранении ответа "'.$a_name.'"';
 						}
 					}
 
-					// создание вопроса
-					if ($q_name <> '') {
+					// добавляем отчёт о кол-ве добавленных вопросов и гамм
+					Yii::app()->user->setFlash('flash', '<i>Всего добавлено <b>' .$questionsCount. '</b> вопросов в <b>'.$gammasCount. '</b> гаммах. Перейти к '.CHtml::link('списку загруженных вопросов',array('/testings/testingQuestionAdmin/manage','test'=>$model->id)).'.</i>');
 
-						$question = new TestingQuestion;
-						$question->text = $q_name;
-						$question->type = $q_type;
-						$question->test_id = $model->id;
-						$question->gamma_id = $gamma->id;
-						$question->author = $author;
-
-						if ($question->save()) {
-							//$log[] = 'Вопрос "'.$q_name.'" сохранен.';
-							$questionsCount++;
-						} else {
-							$log[] = 'Ошибка при сохранении вопроса "'.$q_name.'"';
-						}
-
-					}
-
-					// создание ответа
-					$answer = new TestingAnswer;
-					$answer->text = $a_name;
-					if (($a_isright == 'да') || ($a_isright == 'Да') || ($a_isright == 'ДА') || ($a_isright == 'y') || ($a_isright == 'yes') || ($a_isright == 'Y')) {
-						$answer->is_right = TestingAnswer::IS_RIGHT;
-					} else {
-						$answer->is_right = TestingAnswer::IS_NOT_RIGHT;
-					}
-					$answer->question_id = $question->id;
-
-					if ($answer->save()) {
-						//$log[] = 'Ответ "'.$a_name.'" сохранен.';
-					} else {
-						$log[] = 'Ошибка при сохранении ответа "'.$a_name.'"';
-					}
+					$params['log'] = '<p>' . implode('</p><p>',$log) . '</p>';
 				}
-
-				// добавляем отчёт о кол-ве добавленных вопросов и гамм
-				Yii::app()->user->setFlash('flash', '<i>Всего добавлено <b>' .$questionsCount. '</b> вопросов в <b>'.$gammasCount. '</b> гаммах. Перейти к '.CHtml::link('списку загруженных вопросов',array('/testings/testingQuestionAdmin/manage','test'=>$model->id)).'.</i>');
-
-				$params = array(
-					'model' => $model,
-					'form' => $form,
-					'log' => '<p>'.implode('</p><p>',$log).'</p>',
-				);
-
-			} catch (Exception $e){
+				else
+				{
+					Yii::$app()->session->setFlash('flash', 'Произошла ошибка при загрузке файла. Обратитесь к администратору!');
+				}
+			} 
+			catch (Exception $e)
+			{
 				$params['log'] = 'Импорт прошел неудачно: ' . $e->getMessage();
 			}
 		}

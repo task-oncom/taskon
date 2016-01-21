@@ -49,6 +49,7 @@ class TestingTest extends \common\components\ActiveRecordModel
 			[['minutes', 'questions', 'pass_percent', 'attempt'], 'requiredNotMix'],
 			[['session_id', 'minutes', 'questions', 'pass_percent', 'attempt', 'mix'], 'integer'],
 			[['name'], 'string', 'max' => 200],
+			[['csv_file'], 'file', 'skipOnEmpty' => false, 'extensions' => 'xls, xlsx', 'on' => 'upload'],
 			[['mix'], 'safe'],
         ];
 	}
@@ -126,4 +127,17 @@ class TestingTest extends \common\components\ActiveRecordModel
 	{
 		return ArrayHelper::map(self::find()->where(['session_id' => $session_id]), 'id', 'name');
 	}
+
+	public function upload()
+    {
+        if ($this->validate()) 
+        {
+            $this->csv_file->saveAs('uploads/' . date('dmYHiS_') . uniqid() . '.' . $this->imageFile->extension);
+            return true;
+        } 
+        else 
+        {
+            return false;
+        }
+    }
 }
