@@ -28,9 +28,9 @@ return [
         ],
 		'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=mfo_work',
-            'username' => 'mfo',
-            'password' => 'fyPBaQ24',
+            'dsn' => 'mysql:host=localhost;dbname=mfo',
+            'username' => 'root',
+            'password' => '',
             'charset' => 'utf8',
         ],
 		'authManager' => [

@@ -35,8 +35,8 @@ class BaseForm extends \yii\widgets\ActiveForm
         // $view->registerJsFile('/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js', ['position' => \yii\web\View::POS_END ]);
         // $view->registerJsFile('/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.ru.js', ['position' => \yii\web\View::POS_END ]);
 
-  //       $view->registerJsFile('/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js', ['position' => \yii\web\View::POS_END ]);
-		// $view->registerJsFile('/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.ru.js', ['position' => \yii\web\View::POS_END ]);
+        $view->registerJsFile('/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js', ['position' => \yii\web\View::POS_END ]);
+		$view->registerJsFile('/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.ru.js', ['position' => \yii\web\View::POS_END ]);
 
         $view->registerJsFile('/plugins/switchery/switchery.min.js', ['position' => \yii\web\View::POS_HEAD ]);
 		$view->registerJsFile('/plugins/powerange/powerange.min.js', ['position' => \yii\web\View::POS_HEAD ]);
@@ -68,11 +68,12 @@ $js = <<<JS
         todayBtn: true
     });
 
-	$('.datetimepicker-autoClose').datepicker({
+	$('.datetimepicker-autoClose').datetimepicker({
         todayHighlight: true,
 		language: 'ru',
         autoclose: true,
-		format: 'dd.mm.yyyy hh:ii:ss'
+        todayBtn: true,
+		format: 'dd.mm.yyyy hh:ii'
     });
 
 	FormSliderSwitcher.init();
@@ -234,12 +235,17 @@ JS;
                                     'captchaAction' => 'captcha',
                                 ]
                             );
-                    break;
+                        break;
                     case 'date':
                         $config['options'][] = '<div style="padding-left: 0;" class="col-md-6" data-date-format="dd.mm.yyyy hh:ii:ss" data-date-start-date="Date.default">'.
                             $this->field($this->model, $key, $optEl)->input('text', ['class'=>'datepicker-autoClose form-control']).
                             '</div>';
-                    break;
+                        break;
+                    case 'datetime':
+                        $config['options'][] = '<div style="padding-left: 0;" class="col-md-6" data-date-format="dd.mm.yyyy hh:ii" data-date-start-date="Date.default">'.
+                            $this->field($this->model, $key, $optEl)->input('text', ['class'=>'datetimepicker-autoClose form-control']).
+                            '</div>';
+                        break;
                     case 'file':
                         $config['options'][] = $this->field($this->model, $key, $optEl)->fileInput();
                         break;

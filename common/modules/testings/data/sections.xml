@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+-
+- phpMyAdmin XML Dump
+- version 2.11.10
+- http://www.phpmyadmin.net
+-
+- Хост: localhost
+- Время создания: Окт 12 2011 г., 21:06
+- Версия сервера: 5.0.37
+- Версия PHP: 5.2.5
+-->
+
+<!--
+- База данных: 'partners_schneider'
+-->
+<partners_schneider>
+  <!-- Таблица  gammas -->
+    <gammas>
+        <theme_id>1</theme_id>
+        <gamma_name>Кабеленесущие системы Thorsman, Wibe, Stago, Schneider Electric</gamma_name>
+        <gamma_act>1</gamma_act>
+        <gamma_date></gamma_date>
+        <gamma_utime>0</gamma_utime>
+        <gamma_id>1</gamma_id>
+    </gammas>
+    <gammas>
+        <theme_id>1</theme_id>
+        <gamma_name>Низковольтные шкафы Prisma Plus и Prisma Pack</gamma_name>
+        <gamma_act>1</gamma_act>
+        <gamma_date></gamma_date>
+        <gamma_utime>0</gamma_utime>
+        <gamma_id>2</gamma_id>
+    </gammas>
+    <gammas>
+        <theme_id>1</theme_id>
+        <gamma_name>Автоматические выключатели, УЗО и Дифференциальные автоматы серии Домовой</gamma_name>
+        <gamma_act>1</gamma_act>
+        <gamma_date></gamma_date>
+        <gamma_utime>0</gamma_utime>
+        <gamma_id>3</gamma_id>
+    </gammas>
+    <gammas>
+        <theme_id>2</theme_id>
+        <gamma_name>Мини-контроллеры</gamma_name>
+        <gamma_act>1</gamma_act>
+        <gamma_date></gamma_date>
+        <gamma_utime>0</gamma_utime>
+        <gamma_id>4</gamma_id>
+    </gammas>
+    <gammas>
+        <theme_id>2</theme_id>
+        <gamma_name>Вспомогательное оборудование автоматизации</gamma_name>
+        <gamma_act>1</gamma_act>
+        <gamma_date></gamma_date>
+        <gamma_utime>0</gamma_utime>
+        <gamma_id>5</gamma_id>
+    </gammas>
+    <gammas>
+        <theme_id>2</theme_id>
+        <gamma_name>Компактные панели оператора Magelis</gamma_name>
+        <gamma_act>1</gamma_act>
+        <gamma_date></gamma_date>
+        <gamma_utime>0</gamma_utime>
+        <gamma_id>6</gamma_id>
+    </gammas>
+    <gammas>
+        <theme_id>2</theme_id>
+        <gamma_name>Шкафы Spacial</gamma_name>
+        <gamma_act>1</gamma_act>
+        <gamma_date></gamma_date>
+        <gamma_utime>0</gamma_utime>
+        <gamma_id>7</gamma_id>
+    </gammas>
+    <gammas>
+        <theme_id>2</theme_id>
+        <gamma_name>Датчики гаммы Global Detection</gamma_name>
+        <gamma_act>1</gamma_act>
+        <gamma_date></gamma_date>
+        <gamma_utime>0</gamma_utime>
+        <gamma_id>8</gamma_id>
+    </gammas>
+    <gammas>
+        <theme_id>2</theme_id>
+        <gamma_name>Кнопки</gamma_name>
+        <gamma_act>1</gamma_act>
+        <gamma_date></gamma_date>
+        <gamma_utime>0</gamma_utime>
+        <gamma_id>9</gamma_id>
+    </gammas>
+    <gammas>
+        <theme_id>1</theme_id>
+        <gamma_name>Устройства контроля и управления гамм Acti 9, Multi 9</gamma_name>
+        <gamma_act>1</gamma_act>
+        <gamma_date></gamma_date>
+        <gamma_utime>0</gamma_utime>
+        <gamma_id>10</gamma_id>
+    </gammas>
+    <gammas>
+        <theme_id>1</theme_id>
+        <gamma_name>Автоматические выключатели, УЗО, щитки гамм Acti 9, Multi 9</gamma_name>
+        <gamma_act>1</gamma_act>
+        <gamma_date></gamma_date>
+        <gamma_utime>0</gamma_utime>
+        <gamma_id>11</gamma_id>
+    </gammas>
+    <gammas>
+        <theme_id>2</theme_id>
+        <gamma_name>ATV, ATS</gamma_name>
+        <gamma_act>1</gamma_act>
+        <gamma_date></gamma_date>
+        <gamma_utime>0</gamma_utime>
+        <gamma_id>12</gamma_id>
+    </gammas>
+    <gammas>
+        <theme_id>1</theme_id>
+        <gamma_name>Автоматические выключатели Masterpact</gamma_name>
+        <gamma_act>1</gamma_act>
+        <gamma_date></gamma_date>
+        <gamma_utime>0</gamma_utime>
+        <gamma_id>13</gamma_id>
+    </gammas>
+    <gammas>
+        <theme_id>1</theme_id>
+        <gamma_name>Автоматические выключатели Compact и выключатели-разъединители Interpact</gamma_name>
+        <gamma_act>1</gamma_act>
+        <gamma_date></gamma_date>
+        <gamma_utime>0</gamma_utime>
+        <gamma_id>14</gamma_id>
+    </gammas>
+    <gammas>
+        <theme_id>2</theme_id>
+        <gamma_name>Контакторы</gamma_name>
+        <gamma_act>1</gamma_act>
+        <gamma_date></gamma_date>
+        <gamma_utime>0</gamma_utime>
+        <gamma_id>15</gamma_id>
+    </gammas>
+</partners_schneider>
