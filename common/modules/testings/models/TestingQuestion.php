@@ -114,33 +114,52 @@ class TestingQuestion extends \common\components\ActiveRecordModel
 
 	public function getRightAnswer() 
 	{
-		switch ($this->type) {
-			case self::ONE_OPTION :
-				$answerModel = TestingAnswer::model()->find('question_id = :question and is_right = 1',array(':question' => $this->id));
-				if ($answerModel) {
-					$answer = trim(preg_replace('/\s+/', ' ', $answerModel->text));
-				} else {
+		$query = TestingAnswer::find()->where(['question_id' => $this->id]);
+
+		switch ($this->type) 
+		{
+			case self::ONE_OPTION:
+				$model = $query->andWhere(['is_right' => 1])->one();
+
+				if($model)
+				{
+					$answer = trim(preg_replace('/\s+/', ' ', $model->text));
+				} 
+				else 
+				{
 					$answer = null;
 				}
 				break;
-			case self::FEW_OPTIONS :
-				$answerModel = TestingAnswer::model()->findAll('question_id = :question and is_right = 1',array(':question' => $this->id));
-				if ($answerModel) {
+
+			case self::FEW_OPTIONS:
+				$models = $query->andWhere(['is_right' => 1])->all();
+
+				if ($models) 
+				{
 					$arr = array();
-					foreach ($answerModel as $answerItem) {
-						$arr[] = trim(preg_replace('/\s+/', ' ', $answerItem->text));
+
+					foreach ($models as $model)
+					{
+						$arr[] = trim(preg_replace('/\s+/', ' ', $model->text));
 					}
+
 					sort($arr);
-					$answer = implode(self::DELIMITER,$arr);
-				} else {
+					$answer = implode(self::DELIMITER, $arr);
+				} 
+				else 
+				{
 					$answer = null;
 				}
 				break;
-			case self::USER_ANSWER :
-				$answerModel = TestingAnswer::model()->find('question_id = :question',array(':question' => $this->id));
-				if ($answerModel) {
-					$answer = trim(preg_replace('/\s+/', ' ', $answerModel->text));
-				} else {
+
+			case self::USER_ANSWER:
+				$models = $query->one();
+				if ($model) 
+				{
+					$answer = trim(preg_replace('/\s+/', ' ', $model->text));
+				} 
+				else 
+				{
 					$answer = null;
 				}
 				break;

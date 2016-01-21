@@ -11,6 +11,7 @@ use common\modules\testings\models\TestingTest;
 use common\modules\testings\models\TestingPassing;
 use common\modules\testings\models\SearchTestingPassing;
 use common\modules\testings\models\TestingSession;
+use common\modules\testings\models\SearchTestingQuestionPassing;
 use common\modules\testings\models\TestingQuestionPassing;
 
 class TestingPassingAdminController extends AdminController
@@ -44,12 +45,13 @@ class TestingPassingAdminController extends AdminController
 
 	public function actionView($id)
 	{
-		// $questions = new TestingQuestionPassing('search');
-		// $questions->unsetAttributes();
+		$searchModel = new SearchTestingQuestionPassing();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, null, null, $id);
 
 		return $this->render('view', [
             'model' => $this->findModel($id),
-            'questions' => $questions,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
 			'time' => $this->showPeriod($model->time),
         ]);
 	}
@@ -223,7 +225,7 @@ class TestingPassingAdminController extends AdminController
      */
     protected function findModel($id)
     {
-        if (($model = TestingAnswer::findOne($id)) !== null) {
+        if (($model = TestingPassing::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

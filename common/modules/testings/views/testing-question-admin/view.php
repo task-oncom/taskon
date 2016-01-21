@@ -7,8 +7,6 @@ use common\modules\testings\models\TestingQuestion;
 
 /* @var $this yii\web\View */
 
-$this->title = $model->text;
-
 ?>
 
 <div class="faq-view">

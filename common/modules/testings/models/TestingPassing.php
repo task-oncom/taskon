@@ -109,38 +109,19 @@ class TestingPassing extends \common\components\ActiveRecordModel
         return $this->hasMany(TestingQuestionPassing::className(), ['passing_id' => 'id']);
     }
 
-    public function search() {
-		
-		$criteria = $this->buildSearchCriteria();
-
-		return new ActiveDataProvider(get_class($this), array(
-			'criteria' => $criteria
-		));
-	}
-
-    public function getCountPassedQuestions() {
-        //Получаем все вопросы
-        $questions = TestingQuestionPassing::model()->findAllByAttributes(
-            array('passing_id' => $this->id)
-        );
+    public function getCountPassedQuestions() 
+    {
         $count = 0;
-        foreach($questions as $question) {
-            if($question->isRight) {
+
+        foreach($this->questions as $question) 
+        {
+            if($question->isRight) 
+            {
                 $count++;
             }
         }
+
         return $count;
-        /*
-        $sql = 'SELECT count(*) FROM testings_questions q 
-            INNER JOIN testings_answers a ON q.id = a.question_id 
-            WHERE q.test_id = :test_id AND a.is_right = :is_right';
-        $count = Yii::app()->db->createCommand($sql)->queryScalar(array(
-            'test_id' => $this->id,
-            'is_right' => TestingAnswer::IS_RIGHT,
-        ));
-        return $count;
-         * 
-         */
     }
 
 	

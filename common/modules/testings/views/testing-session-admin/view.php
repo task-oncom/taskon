@@ -6,25 +6,15 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\modules\faq\models\Faq */
 
-$this->title = $model->name;
-
-$this->params['breadcrumbs'][] = ['label' => 'Список сессий', 'url' => ['/testings/testing-session-admin/manage']];
-$this->params['breadcrumbs'][] = 'Сессия "' . $model->name;
 ?>
 
 <div class="faq-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <h1><?= Html::encode($model->name) ?></h1>
 
     <p>
         <?= Html::a(Yii::t('content', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <!-- <?= Html::a(Yii::t('content', 'Delete'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('content', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
-            ],
-        ]) ?> -->
+        <?= Html::a("Экспорт результатов", ['testings/testing-session-admin/export-session-result', 'id' => $model->id], ['class' => 'btn btn-info']) ?>        
     </p>
 
     <?= DetailView::widget([
