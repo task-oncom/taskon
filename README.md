@@ -1,5 +1,5 @@
-Yii 2 Advanced Application Template
-Каркас Арт Проект
+РџСЂРѕРµРєС‚ СЃР°Р№С‚Р° task-on.com
+Р”Р»СЏ РђСЂС‚ РџСЂРѕРµРєС‚
 ===================================
 
 Yii 2 Advanced Application Template is a skeleton Yii 2 application best for
