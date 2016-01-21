@@ -11,6 +11,7 @@ use common\modules\testings\models\TestingTest;
 use common\modules\testings\models\TestingPassing;
 use common\modules\testings\models\SearchTestingPassing;
 use common\modules\testings\models\TestingSession;
+use common\modules\testings\models\TestingQuestionPassing;
 
 class TestingPassingAdminController extends AdminController
 {
@@ -22,10 +23,10 @@ class TestingPassingAdminController extends AdminController
             'Delete' => 'Удаление прохождения',
             'Manage' => 'Управление прохождениями',
 			'Mistake' => 'Ошибка',
-			'ChangeStatus' => 'Изменить статус',
-			'ChangeAnswerStatus' => 'Изменить статус ответа',
+			'Change-status' => 'Изменить статус',
+			'Change-answer-status' => 'Изменить статус ответа',
 			'Statistics' => 'Статистика прохождений',
-			'ReAttempt' => 'Переназначение теста'
+			'Re-attempt' => 'Переназначение теста'
         );
     }
 
@@ -161,49 +162,71 @@ class TestingPassingAdminController extends AdminController
 		));
 	}
 
-	public function actionChangeAnswerStatus($qp_id) {
-		$qp = TestingQuestionPassing::model()->findByPk($qp_id);
-		if ($qp) {
-			if ($qp->user_answer == $qp->answer_text) {
+	public function actionChangeAnswerStatus($qp_id) 
+	{
+		$qp = TestingQuestionPassing::findOne($qp_id);
+
+		if ($qp) 
+		{
+			if ($qp->user_answer == $qp->answer_text) 
+			{
 				$qp->user_answer = 'Заведомо неправильный ответ';
-			} else {
+			} 
+			else 
+			{
 				$qp->user_answer = $qp->answer_text;
 			}
+
 			$qp->save();
-			$passing = $this->loadModel($qp->passing_id);
-			if ($passing) {
+
+			$passing = $this->findModel($qp->passing_id);
+
+			if ($passing) 
+			{
 				$passing->recountPassResult();
 				$passing->save();
 			}
 		}
+
 		$this->redirect($_SERVER['HTTP_REFERER']);
 	}
 
-	public function actionChangeStatus($user, $test) {
+	public function actionChangeStatus($user, $test) 
+	{
 
-        $tp = TestingPassing::model()->findAllByAttributes(array('user_id'=>$user,'test_id'=>$test));
-		if ($tp) {
-			foreach ($tp as $t) {
-				$t->delete();
-			}
-		} else {
+        $tp = TestingPassing::find()->where([
+    		'user_id' => $user, 
+    		'test_id' => $test
+    	])->one();
+
+		if ($tp) 
+		{
+			$tp->delete();
+		} 
+		else 
+		{
 			$tp = new TestingPassing;
 			$tp->user_id = $user;
 			$tp->test_id = $test;
 			$tp->save();
 		}
+
 		$this->redirect($_SERVER['HTTP_REFERER']);
 	}
 
-	public function loadModel($id)
-	{
-		$model = TestingPassing::model()->findByPk((int) $id);
-		if($model === null)
-        {
-            $this->pageNotFound();
+	/**
+     * Finds the Faq model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Faq the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = TestingAnswer::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
         }
-
-		return $model;
-	}
-
+    }
 }

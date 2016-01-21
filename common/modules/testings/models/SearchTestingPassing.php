@@ -53,7 +53,7 @@ class SearchTestingPassing extends TestingPassing
             'query' => $query,
             'pagination' => ['pageSize' => self::PAGE_SIZE],
             'sort' => [
-                'defaultOrder'=>'user.last_name, user.first_name, user.patronymic, test.name DESC',
+                'defaultOrder'=>'create_date DESC',
             ],
         ]);
 
@@ -65,7 +65,7 @@ class SearchTestingPassing extends TestingPassing
             return $dataProvider;
         }
 
-        $query = $this->query($params, $order, $limit);
+        $dataProvider->query = $this->query($params, $order, $limit);
 
         return $dataProvider;
     }
@@ -74,7 +74,7 @@ class SearchTestingPassing extends TestingPassing
     {
         $query = TestingPassing::find();
 
-        $query->joinWith(['user', 'test', 'mistake']);
+        $with = ['test' => true];
 
         $query->andFilterWhere([
             'id' => $this->id,
@@ -82,12 +82,27 @@ class SearchTestingPassing extends TestingPassing
             'test_id' => $this->test_id,
             'create_date' => $this->create_date,
             TestingTest::tableName() . '.session_id' => Yii::$app->request->get('session'),
-            TestingUser::tableName() . '.email' => $this->filter_user_email,
-            TestingUser::tableName() . '.company_name' => $this->filter_user_company_name,
-            TestingUser::tableName() . '.last_name' => $this->filter_user_last_name
         ]);
 
-//         $tpassing = Yii::app()->request->getQuery('TestingPassing');
+        if($this->filter_user_email)
+        {
+            $with['user'] = true;
+            $query->andFilterWhere(['like', TestingUser::tableName() . '.email', $this->filter_user_email]);
+        }
+
+        if($this->filter_user_company_name)
+        {
+            $with['user'] = true;
+            $query->andFilterWhere(['like', TestingUser::tableName() . '.company_name', $this->filter_user_company_name]);
+        }
+
+        if($this->filter_user_last_name)
+        {
+            $with['user'] = true;
+            $query->andFilterWhere(['like', TestingUser::tableName() . '.last_name', $this->filter_user_last_name]);
+        }
+
+        //         $tpassing = Yii::app()->request->getQuery('TestingPassing');
 
 //      $pass_date = 'CONCAT( RIGHT( LEFT( pass_date, 10 ) , 4 ) ,  "-", TRIM( 
 // TRAILING CONCAT(  ".", SUBSTRING_INDEX( LEFT( pass_date, 10 ) ,  ".", -1 ) ) 
@@ -106,51 +121,51 @@ class SearchTestingPassing extends TestingPassing
 //          $criteria->addCondition($pass_date.' > "'.Yii::app()->request->getQuery('pass_date').'"');
 //      }
 
-        switch ($this->is_passed) 
-        {
-            case TestingPassing::AUTH:
-                $query->andFilterWhere(['>', 'ser.create_date', '2014-06-05 00:00:00']);
-                $query->andFilterWhere([TestingUser::tableName() . '.is_auth' => 0]);
-                break;
-
-            case TestingPassing::STARTED:
-                $query->andFilterWhere([
-                    'is_passed' => 0,
-                    'pass_date' => null,
-                    TestingMistake::tableName() . '.passing_id' => null
-                ]);
-                break;
-
-            case TestingPassing::MISTAKE:
-                $query->andFilterWhere(['=', TestingMistake::tableName() . '.passing_id', 'id']);
-                break;
-
-            case TestingPassing::PASSED:
-                $query->andFilterWhere([
-                    'is_passed' => 1,
-                    TestingMistake::tableName() . '.passing_id' => null
-                ]);
-                break;
-
-            case TestingPassing::FAILED:
-                $query->andFilterWhere([
-                    'is_passed' => 0,
-                    TestingMistake::tableName() . '.passing_id' => null
-                ]);
-                $query->andFilterWhere(['not', 'pass_date', null]);
-                break;
-
-            case TestingPassing::NOT_STARTED:
-                $query->andFilterWhere([
-                    'is_passed' => null,
-                    TestingMistake::tableName() . '.passing_id' => null
-                ]);
-                break;
-        }
-
-        // if (Yii::app()->user->getRole() == 'schneider_electric')
+        // switch ($this->is_passed) 
         // {
-        //     $criteria->compare('user.tki', Yii::app()->user->getName(), true);
+        //     case TestingPassing::AUTH:
+        //         $with['user'] = true;
+        //         $query->andFilterWhere(['>', 'ser.create_date', '2014-06-05 00:00:00']);
+        //         $query->andFilterWhere([TestingUser::tableName() . '.is_auth' => 0]);
+        //         break;
+
+        //     case TestingPassing::STARTED:
+        //         $query->andFilterWhere([
+        //             'is_passed' => 0,
+        //             'pass_date' => null,
+        //             TestingMistake::tableName() . '.passing_id' => null
+        //         ]);
+        //         break;
+
+        //     case TestingPassing::MISTAKE:
+        //         $with['mistake'] = true;
+        //         $query->andFilterWhere(['=', TestingMistake::tableName() . '.passing_id', 'id']);
+        //         break;
+
+        //     case TestingPassing::PASSED:
+        //         $with['mistake'] = true;
+        //         $query->andFilterWhere([
+        //             'is_passed' => 1,
+        //             TestingMistake::tableName() . '.passing_id' => null
+        //         ]);
+        //         break;
+
+        //     case TestingPassing::FAILED:
+        //         $with['mistake'] = true;
+        //         $query->andFilterWhere([
+        //             'is_passed' => 0,
+        //             TestingMistake::tableName() . '.passing_id' => null
+        //         ]);
+        //         $query->andFilterWhere(['not', 'pass_date', null]);
+        //         break;
+
+        //     case TestingPassing::NOT_STARTED:
+        //         $with['mistake'] = true;
+        //         $query->andFilterWhere([
+        //             'is_passed' => null,
+        //             TestingMistake::tableName() . '.passing_id' => null
+        //         ]);
+        //         break;
         // }
 
         if(!empty($order))
@@ -158,6 +173,8 @@ class SearchTestingPassing extends TestingPassing
 
         if(!empty($limit))
             $query->limit($limit);
+
+        $query->joinWith(array_keys($with));
 
         return $query;
     }
