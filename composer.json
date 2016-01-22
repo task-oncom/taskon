@@ -26,6 +26,7 @@
         "2amigos/yii2-date-picker-widget": "~1.0",
         "kartik-v/dependent-dropdown": "dev-master",
         "phpoffice/phpword": "dev-master",
+        "phpoffice/phpexcel": "dev-master",
         "mpdf/mpdf": "dev-master",
         "dompdf/dompdf": "dev-master",
         "tecnick.com/tcpdf": "dev-master",
