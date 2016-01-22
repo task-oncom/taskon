@@ -7,12 +7,19 @@ use common\components\AdminController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\web\UploadedFile;
+use yii\helpers\Html;
 
 use common\modules\testings\models\TestingTest;
 use common\modules\testings\models\SearchTestingTest;
+use common\modules\testings\models\TestingQuestion;
+use common\modules\testings\models\TestingTheme;
+use common\modules\testings\models\TestingAnswer;
 
 class TestingTestAdminController extends AdminController
 {
+	public $errorSummaryCssClass = 'error-summary';
+	public $encodeErrorSummary;
+
     public static function actionsTitles()
     {
         return array(
@@ -129,10 +136,8 @@ class TestingTestAdminController extends AdminController
 		{
 			$model->csv_file = UploadedFile::getInstance($model, 'csv_file');
 
-            if ($model->upload()) 
+            if($model->upload()) 
             {
-				$resource = CSVHelper::open($csv_file->tempName);
-
 				try 
 				{
 					$log = [];
@@ -140,106 +145,104 @@ class TestingTestAdminController extends AdminController
 					set_time_limit(60*3); // Максимальное время выполнения скрипта - 3 минуты
 
 					$questionsCount = 0; // Кол-во загруженных вопросов
-					$gammasCount = 0; // Кол-во гамм (не только созданных)
+					$themesCount = 0; // Кол-во тем (не только созданных)
 
-					while ($data = CSVHelper::fgetcsv($resource)) 
+					$inputFileType = \PHPExcel_IOFactory::identify($model->file);
+				    $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+				    $objPHPExcel = $objReader->load($model->file);
+
+				    $sheet = $objPHPExcel->getSheet(0); 
+					$highestRow = $sheet->getHighestRow(); 
+					$highestColumn = $sheet->getHighestColumn();
+
+					for ($i = 3; $i <= $highestRow; $i++)
 					{
-						// если в файле пошли пустые строки, то выходим из цикла
-						if (count($data) < 2) break;
+						// извлечение переменных из XLS
+						$theme_name = trim(preg_replace('/\s+/', ' ', $sheet->getCell('A' . $i)->getValue()));
+						$question_name = trim(preg_replace('/\s+/', ' ', $sheet->getCell('B' . $i)->getValue()));
+						$question_type = trim(preg_replace('/\s+/', ' ', $sheet->getCell('C' . $i)->getValue()));
+						$answer_name = trim(preg_replace('/\s+/', ' ', $sheet->getCell('D' . $i)->getValue()));
+						$answer_isright = trim($sheet->getCell('E' . $i)->getValue());
 
-						// извлечение переменных из CSV
-						$gamma_type = trim($data[0]);
-						// если первый столбец не указывает на цифры 1 или 2 (строительная и промышленная гаммы) - вся строка неправильная
-						if (($gamma_type <> '1') && ($gamma_type <> '2')) continue;
-						$gamma_name = trim(preg_replace('/\s+/', ' ',$data[1]));
-						$q_name = trim(preg_replace('/\s+/', ' ',$data[2]));
-						$q_type = trim(preg_replace('/\s+/', ' ',$data[3]));
-						$a_name = trim(preg_replace('/\s+/', ' ',$data[4]));
-						$a_isright = trim($data[5]);
-						$author = trim($data[6]);
+						// поиск или создание темы
+						if ($theme_name <> '') 
+						{
+							$themesCount++;
 
-						// поиск или создание гаммы
-						if ($gamma_name <> '') {
+							$theme = TestingTheme::find()->where(['name' => $theme_name])->one();
 
-							$gammasCount++;
-
-							$cr1 = new CDbCriteria;
-
-							$cr1->addCondition('type = :main_gamma');
-							$cr1->addCondition('name = :gamma');
-
-							$cr1->params = array(
-								':main_gamma' => $gamma_type,
-								':gamma' => $gamma_name,
-							);
-
-							$gamma = TestingGamma::model()->find($cr1);
-
-							if ($gamma === null) {
-								$gamma = new TestingGamma;
-								$gamma->name = $gamma_name;
-								$gamma->type = $gamma_type;
-								//$log[] = 'Гамма '.$gamma_name.' создана.';
-							} else {
-								//$log[] = 'Гамма '.$gamma_name.' уже существует.';
+							if(!$theme) 
+							{
+								$theme = new TestingTheme;
+								$theme->name = $theme_name;
+							} 
+							else 
+							{
+								$log[] = 'Тема ' . $theme_name . ' уже существует.';
 							}
 
-							if ($gamma->save()) {
-								//$log[] = 'Гамма "'.$gamma_name.'" сохранена.';
-							} else {
-								$log[] = 'Ошибка при сохранении гаммы "'.$gamma_name.'"';
+							if(!$theme->save()) 
+							{
+								$log[] = 'Ошибка при сохранении темы "' . $theme_name . '"';
 							}
 						}
 
 						// создание вопроса
-						if ($q_name <> '') {
-
+						if ($question_name <> '') 
+						{
 							$question = new TestingQuestion;
-							$question->text = $q_name;
-							$question->type = $q_type;
-							$question->test_id = $model->id;
-							$question->gamma_id = $gamma->id;
-							$question->author = $author;
+							$question->text = $question_name;
+							$question->type = $question_type;
+							$question->test_id = $id;
+							$question->theme_id = $theme->id;
+							$question->is_active = TestingQuestion::ACTIVE;
 
-							if ($question->save()) {
-								//$log[] = 'Вопрос "'.$q_name.'" сохранен.';
+							if($question->save()) 
+							{
 								$questionsCount++;
-							} else {
-								$log[] = 'Ошибка при сохранении вопроса "'.$q_name.'"';
+							} 
+							else 
+							{
+								$log[] = 'Ошибка при сохранении вопроса "' . $question_name . '"';
 							}
-
 						}
 
 						// создание ответа
 						$answer = new TestingAnswer;
-						$answer->text = $a_name;
-						if (($a_isright == 'да') || ($a_isright == 'Да') || ($a_isright == 'ДА') || ($a_isright == 'y') || ($a_isright == 'yes') || ($a_isright == 'Y')) {
+						$answer->text = $answer_name;
+
+						if (in_array($answer_isright, TestingAnswer::$xls_rights_list)) 
+						{
 							$answer->is_right = TestingAnswer::IS_RIGHT;
-						} else {
+						} 
+						else 
+						{
 							$answer->is_right = TestingAnswer::IS_NOT_RIGHT;
 						}
+
 						$answer->question_id = $question->id;
 
-						if ($answer->save()) {
-							//$log[] = 'Ответ "'.$a_name.'" сохранен.';
-						} else {
-							$log[] = 'Ошибка при сохранении ответа "'.$a_name.'"';
+						if (!$answer->save()) 
+						{
+							$log[] = 'Ошибка при сохранении ответа "' . $answer_name . '"';
 						}
 					}
 
 					// добавляем отчёт о кол-ве добавленных вопросов и гамм
-					Yii::app()->user->setFlash('flash', '<i>Всего добавлено <b>' .$questionsCount. '</b> вопросов в <b>'.$gammasCount. '</b> гаммах. Перейти к '.CHtml::link('списку загруженных вопросов',array('/testings/testingQuestionAdmin/manage','test'=>$model->id)).'.</i>');
+					Yii::$app->session->setFlash('flash', '<i>Всего добавлено <b>' . $questionsCount . '</b> вопросов в <b>' . $themesCount . '</b> темах. Перейти к ' . Html::a('списку загруженных вопросов', ['/testings/testing-question-admin/manage', 'test'=>$model->id]) . '.</i>');
 
-					$params['log'] = '<p>' . implode('</p><p>',$log) . '</p>';
+					$params['log'] = '<p>' . implode('</p><p>', $log) . '</p>';
 				}
-				else
+				catch (Exception $e)
 				{
-					Yii::$app()->session->setFlash('flash', 'Произошла ошибка при загрузке файла. Обратитесь к администратору!');
+					$params['log'] = 'Импорт прошел неудачно: ' . $e->getMessage();
 				}
-			} 
-			catch (Exception $e)
+
+				$model->deleteFile();
+			}
+			else
 			{
-				$params['log'] = 'Импорт прошел неудачно: ' . $e->getMessage();
+				Yii::$app->session->setFlash('flash', 'Произошла ошибка при загрузке файла. Обратитесь к администратору!');
 			}
 		}
 

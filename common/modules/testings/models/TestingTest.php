@@ -13,9 +13,14 @@ use common\modules\testings\models\TestingQuestion;
 
 class TestingTest extends \common\components\ActiveRecordModel
 {
+	const SCENARIO_UPLOAD = 'upload';
+
     const PAGE_SIZE = 10;
 
+    const TEMP_FOLDER = '/uploads/temp/';
+
 	public $csv_file;
+	public $file;
 
 	/**
      * @inheritdoc
@@ -45,11 +50,11 @@ class TestingTest extends \common\components\ActiveRecordModel
 	public function rules()
 	{
 		return [
-			[['session_id', 'name'], 'required'],
-			[['minutes', 'questions', 'pass_percent', 'attempt'], 'requiredNotMix'],
-			[['session_id', 'minutes', 'questions', 'pass_percent', 'attempt', 'mix'], 'integer'],
-			[['name'], 'string', 'max' => 200],
-			[['csv_file'], 'file', 'skipOnEmpty' => false, 'extensions' => 'xls, xlsx', 'on' => 'upload'],
+			[['session_id', 'name'], 'required', 'except' => self::SCENARIO_UPLOAD],
+			[['minutes', 'questions', 'pass_percent', 'attempt'], 'requiredNotMix', 'except' => self::SCENARIO_UPLOAD],
+			[['session_id', 'minutes', 'questions', 'pass_percent', 'attempt', 'mix'], 'integer', 'except' => self::SCENARIO_UPLOAD],
+			[['name'], 'string', 'max' => 200, 'except' => self::SCENARIO_UPLOAD],
+			[['csv_file'], 'file', 'skipOnEmpty' => false, 'extensions' => 'xls, xlsx', 'on' => self::SCENARIO_UPLOAD],
 			[['mix'], 'safe'],
         ];
 	}
@@ -65,7 +70,7 @@ class TestingTest extends \common\components\ActiveRecordModel
 	public function attributeLabels()
     {
         return [
-            'csv_file' => 'Загрузить csv-файл',
+            'csv_file' => 'Загрузить XLS-файл',
 			'attempt' => 'Количество попыток',
 			'session_id' => 'Сессия',
 			'name' => 'Наименование теста',
@@ -128,16 +133,35 @@ class TestingTest extends \common\components\ActiveRecordModel
 		return ArrayHelper::map(self::find()->where(['session_id' => $session_id]), 'id', 'name');
 	}
 
+	private function getPath()
+	{
+		return Yii::getAlias('@webroot') . self::TEMP_FOLDER;
+	}
+
 	public function upload()
     {
-        if ($this->validate()) 
+        if($this->validate()) 
         {
-            $this->csv_file->saveAs('uploads/' . date('dmYHiS_') . uniqid() . '.' . $this->imageFile->extension);
+        	if(!file_exists($this->getPath()))
+        	{
+        		mkdir($this->getPath(), 0777, true);
+        	}
+
+        	$this->file = $this->getPath() . date('dmYHis-') . uniqid() . '.' . $this->csv_file->extension;
+            $this->csv_file->saveAs($this->file);
             return true;
         } 
         else 
         {
             return false;
+        }
+    }
+
+    public function deleteFile()
+    {
+    	if(file_exists($this->file))
+        {
+        	unlink($this->file);
         }
     }
 }

@@ -14,7 +14,7 @@ use yii\widgets\DetailView;
 
     <p>
         <?= Html::a(Yii::t('content', 'Update'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Импорт вопросов из CSV-файла', ['import-tests', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
+        <?= Html::a('Импорт вопросов из XLS-файла', ['import-tests', 'id' => $model->id], ['class' => 'btn btn-info']) ?>
     </p>
 
     <?= DetailView::widget([

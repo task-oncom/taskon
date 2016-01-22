@@ -20,6 +20,8 @@ class TestingAnswer extends \common\components\ActiveRecordModel
         self::IS_RIGHT => 'Да',
     ];
 
+    public static $xls_rights_list = ['да', 'Да', 'ДА', 'y', 'yes', 'Y'];
+
 	public static function tableName()
 	{
 		return 'testings_answers';

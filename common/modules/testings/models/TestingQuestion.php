@@ -49,7 +49,6 @@ class TestingQuestion extends \common\components\ActiveRecordModel
 	{
 		return [
 			'is_active' => 'Активен/скрыт',
-			'author' => 'Автор вопроса',
 			'test_id' => 'Тест',
 			'theme_id' => 'Тема',
 			'text' => 'Текст вопроса',

@@ -33,9 +33,9 @@ class TestingTheme extends \common\components\ActiveRecordModel
 	public function rules()
 	{
 		return [
-			[['name', 'type'], 'required'],
-			[['type'], 'integer'],
-			[['name'], 'stirng', 'max' => 200],
+			[['name'], 'required'],
+			[['type'], 'safe'],
+			[['name'], 'string', 'max' => 200],
 			// array('id, name, type', 'safe', 'on' => 'search'),
         ];
 	}

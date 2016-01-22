@@ -3,23 +3,31 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 ?>
 
+<style type="text/css">
+	#log_box p {
+		margin: 0;
+	}
+</style>
+
 <?php if (\Yii::$app->session->hasFlash('flash')): ?>
 	<div class="alert alert-success fade in m-b-15">
-		<?php echo $this->msg(\Yii::$app->session->getFlash('flash'), 'ok'); ?>
+		<?php echo \Yii::$app->session->getFlash('flash'); ?>
 		<span class="close" data-dismiss="alert">×</span>
 	</div>
 <?php endif ?>
 
 <?php if (isset($log)) : ?>
 	
-	<div id="log_box"><?php echo $log; ?></div>
+	<div id="log_box"><?php echo $log; ?></div> 
+
+	<hr>
 
 	<script type="text/javascript">
 		jQuery('#log_box p').each(function(){
 			var str = $(this).text();
 			var reg = /Ошибка/gi;
 			if (str.match(reg)) {
-				$(this).css('background-color','#ccc').css('color','red');
+				$(this).css('color','red');
 			}
 		});
 	</script>
@@ -32,7 +40,7 @@ use yii\helpers\Html;
 Для загрузки реестра вопросов на сайт необходимо:
 
 <ol>
-	<li>Заполнить <a href="/upload/users/Questions_example_table.xls">шаблон</a> в формате MS Excel.</li>
+	<li>Заполнить <a href="/uploads/templates/Questions_example_table.xlsx">шаблон</a> в формате MS Excel.</li>
 	<li>Сохранить файл как XLS или XLSX.</li>
 	<li>Загрузить файл на сайт c помощью кнопки ниже.</li>
 </ol>
