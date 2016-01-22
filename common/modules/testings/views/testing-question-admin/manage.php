@@ -153,7 +153,6 @@ $this->registerJs($js, yii\web\View::POS_READY, 'expnd.info');
             	return TestingQuestion::$type_list[$model->type];
             }
         ],
-        'author',
         [
             'class' => 'common\components\ColorActionColumn',
 	        'template' => '{view} {update}',
