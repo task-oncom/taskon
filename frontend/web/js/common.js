@@ -1,4 +1,4 @@
-$(document).ready(function() {
+ $(document).ready(function() {
 	$.parallaxify();
 
 	$(".player").mb_YTPlayer();
