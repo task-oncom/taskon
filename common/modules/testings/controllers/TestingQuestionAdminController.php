@@ -6,6 +6,7 @@ use Yii;
 use common\components\AdminController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 use common\modules\testings\models\TestingQuestion;
 use common\modules\testings\models\SearchTestingQuestion;
@@ -92,47 +93,29 @@ class TestingQuestionAdminController extends AdminController
         return $this->redirect(['manage']);
 	}
 
-	// public function actionManage()
-	// {
- //        $questions = array();//Вопросы с предупреждением о картинках
-        
- //        //$param = 'карт, изобр, изображение, скриншот, картинка, схема, рисунок, рис';
- //        $param = trim(Setting::getValue('testings_questions_with_picture'));
- //        $words = empty($param) ? array() : explode(',', trim($param));
- //        $db = Yii::app()->db;
- //        if( isset($_GET['test']) && !empty($words)) {
- //            $where = array();
- //            for ($i = 0; $i < count($words); $i++) {
- //                $where[] = sprintf('%s LIKE trim(%s)', 
- //                    $db->quoteColumnName('text'),
- //                    $db->quoteValue('%'.trim($words[$i]).'%'));
- //            }
-
- //            $where = implode(' OR ', $where);
- //            $sql = "SELECT id, `text` FROM testings_questions WHERE test_id = :test_id AND ($where)";
- //            $rows = $db->createCommand($sql)->queryAll(true, array('test_id' => $_GET['test']));
- //            foreach($rows as $row) {
- //                $questions[$row['id']] = $row['text'];
- //            }
- //        }
-
-        
-	// 	$model=new TestingQuestion('search');
-	// 	$model->unsetAttributes();
-	// 	if(isset($_GET['TestingQuestion']))
- //        {
- //            $model->attributes = $_GET['TestingQuestion'];
- //        }
-
-	// 	$this->render('manage', array(
-	// 		'model' => $model,
- //            'questions' => $questions,
- //            'questions_param' => $param,
-	// 	));
-	// }
-
 	public function actionManage()
 	{
+        $questions = [];
+
+        $param = 'карт, изобр, изображение, скриншот, картинка, схема, рисунок, рис';
+        // $param = trim(Setting::getValue('testings_questions_with_picture'));
+
+        $words = empty($param) ? array() : explode(',', trim($param));
+
+        if(Yii::$app->request->get('test') && !empty($words)) 
+        {
+            $query = TestingQuestion::find();
+
+            for ($i = 0; $i < count($words); $i++) 
+            {
+                $query->orWhere(['like', 'text', trim($words[$i])]);
+            }
+
+            $query->andWhere(['test_id' => Yii::$app->request->get('test')]);
+
+            $questions = ArrayHelper::map($query->all(), 'id', 'text');
+        }
+
 		$searchModel = new SearchTestingQuestion();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -144,6 +127,8 @@ class TestingQuestionAdminController extends AdminController
         return $this->render('manage', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'questions' => $questions,
+            'questions_param' => $param,
         ]);
 	}
 

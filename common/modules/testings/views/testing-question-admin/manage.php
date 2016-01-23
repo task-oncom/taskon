@@ -28,8 +28,7 @@ $("#message_expand").one("click", function (e) {
     e.preventDefault();
     var el = $(this).hide();
         
-    el.parent(".message")
-        .css({height: "auto", overflow: "auto"});
+    $('#list_expand').show();
     
 });
 EOD;
@@ -41,7 +40,7 @@ $this->registerJs($js, yii\web\View::POS_READY, 'expnd.info');
 	    <a href="#" id="message_expand">Показать</a>
 	    <p>Имеются вопросы со словами: <b>&laquo<?php echo Html::encode($questions_param);?>&raquo</b></p>
 	    <br/><br/>
-	    <ul>
+	    <ul style="display:none;" id="list_expand">
 	        <?php foreach($questions as $id => $text): ?>
 	        	<li><?php echo Html::a(Html::encode($text), ['update', 'id' => $id]); ?></li>
 	        <?php endforeach; ?>
