@@ -17,9 +17,6 @@ use common\modules\testings\models\TestingAnswer;
 
 class TestingTestAdminController extends AdminController
 {
-	public $errorSummaryCssClass = 'error-summary';
-	public $encodeErrorSummary;
-
     public static function actionsTitles()
     {
         return array(
