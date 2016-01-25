@@ -149,8 +149,7 @@ class TestingTestAdminController extends AdminController
 				    $objPHPExcel = $objReader->load($model->file);
 
 				    $sheet = $objPHPExcel->getSheet(0); 
-					$highestRow = $sheet->getHighestRow(); 
-					$highestColumn = $sheet->getHighestColumn();
+					$highestRow = $sheet->getHighestRow();
 
 					for ($i = 3; $i <= $highestRow; $i++)
 					{
