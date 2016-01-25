@@ -80,7 +80,6 @@ class SiteController extends Controller
 	
 	public function actionLogin1()
     {
-
         if (!Yii::app()->user->isGuest)
         {
             throw new CException('Вы уже авторизованы!');
