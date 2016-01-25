@@ -6,11 +6,17 @@ use Yii;
 use common\components\AdminController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 
 use common\modules\testings\models\TestingSession;
 use common\modules\testings\models\SearchTestingSession;
 use common\modules\testings\models\TestingPassing;
 use common\modules\testings\models\TestingTest;
+use common\modules\testings\models\TestingUser;
+use common\modules\testings\models\TestingUserGroup;
+use common\modules\testings\models\TestingUserGroupAssign;
 
 class TestingSessionAdminController extends AdminController
 {
@@ -24,7 +30,7 @@ class TestingSessionAdminController extends AdminController
             'Extend1' => 'Продление сессии для компании',
             'Delete' => 'Удаление сессии',
             'Manage' => 'Управление сессиями',
-			'ImportPassings' => 'Импорт пользователей для прохождения тестирования',
+			'Import-passings' => 'Импорт пользователей для прохождения тестирования',
 			'ExportSessionResult' => 'Экспорт результата сессии',
 			'SendMessage' => 'Отправить пользователю сообщение о назначенных тестах',
 			'SendMessageToAll' => 'Отправить сообщения о назначенных тестах всем пользователям',
@@ -193,6 +199,215 @@ class TestingSessionAdminController extends AdminController
             'session' => $session,
         ));
     }
+
+    public function actionImportPassings($id)
+	{
+		$model = $this->findModel($id);
+		$group = new TestingUserGroup;
+
+		$params = ['model' => $model, 'group' => $group];
+
+		if (Yii::$app->request->isPost)
+		{
+			$model->attributes = Yii::$app->request->post('TestingSession');
+			$group->attributes = Yii::$app->request->post('TestingUserGroup');
+
+			$group->session_id = $model->id;
+
+			if($model->validate() && $group->validate())
+			{
+				$group->save(false);
+
+				$model->csv_file = UploadedFile::getInstance($model, 'csv_file');
+
+				if($model->upload()) 
+            	{
+					try 
+					{
+						$log = [];
+
+						set_time_limit(60*5); // Максимальное время выполнения скрипта - 5 минуты
+
+						$usersCount = 0; // кол-во загруженных пользователей
+						$passingsCount = 0; // кол-во назначенных тестов
+		                
+		                $assigned = []; //Для проверки на дубликаты
+		                $test_ids = array_keys(ArrayHelper::map(TestingTest::find()->where(['session_id' => $model->id])->all(), 'id', 'name'));
+
+		                if(!empty($test_ids)) 
+		                {
+		                	$passings = TestingPassing::find()->where(['test_id' => $test_ids])->all();
+
+		                    foreach($passings as $passing) 
+		                    {
+		                        $assigned[$passing->user_id][] = $passing->test_id;
+		                    }
+		                }
+
+		                $inputFileType = \PHPExcel_IOFactory::identify($model->file);
+					    $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
+					    $objPHPExcel = $objReader->load($model->file);
+
+					    $sheet = $objPHPExcel->getSheet(0); 
+						$highestRow = $sheet->getHighestRow(); 
+						$highestColumn = $sheet->getHighestColumn();
+
+						$mixCreate = true;
+
+						for ($i = 3; $i <= $sheet->getHighestRow(); $i++)
+						{
+							// извлечение переменных из XLS
+							$sex = trim($sheet->getCell('A' . $i)->getValue());
+							$last_name = trim($sheet->getCell('B' . $i)->getValue());
+							$first_name = trim($sheet->getCell('C' . $i)->getValue());
+							$patronymic = trim($sheet->getCell('D' . $i)->getValue());
+							$company_name = trim(preg_replace('/\s+/', ' ', $sheet->getCell('E' . $i)->getValue()));
+							$city = trim($sheet->getCell('F' . $i)->getValue());
+							$email = trim($sheet->getCell('G' . $i)->getValue());
+							$login = trim($sheet->getCell('H' . $i)->getValue());
+							$password = trim($sheet->getCell('I' . $i)->getValue());
+
+							// Извлеченние данных о назначенных тестах
+							$usertests = [];
+
+							for ($j = 10; $j <= $sheet->getHighestColumn(); $j++)
+							{
+								$testName = trim($sheet->getCellByColumnAndRow($j, 2)->getValue());
+								$test = trim($sheet->getCellByColumnAndRow($j, $i)->getValue());
+
+								if(in_array($testName, TestingTest::$mix_test_titles) && $mixCreate)
+								{
+									$mixModel = TestingTest::model()->findByAttributes(array('name'=>'Комбинированный тест', 'session_id'=>$model->id));
+
+									if(!$mixModel)
+									{
+										$mixModel = new TestingTest;
+										$mixModel->session_id = $model->id;
+										$mixModel->name = 'Комбинированный тест';
+										$mixModel->mix = true;
+
+										$mixModel->save();
+									}
+
+									$mixCreate = false;
+								}
+
+								$usertests[] = $test;
+							}								
+
+							// если первый столбец не указывает на пол - вся строка неправильная
+							if (($sex <> 'м') && ($sex <> 'ж') && ($sex <> 'М') && ($sex <> 'Ж')) continue;
+
+							$usersCount++;
+
+							// поиск или создание пользователя
+							$user = TestingUser::find()->where([
+								'first_name' => $first_name,
+								'last_name' => $last_name,
+								'patronymic' => $patronymic,
+								'company_name' => $company_name,
+							])->one();
+
+							if (!$user)
+							{
+								$user = new TestingUser;
+								$user->attributes = [
+									'last_name' => $last_name,
+									'first_name' => $first_name,
+									'patronymic' => $patronymic,
+									'company_name' => $company_name,
+									'sex' => (($sex == 'Ж') || ($sex == 'ж')) ? 0 : 1,
+								];
+							}
+
+							$user->email = $email;
+							$user->manager_id = Yii::$app->user->id;
+							$user->city = $city;
+							$user->login = $login;
+							$user->password = $password;
+
+							if($user->save()) 
+							{
+								$user_group_assign = new TestingUserGroupAssign;
+								$user_group_assign->attributes = [
+						            'user_id' => $user->id,
+						            'group_id' => $group->id,
+						            'session_id' => $model->id
+						        ];
+							} 
+							else 
+							{
+								$log[] = 'Ошибка при сохранении пользователя '.$last_name.' '.$first_name.' '.$patronymic.' ["'.$company_name.'"]!';
+								break;
+							}
+
+							// назначение тестов
+							$testings = TestingTest::find()->where(['session_id' => $model->id]);
+
+							// проверка на то, создано ли достаточное кол-во тестов в пределах текущей сессии
+							if (count($usertests) > count($testings)) 
+							{
+								throw new NotFoundHttpException('Загружено недостаточное количество тестов в пределах текущей сессии!');
+							}
+		                    
+							foreach ($usertests as $index => $test) 
+							{
+								if(in_array($test, array('да','Да','ДА','y','yes','1','Y'))) 
+								{
+									if(!isset($testings[$index]))
+									{
+										continue;
+									}
+
+									if(isset($assigned[$user->id]) && in_array($testings[$index]->id, $assigned[$user->id])) 
+									{
+		                                $log[] = "Пользователю {$user->id} уже назначен тест № {$testings[$index]->id}";
+		                                continue;
+		                            }
+
+		                            $pass = new TestingPassing;
+									$pass->user_id = $user->id;
+									$pass->percent_rights = 0;
+									$pass->test_id = $testings[$index]->id;
+
+									if ($pass->save()) 
+									{
+										$passingsCount++;
+		                                $assigned[$user->id][$index] = $testings[$index]->id;
+									} 
+									else 
+									{
+										$log[] = 'Ошибка при назначении теста "'.$testings[$index]->name.'"';
+									}
+								}
+							}
+						}
+
+						// добавляем отчёт о кол-ве назначенных тестов
+						Yii::$app->session->setFlash('flash', '<i>Всего назначено <b>' .$passingsCount. '</b> тестов <b>'.$usersCount. '</b> пользователям. Перейти к '.Html::a('списку назначенных тестов', ['/testings/testing-user-admin/manage', 'session'=>$model->id]).'.</i>');
+
+
+						$params = array(
+							'model' => $model,
+							'group' => $group,
+							'log' => implode('<br />',$log),
+						);
+
+					} 
+					catch (Exception $e)
+					{
+						$params['log'] = 'Импорт прошел неудачно: ' . $e->getMessage();
+					}
+				}
+				else
+				{
+					Yii::$app->session->setFlash('flash', 'Произошла ошибка при загрузке файла. Обратитесь к администратору!');
+				}
+			}
+		}
+
+		return $this->render('import-passings', $params);
+	}
 
 	public function actionExportSessionResult($id)
 	{
@@ -525,236 +740,6 @@ class TestingSessionAdminController extends AdminController
 		$objWriter = PHPExcel_IOFactory::createWriter($excel, 'Excel2007');
 		$objWriter->save('php://output');
 		Yii::app()->end();
-	}
-
-	public function actionImportPassings($id)
-	{
-		$model = $this->loadModel($id);
-		$group = new TestingUserGroup;
-
-		$params = array('model' => $model, 'group' => $group);
-
-		if (Yii::app()->request->isPostRequest)
-		{
-			$model->attributes = $_POST['TestingSession'];
-			$group->attributes = $_POST['TestingUserGroup'];
-			$group->session_id = $model->id;
-
-			if($model->validate() && $group->validate())
-			{
-				$group->save(false);
-
-				$csv_file = CUploadedFile::getInstance($model, 'csv_file');
-
-				$resource = CSVHelper::open($csv_file->tempName);
-
-				try {
-					$log = array();
-
-					set_time_limit(60*5); // Максимальное время выполнения скрипта - 5 минуты
-
-					$usersCount = 0; // кол-во загруженных пользователей
-					$passingsCount = 0; // кол-во назначенных тестов
-	                
-	                $assigned = array();//Для проверки на дубликаты
-	                $test_ids = Yii::app()->db->createCommand('SELECT id FROM testings_tests WHERE session_id = :session_id')
-	                        ->queryColumn(array('session_id' => $model->id));
-	                if(!empty($test_ids)) {
-	                    $sql = 'SELECT user_id, test_id FROM testings_passings WHERE test_id IN ('.implode(', ', $test_ids).')';
-	                    $rows = Yii::app()->db->createCommand($sql)->queryAll();
-	                    foreach($rows as $row) {
-	                        $assigned[$row['user_id']][] = $row['test_id'];
-	                    }
-	                }
-	                
-					while ($data = CSVHelper::fgetcsv($resource)) 
-					{
-						// если в файле пошли пустые строки, то выходим из цикла
-						if (count($data) < 2) break;
-
-						// извлечение переменных из CSV
-						$sex = trim($data[0]);
-						$last_name = trim($data[1]);
-						$first_name = trim($data[2]);
-						$patronymic = trim($data[3]);
-						$company_name = trim(preg_replace('/\s+/', ' ',$data[4]));
-						$city = trim($data[5]);
-						$email = trim($data[6]);
-						$login = trim($data[7]);
-						$password = trim($data[8]);
-						$tki = trim($data[9]);
-						$region = trim($data[10]);
-
-						// удаляем уже извлечённые данные; остальные, стало быть, сведения о назначенных тестах
-						array_shift($data);
-						array_shift($data);
-						array_shift($data);
-						array_shift($data);
-						array_shift($data);
-						array_shift($data);
-						array_shift($data);
-						array_shift($data);
-						array_shift($data);
-						array_shift($data);
-						array_shift($data);
-
-						$usertests = array();
-
-						foreach ($data as $test) 
-						{
-							$test = trim($test);
-							if(in_array($test, array('Комбинированный тест','комбинированный тест','Комбинированный','комбинированный')))
-							{
-								$mixModel = TestingTest::model()->findByAttributes(array('name'=>'Комбинированный тест','session_id'=>$model->id));
-
-								if(!$mixModel)
-								{
-									$mixModel = new TestingTest();
-									$mixModel->session_id = $model->id;
-									$mixModel->name = 'Комбинированный тест';
-									$mixModel->mix = true;
-
-									$mixModel->save();
-								}
-							}
-							
-							$usertests[] = $test;
-						}
-						
-						if(isset($usertests[0]) && $usertests[0] == 'Вид тестирования') continue;
-
-						// если первый столбец не указывает на пол - вся строка неправильная
-						if (($sex <> 'м') && ($sex <> 'ж') && ($sex <> 'М') && ($sex <> 'Ж')) continue;
-
-						$usersCount++;
-
-						// поиск или создание пользователя
-						$cr1 = new CDbCriteria;
-
-						$cr1->addCondition('first_name = :first_name');
-						$cr1->addCondition('last_name = :last_name');
-						$cr1->addCondition('patronymic = :patronymic');
-						$cr1->addCondition('company_name = :company_name');
-
-						$cr1->params = array(
-							':first_name' => $first_name,
-							':last_name' => $last_name,
-							':patronymic' => $patronymic,
-							':company_name' => $company_name,
-						);
-
-						$user = TestingUser::model()->find($cr1);
-
-						if ($user === null)
-						{
-							$user = new TestingUser;
-							$user->last_name = $last_name;
-							$user->first_name = $first_name;
-							$user->patronymic = $patronymic;
-							$user->company_name = $company_name;
-
-							if(($sex == 'Ж') || ($sex == 'ж')) 
-							{
-								$user->sex = 0;
-							} 
-							else 
-							{
-								$user->sex = 1;
-							}
-							//$log[] = 'Пользователь '.$last_name.' '.$first_name.' '.$patronymic.'["'.$company_name.'"] создан.';
-						} 
-						else 
-						{
-							//$log[] = 'Пользователь '.$last_name.' '.$first_name.' '.$patronymic.'["'.$company_name.'"] уже существует.';
-						}
-
-						$user->email = $email;
-						$user->manager_id = Yii::app()->user->id;
-						$user->tki = $tki;
-						$user->city = $city;
-						$user->region = $region;
-						$user->login = $login;
-						$user->password = $password;
-
-						if ($user->save()) 
-						{
-							$command = Yii::app()->db->createCommand();
-					        $command->insert('testings_users_groups_assign',  array(
-					            'user_id' => $user->id,
-					            'group_id' => $group->id,
-					            'session_id' => $model->id
-					        ));
-							//$log[] = 'Пользователь '.$last_name.' '.$first_name.' '.$patronymic.' ["'.$company_name.'"] сохранён.';
-						} 
-						else 
-						{
-							$log[] = 'Ошибка при сохранении пользователя '.$last_name.' '.$first_name.' '.$patronymic.' ["'.$company_name.'"]!';
-							break;
-						}
-
-						// назначение тестов
-						$testings = TestingTest::model()->findAll('session_id = :session', array(':session'=>$model->id));
-
-						// проверка на то, создано ли достаточное кол-во тестов в пределах текущей сессии
-						if (count($usertests) > count($testings)) 
-						{
-							throw new Exception('Загружено недостаточное количество тестов в пределах текущей сессии!');
-						}
-	                    
-						foreach ($usertests as $index => $test) 
-						{
-							if(in_array($test, array('да','Да','ДА','y','yes','1','Y'))) 
-							{
-								if(!isset($testings[$index]))
-								{
-									continue;
-								}
-
-								if(isset($assigned[$user->id]) && in_array($testings[$index]->id, $assigned[$user->id])) 
-								{
-	                                $log[] = "Пользователю {$user->id} уже назначен тест № {$testings[$index]->id}";
-	                                continue;
-	                            }
-
-	                            $pass = new TestingPassing;
-								$pass->user_id = $user->id;
-								$pass->percent_rights = 0;
-								$pass->test_id = $testings[$index]->id;
-
-								if ($pass->save()) 
-								{
-									//$log[] = 'Пользователю назначен тест "'.$testings[$index]->name.'"';
-									$passingsCount++;
-	                                $assigned[$user->id][$index] = $testings[$index]->id;
-								} 
-								else 
-								{
-									$log[] = 'Ошибка при назначении теста "'.$testings[$index]->name.'"';
-								}
-							} 
-							else 
-							{
-								//$log[] = 'Тест "'.$testings[$index]->name .'" пользователю не назначается.';
-							}
-						}
-					}
-
-					// добавляем отчёт о кол-ве назначенных тестов
-					Yii::app()->user->setFlash('flash', '<i>Всего назначено <b>' .$passingsCount. '</b> тестов <b>'.$usersCount. '</b> пользователям. Перейти к '.CHtml::link('списку назначенных тестов',array('/testings/testingUserAdmin/manage','session'=>$model->id)).'.</i>');
-
-
-					$params = array(
-						'model' => $model,
-						'group' => $group,
-						'log' => implode('<br />',$log),
-					);
-
-				} catch (Exception $e){
-					$params['log'] = 'Импорт прошел неудачно: ' . $e->getMessage();
-				}
-			}
-		}
-		$this->render('importPassings', $params);
 	}
 
 	public function actionSendMessageToAll($id) 

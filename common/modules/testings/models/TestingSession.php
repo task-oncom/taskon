@@ -16,6 +16,11 @@ class TestingSession extends \common\components\ActiveRecordModel
     const PAGE_SIZE = 10;
 
 	public $csv_file;
+	public $file;
+
+	const TEMP_FOLDER = '/uploads/temp/';
+
+	const SCENARIO_UPLOAD = 'upload';
 
 	const IS_PRESENT = 0;
 	const IS_PAST = 1;
@@ -55,8 +60,9 @@ class TestingSession extends \common\components\ActiveRecordModel
 	public function rules()
 	{
 		return [
-			[['name', 'start_date', 'end_date'], 'required'],
-			[['name'], 'string', 'max' => 80],
+			[['name', 'start_date', 'end_date'], 'required', 'except' => self::SCENARIO_UPLOAD],
+			[['name'], 'string', 'max' => 80, 'except' => self::SCENARIO_UPLOAD],
+			[['csv_file'], 'file', 'skipOnEmpty' => false, 'extensions' => 'xls, xlsx', 'on' => self::SCENARIO_UPLOAD],
 		];
 	}
 
@@ -151,6 +157,38 @@ class TestingSession extends \common\components\ActiveRecordModel
 
 		return $query->all();
 	}
+
+	private function getPath()
+	{
+		return Yii::getAlias('@webroot') . self::TEMP_FOLDER;
+	}
+
+	public function upload()
+    {
+        if($this->validate()) 
+        {
+        	if(!file_exists($this->getPath()))
+        	{
+        		mkdir($this->getPath(), 0777, true);
+        	}
+
+        	$this->file = $this->getPath() . date('dmYHis-') . uniqid() . '.' . $this->csv_file->extension;
+            $this->csv_file->saveAs($this->file);
+            return true;
+        } 
+        else 
+        {
+            return false;
+        }
+    }
+
+    public function deleteFile()
+    {
+    	if(file_exists($this->file))
+        {
+        	unlink($this->file);
+        }
+    }
 
 	public function sendMailByList($users)
 	{

@@ -18,7 +18,7 @@ class TestingUserGroup extends \common\components\ActiveRecordModel
         return [
             [
 	            'class' => TimestampBehavior::className(),
-	            'createdAtAttribute' => 'create_date',
+	            'createdAtAttribute' => 'created',
 	            'updatedAtAttribute' => null,
 	            'value' => new Expression('NOW()'),
 	        ],
