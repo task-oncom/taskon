@@ -29,8 +29,8 @@ use common\modules\testings\models\Passing;
 
 <p>
     <?= Html::a('Добавить', ['create', 'session' => $session->id], ['class' => 'btn btn-success']) ?>
-    <?= Html::a('Импорт из CSV-файла', ['/testings/session-admin/import-passings', 'id' => $session->id], ['class' => 'btn btn-success']) ?>
-    <?= Html::a('Экспорт результатов в CSV-файл', ['/testings/session-admin/export-session-result', 'id' => $session->id], ['class' => 'btn btn-success']) ?>
+    <?= Html::a('Импорт из XLS-файла', ['/testings/session-admin/import-passings', 'id' => $session->id], ['class' => 'btn btn-info']) ?>
+    <?= Html::a('Экспорт результатов в XLS-файл', ['/testings/session-admin/export-session-result', 'id' => $session->id], ['class' => 'btn btn-info']) ?>
 </p>
 
 <?php echo AdminGrid::widget([
