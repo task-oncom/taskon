@@ -5,12 +5,13 @@ namespace common\modules\testings\models;
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
+use yii\helpers\Url;
 
 class TestingSendHistory extends \common\components\ActiveRecordModel
 {
     const PAGE_SIZE = 10;
 
-    const FOLDER_PATH = '/upload/dublicates/';
+    const FOLDER_PATH = '/uploads/dublicates/';
 
     const OFFSET_EXCEL_ROWS = 3;
 
@@ -152,12 +153,12 @@ class TestingSendHistory extends \common\components\ActiveRecordModel
 
 	public function getFilePath()
 	{
-		return Yii::getPathOfAlias('webroot') . self::FOLDER_PATH . $this->file;
+		return Yii::getAlias('@webroot') . self::FOLDER_PATH . $this->file;
 	}
 
 	public function getFileUrl()
 	{
-		return Yii::app()->getBaseUrl(true) . self::FOLDER_PATH . $this->file;
+		return Url::to([self::FOLDER_PATH . $this->file]);
 	}
 
 	public function generateFile($users, $session_id)

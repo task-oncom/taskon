@@ -57,7 +57,6 @@ if ($question)
         [
             'class' => 'common\components\ColorActionColumn',
 	        'template' => '{view} {update}',
-            'contentOptions' => ['style' => 'width:60px;', 'align' => 'center'],
         ],
     ],
 ]); ?>

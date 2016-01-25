@@ -155,7 +155,6 @@ $this->registerJs($js, yii\web\View::POS_READY, 'expnd.info');
         [
             'class' => 'common\components\ColorActionColumn',
 	        'template' => '{view} {update}',
-            'contentOptions' => ['style' => 'width:60px;', 'align' => 'center'],
         ],
     ],
 ]); ?>

@@ -6,16 +6,15 @@ use Yii;
 use common\components\AdminController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use yii\helpers\Json;
+
+use common\modules\testings\components\MarkBoxBehavior;
 
 use common\modules\testings\models\TestingUser;
 use common\modules\testings\models\SearchTestingUser;
 use common\modules\testings\models\SearchTestingUserGroup;
 
 class TestingUserAdminController extends AdminController
-{
-	private $_marked;
-	
+{	
     public static function actionsTitles()
     {
         return array(
@@ -25,8 +24,8 @@ class TestingUserAdminController extends AdminController
             'Delete' => 'Удаление пользователя',
             'Manage' => 'Управление пользователями',
             'Manage-group' => 'Управление группами',
-            'UpdateMark' => 'Пометка пользователй',
-            'ResetMark' => 'Сброс пометок',
+            'Update-mark' => 'Пометка пользователй',
+            'Reset-mark' => 'Сброс пометок',
         );
     }
 
@@ -39,6 +38,19 @@ class TestingUserAdminController extends AdminController
                     'delete' => ['post'],
                 ],
             ],
+            'marked' => [
+                'class' => MarkBoxBehavior::className(),
+                'session_key' => 'user-admin',
+            ]
+        ];
+    }
+
+    public function actions()
+    {
+        return [
+            'update-mark' => [
+                'class' => \common\modules\testings\components\MarkBoxAction::className(),
+            ]
         ];
     }
 	
@@ -150,102 +162,6 @@ class TestingUserAdminController extends AdminController
             'dataProvider' => $dataProvider,
         ]);
 	}
-
-	public function getMarked($session)
-	{
-		$session = intval($session);
-		if(!isset($this->_marked[$session]))
-		{
-			$session_key = 'notify_session_'.$session;
-			
-			if(isset(Yii::$app->session[$session_key])) 
-            {
-				$data = unserialize(Yii::$app->session[$session_key]);
-
-				if($data === FALSE)
-                {
-					$data = [];
-                }
-			} 
-            else 
-            {
-				$data = [];
-			}
-
-			$this->_marked[$session] = $data;
-		}
-		
-		return $this->_marked[$session];
-	}
-	
-	public function setMarked($session, $data)
-	{		
-		$session = intval($session);
-		$session_key = 'notify_session_'.$session;
-		
-		$this->_marked[$session] = $data;
-		Yii::$app->session[$session_key] = serialize($data);
-	}
-	
-	public function checkMark($data, $row) 
-    {
-		return in_array($data->id, $this->getMarked());
-	}
-	
-	public function actionUpdateMark($session)
-	{
-		if(!isset($_POST['data']) || !is_array($_POST['data']))
-        {
-			return;
-        }
-
-		$toggle = $_POST['data'];
-		
-		$data = $this->getMarked($session);
-		
-		$remove = []; $append = [];
-
-		foreach($toggle as $key => $value) 
-        {
-			if($value) 
-            {
-				$append[] = $key;
-            }
-			else
-            {
-				$remove[] = $key;
-            }
-		}
-		if(!empty($append))
-        {
-			$data = array_merge($data, $append);
-        }
-      
-        $data = array_unique($data);
-			
-		if(!empty($remove))
-        {
-			$data = array_diff($data, $remove);
-        }
-			
-		$this->setMarked($session, $data);
-        $qty = count($data);
-
-		echo Json::encode([
-            'qty' => $qty,
-            'title' => "Разослать выделенным ($qty)",
-        ]);
-	}
-  
-    public function actionResetMark($session)
-    {
-		$this->setMarked($session, []);
-
-		echo Json::encode(array(
-            'qty' => 0,
-            'title' => "Разослать выделенным",
-        ));   
-    }
 
 	/**
      * Finds the Faq model based on its primary key value.
