@@ -22,6 +22,13 @@ class TestingTest extends \common\components\ActiveRecordModel
 	public $csv_file;
 	public $file;
 
+	public static $mix_test_titles = [
+		'Комбинированный тест',
+		'комбинированный тест',
+		'Комбинированный',
+		'комбинированный'
+	];
+
 	/**
      * @inheritdoc
      */

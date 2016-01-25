@@ -205,7 +205,6 @@ use common\modules\testings\models\TestingPassing;
         [
             'class' => 'common\components\ColorActionColumn',
 	        'template' => '{view} {delete}',
-            'contentOptions' => ['style' => 'width:60px;', 'align' => 'center'],
         ],
     ],
 ]); ?>

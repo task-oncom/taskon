@@ -93,7 +93,6 @@ use \common\components\zii\AdminGrid;
         [
             'class' => 'common\components\ColorActionColumn',
 	        'template' => '{view} {update}',
-            'contentOptions' => ['style' => 'width:60px;', 'align' => 'center'],
         ],
     ],
 ]); ?>

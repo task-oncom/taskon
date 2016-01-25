@@ -6,7 +6,6 @@ use \common\components\zii\AdminGrid;
 use common\modules\testings\models\TestingSession;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\modules\faq\models\SearchFaq */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $session_id = null;
@@ -75,7 +74,6 @@ if($session)
         [
             'class' => 'common\components\ColorActionColumn',
 	        'template' => '{view} {update}',
-            'contentOptions' => ['style' => 'width:60px;', 'align' => 'center'],
         ],
     ],
 ]); ?>

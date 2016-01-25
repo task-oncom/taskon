@@ -1,33 +1,39 @@
 <?php
 
+namespace common\modules\testings\controllers;
+
+use Yii;
+use common\components\AdminController;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
+
+use common\modules\testings\models\SearchTestingSendHistory;
+
 class TestingSendHistoryAdminController extends AdminController
 {
     public static function actionsTitles()
     {
         return array(
             'Manage' => 'Управление пользователями',
-            'ResendDublicates' => '',
+            'Resend-dublicates' => '',
         );
     }
 
-	public function actionManage()
+	public function actionManage($session)
 	{
-		if(!Yii::app()->request->getQuery('session'))
-		{
-			$this->pageNotFound();
-		}
+		$searchModel = new SearchTestingSendHistory();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-		$model=new TestingSendHistory('search');
-		$model->unsetAttributes();
-		if(isset($_GET['TestingSendHistory']))
-        {
-            $model->attributes = $_GET['TestingSendHistory'];
-        }
+        Yii::$app->controller->page_title = 'История отправки дубликатов';
+        Yii::$app->controller->breadcrumbs = [
+            'История отправки дубликатов',
+        ];
 
-		$this->render('manage', array(
-			'model' => $model,
-			'session_id' => Yii::app()->request->getQuery('session')
-		));
+        return $this->render('manage', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'session_id' => $session
+        ]);
 	}
 
 	public function actionResendDublicates()
@@ -83,23 +89,19 @@ class TestingSendHistoryAdminController extends AdminController
 			
 	}
 
-	public function loadModel($id)
-	{
-		$model = TestingSendHistory::model()->findByPk((int) $id);
-		if($model === null)
-        {
-            $this->pageNotFound();
+	/**
+     * Finds the Faq model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param integer $id
+     * @return Faq the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = TestingUser::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException('The requested page does not exist.');
         }
-
-		return $model;
-	}
-
-	protected function performAjaxValidation($model)
-	{
-		if(isset($_POST['ajax']) && $_POST['ajax'] === 'testing-sendhistory-form')
-		{
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
-	}
+    }
 }

@@ -64,8 +64,6 @@ class TestingUser extends \common\components\ActiveRecordModel
             'password' => 'Пароль',
             'email' => 'Email',
             'manager_id' => 'Ответственный менеджер',
-            'tki' => 'ТКИ',
-            'region' => 'Регион',
             'create_date' => 'Время создания',
 		];
 	}
@@ -78,11 +76,8 @@ class TestingUser extends \common\components\ActiveRecordModel
 			[['first_name', 'patronymic', 'last_name'], 'string', 'max' => 50],
 			[['company_name'], 'string', 'max' => 250],
 			[['email'], 'string', 'max' => 150],
-			[['tki', 'city', 'region'], 'string', 'max' => 100],
+			[['city'], 'string', 'max' => 100],
 			[['manager_id'], 'string', 'max' => 11],
-
-			[['pass_date', 'pass_date_start', 'attempt'], 'safe'],
-			[['end_date'], 'required', 'on' => 'extend'],
 		];
 	}
 

@@ -1,180 +1,204 @@
 <?php
 
-Yii::import('zii.widgets.grid.CGridColumn');
+namespace common\modules\testings\components;
 
-class MarkBoxColumn extends CGridColumn
+use Closure;
+use yii\base\InvalidConfigException;
+use yii\helpers\Html;
+
+class MarkBoxColumn extends \yii\grid\CheckboxColumn
 {
 	public $checked;
-	/**
-	 * @var array the HTML options for the data cell tags.
-	 */
-	public $htmlOptions=array('class'=>'checkbox-column');
-	/**
-	 * @var array the HTML options for the header cell tag.
-	 */
-	public $headerHtmlOptions=array('class'=>'checkbox-column');
-	/**
-	 * @var array the HTML options for the footer cell tag.
-	 */
-	public $footerHtmlOptions=array('class'=>'checkbox-column');
-	/**
-	 * @var array the HTML options for the checkboxes.
-	 */
-	public $checkBoxHtmlOptions=array();
 
-	/**
-	 * @var string the template to be used to control the layout of the header cell.
-	 * The token "{item}" is recognized and it will be replaced with a "check all" checkbox.
-	 * By default if in multiple checking mode, the header cell will display an additional checkbox, 
-	 * clicking on which will check or uncheck all of the checkboxes in the data cells.
-	 * See {@link selectableRows} for more details.
-	 * @since 1.1.11
-	 */
-	public $headerTemplate='{item}';
+	public $contentOptions = ['class'=>'checkbox-column'];
+
+	public $headerOptions = ['class'=>'checkbox-column'];
+
+	public $footerOptions = ['class'=>'checkbox-column'];
 
 	public $updateUrl;
-	/**
-	 * Initializes the column.
-	 * This method registers necessary client script for the checkbox column.
-	 */
-	public function init()
-	{
-		if(isset($this->checkBoxHtmlOptions['name']))
-			$name=$this->checkBoxHtmlOptions['name'];
-		else
-		{
-			$name=$this->id;
-			if(substr($name,-2)!=='[]')
-				$name.='[]';
-			$this->checkBoxHtmlOptions['name']=$name;
-		}
-		$name=strtr($name,array('['=>"\\[",']'=>"\\]"));
 
+    public $name = 'selection';
 
-		$js=<<<CBALL
-$(document).delegate('#{$this->id}_all','click',function() {
-	//групповой выбор/сброс
-	var th = this, checked=this.checked, data = {};
-	
-	th.disabled = true;
-	$("input[name='$name']:not(:disabled)").each(function() {		
-		data[this.value] =checked ? 1:0;
-		this.checked=checked;
-		this.disabled = true;
-	});
-	$.ajax({
-        type: 'POST',
-        url: '{$this->updateUrl}',
-        data: {data: data},
-        dataType: 'json',
-        success: function(data){
-          var el = $("#sendMarkup").html(data.title);
+    public $checkboxOptions = [];
 
-          if(data.qty) {
-            el.show();
-            $("#resetMarkup").show();
-          } else {
-            el.hide();
-            $("#resetMarkup").hide();
-          }
-        },
-        complete: function(){
-            th.disabled = false;
-      		$("input[name='$name']").each(function() {
-      			this.disabled = false;
-      		});
+    public $multiple = true;
+
+    public function init()
+    {
+        parent::init();
+        if (empty($this->name)) 
+        {
+            throw new InvalidConfigException('The "name" property must be set.');
         }
-      });
-    });
+
+        if (substr_compare($this->name, '[]', -2, 2)) 
+        {
+            $this->name .= '[]';
+            // $this->checkBoxOptions['name'] = $name;
+        }
+
+		// $name = strtr($name, ['['=>"\\[",']'=>"\\]"]);
 
 
-$(document).delegate("input[name='$name']", 'click',function() {
-	var checked=this.checked, data = {}, th = this;
+$js = <<<EOD
+	$(document).delegate('.select-on-check-all','click',function() {
+		//групповой выбор/сброс
+		var th = this, checked=this.checked, data = {};
 		
-	$('#{$this->id}_all').prop('checked', $("input[name='$name']").length==$("input[name='$name']:checked").length);
-	th.disabled = true;
-	data[this.value] =checked ? 1:0;
-  
-	$.ajax({
-    type: 'POST',
-    url: '{$this->updateUrl}',
-    data: {data: data},
-    dataType: 'json',
-    success: function(data){
-      var el = $("#sendMarkup").html(data.title);
-      if(data.qty) {
-        el.show();
-        $("#resetMarkup").show();
-      } else {
-        el.hide();
-        $("#resetMarkup").hide();
-      }
-    },
-    complete: function(){
-  		th.disabled = false;
+		th.disabled = true;
+		$("input[name='{$this->name}']:not(:disabled)").each(function() {		
+			data[this.value] =checked ? 1:0;
+			this.checked=checked;
+			this.disabled = true;
+		});
+		$.ajax({
+	        type: 'POST',
+	        url: '{$this->updateUrl}',
+	        data: {data: data},
+	        dataType: 'json',
+	        success: function(data){
+	          var el = $("#sendMarkup").html(data.title);
+
+	          if(data.qty) {
+	            el.show();
+	            $("#resetMarkup").show();
+	          } else {
+	            el.hide();
+	            $("#resetMarkup").hide();
+	          }
+	        },
+	        complete: function(){
+	            th.disabled = false;
+	      		$("input[name='{$this->name}']").each(function() {
+	      			this.disabled = false;
+	      		});
+	        }
+	      });
+	    });
+
+
+	$(document).delegate("input[name='$this->name']", 'click',function() {
+		var checked=this.checked, data = {}, th = this;
+			
+		$('.select-on-check-all').prop('checked', $("input[name='{$this->name}']").length==$("input[name='{$this->name}']:checked").length);
+		th.disabled = true;
+		data[this.value] =checked ? 1:0;
+	  
+		$.ajax({
+	    type: 'POST',
+	    url: '{$this->updateUrl}',
+	    data: {data: data},
+	    dataType: 'json',
+	    success: function(data){
+	      var el = $("#sendMarkup").html(data.title);
+	      if(data.qty) {
+	        el.show();
+	        $("#resetMarkup").show();
+	      } else {
+	        el.hide();
+	        $("#resetMarkup").hide();
+	      }
+	    },
+	    complete: function(){
+	  		th.disabled = false;
+	    }
+	  });
+
+	});
+
+	$(document).delegate("#resetMarkup", 'click', function(){
+	  $(".select-on-check-all, input[name='{$this->name}']").prop('checked', false);
+	  $("#sendMarkup").hide();
+	  $("#resetMarkup").hide();  
+
+	  $.ajax({
+	    type: 'POST',
+	    data: {reset:true},
+	    url: $(this).attr('href')
+	  });
+	  return false;
+	});
+EOD;
+
+		\Yii::$app->controller->view->registerJS($js, \yii\web\View::POS_END, __CLASS__);
     }
-  });
 
-});
 
-$(document).delegate("#resetMarkup", 'click', function(){
-  $("#{$this->id}_all, input[name='$name']").prop('checked', false);
-  $("#sendMarkup").hide();
-  $("#resetMarkup").hide();  
+  //   if(trim($this->headerTemplate)==='')
+		// {
+		// 	//echo $this->grid->blankDisplay;
+		// 	return;
+		// }
 
-  $.ajax({
-    type: 'POST',
-    url: $(this).attr('href')
-  });
-  return false;
-});
-CBALL;
+		// $item = CHtml::checkBox($this->id.'_all',false);
 
-		Yii::app()->getClientScript()->registerScript(__CLASS__.'#'.$this->id,$js);
-	}
+		// echo strtr($this->headerTemplate,array(
+		// 	'{item}'=>$item,
+		// ));
 
-	/**
-	 * Renders the header cell content.
-	 * This method will render a checkbox in the header when {@link selectableRows} is greater than 1
-	 * or in case {@link selectableRows} is null when {@link CGridView::selectableRows} is greater than 1.
-	 */
-	protected function renderHeaderCellContent()
-	{
-		if(trim($this->headerTemplate)==='')
-		{
-			//echo $this->grid->blankDisplay;
-			return;
-		}
+    protected function renderHeaderCellContent()
+    {
+        $name = $this->name;
 
-		$item = CHtml::checkBox($this->id.'_all',false);
+        if (substr_compare($name, '[]', -2, 2) === 0) 
+        {
+            $name = substr($name, 0, -2);
+        }
 
-		echo strtr($this->headerTemplate,array(
-			'{item}'=>$item,
-		));
-	}
+        if (substr_compare($name, ']', -1, 1) === 0) 
+        {
+            $name = substr($name, 0, -1) . '_all]';
+        } 
+        else 
+        {
+            $name .= '_all';
+        }
 
-	/**
-	 * Renders the data cell content.
-	 * This method renders a checkbox in the data cell.
-	 * @param integer $row the row number (zero-based)
-	 * @param mixed $data the data associated with the row
-	 */
-	protected function renderDataCellContent($row,$data)
-	{
-		$value=$this->grid->dataProvider->keys[$row];
-        /*
-		$checked = false;
-		if($this->checked!==null)
-			$checked=$this->evaluateExpression($this->checked,array('data'=>$data,'row'=>$row));
-        */
-        
-        $marked = $this->grid->controller->getMarked(Yii::app()->request->getQuery('session'));
-        $checked = in_array($data->id, $marked);
-		$options=$this->checkBoxHtmlOptions;
-		$name=$options['name'];
-		unset($options['name']);
-		$options['value']=$value;
-		$options['id']=$this->id.'_'.$row;
-		echo CHtml::checkBox($name,$checked,$options);
-	}
+        $id = $this->grid->options['id'];
+
+        $options = json_encode([
+            'name' => $this->name,
+            'multiple' => $this->multiple,
+            'checkAll' => $name,
+        ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+
+        $this->grid->getView()->registerJs("jQuery('#$id').yiiGridView('setSelectionColumn', $options);");
+
+        if ($this->header !== null || !$this->multiple) 
+        {
+            return parent::renderHeaderCellContent();
+        } 
+        else 
+        {
+            return Html::checkBox($name, false, ['class' => 'select-on-check-all']);
+        }
+    }
+
+    protected function renderDataCellContent($model, $key, $index)
+    {   	
+        if ($this->checkboxOptions instanceof Closure) 
+        {
+            $options = call_user_func($this->checkboxOptions, $model, $key, $index, $this);
+        } 
+        else 
+        {
+            $options = $this->checkboxOptions;
+            if (!isset($options['value'])) 
+            {
+                $options['value'] = is_array($key) ? json_encode($key, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) : $key;
+            }
+        }
+
+        if(\Yii::$app->request->get('session'))
+    	{
+    		$marked = \Yii::$app->controller->getMarked(\Yii::$app->request->get('session'));
+        	$checked = in_array($model->id, $marked);
+        	return Html::checkbox($this->name, $checked, $options);
+    	}
+    	else
+    	{
+    		return Html::checkbox($this->name, !empty($options['checked']), $options);
+    	}
+    }
 }

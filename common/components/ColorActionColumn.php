@@ -10,7 +10,9 @@ use yii\grid;
 class ColorActionColumn extends \yii\grid\ActionColumn
 {
     public $contentOptions = [
-        'class' => 'color-column'
+        'class' => 'color-column',
+        'style' => 'white-space: nowrap;',
+        'align' => 'center'
     ];
 
     protected function initDefaultButtons()

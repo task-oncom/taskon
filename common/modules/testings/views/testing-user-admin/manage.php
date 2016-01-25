@@ -13,10 +13,21 @@ use common\modules\testings\models\TestingPassing;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
+
+$session = null;
+if (\Yii::$app->request->get('session')) 
+{
+	$session = TestingSession::findOne(\Yii::$app->request->get('session'));
+}
 ?>
 
 <p>
     <?= Html::a('Добавить', ['create'], ['class' => 'btn btn-success']) ?>
+    <?php if($session) : ?>
+    	<?= Html::a('Разослать уведомления всем', ['/testings/testing-session-admin/send-message-to-all', 'id' => $session->id], ['class' => 'btn btn-info']) ?>
+    	<?= Html::a('История отправки дубликатов', ['/testings/testing-send-history-admin/manage', 'session' => $session->id], ['class' => 'btn btn-info']) ?>
+    	<?= Html::a('Импорт пользователей из XLS', ['/testings/testing-session-admin/import-passings', 'id' => $session->id], ['class' => 'btn btn-info']) ?>
+    <?php endif; ?>
 </p>
 
 <?php if (\Yii::$app->session->hasFlash('flash')) : ?>
@@ -99,104 +110,88 @@ $columns = [
 
 $link = '';
 
-if (\Yii::$app->request->get('session')) 
-{
-	$session = TestingSession::findOne(\Yii::$app->request->get('session'));
-	if ($session) 
-	{		
-		$marked = \Yii::$app->controller->getMarked($session->id);
-		
-		$qty = count($marked);
+if ($session) 
+{		
+	$marked = \Yii::$app->controller->getMarked($session->id);
+	
+	$qty = count($marked);
 
-		$style = ($qty) ? '' : 'display:none;';
+	$style = ($qty) ? '' : 'display:none;';
 
-		$send = Html::a("Разослать выделенным ($qty)",
-		   	['/testings/testing-session-admin/send-message-to-marked', 'id' => $session->id],  
-		   	['style' => $style, 'id' => 'sendMarkup']
-		);
+	$send = Html::a("Разослать выделенным ($qty)",
+	   	['testings/testing-session-admin/send-message-to-marked', 'id' => $session->id],  
+	   	['style' => $style, 'id' => 'sendMarkup']
+	);
 
-		$clear = Html::a("[сброс]", 
-		  	['resetMark', 'session' => $session->id], 
-		  	['style' => $style, 'id' => 'resetMarkup']
-		);
+	$clear = Html::a("[сброс]", 
+	  	['update-mark', 'session' => $session->id], 
+	  	['style' => $style, 'id' => 'resetMarkup']
+	);
 
-		$link = $send . ' ' . $clear;
-		
-		// array_unshift(
-		// 	$columns, 
-		// 	[
-		// 		'class' => 'MarkBoxColumn',
-		// 		'update_url' => Url::to(['update-mark', 'session' => $session->id]),
-		// 	]
-		// );
+	$link = $send . ' ' . $clear . '<br><br>';
 
-		foreach($session->tests as $test) 
-		{
-			$columns = ArrayHelper::merge(
-				$columns,
+	echo $link;
+	
+	array_unshift(
+		$columns, 
+		[
+			'class' => 'common\modules\testings\components\MarkBoxColumn',
+			'updateUrl' => Url::to(['update-mark', 'session' => $session->id]),
+		]
+	);
+
+	foreach($session->tests as $test) 
+	{
+		$columns = ArrayHelper::merge(
+			$columns,
+			[
 				[
-					[
-						'header' => $test->name,
-						'value' => function($model) use($test)
+					'header' => $test->name,
+					'value' => function($model) use($test)
+					{
+						$passing = TestingPassing::find()->where([
+							'test_id' => $test->id,
+							'user_id' => $model->id
+						])->one();
+
+						if($passing)
 						{
-							$passing = TestingPassing::find()->where([
-								'test_id' => $test->id,
-								'user_id' => $model->id
-							])->one();
-
-							if($passing)
-							{
-								return Html::a("Да", ["/testings/testing-passing-admin/change-status", "user"=>$model->id, "test" => $test->id], ["title" => "Изменить на НЕТ"]);
-							}
-							else
-							{
-								return Html::a("Нет", ["/testings/testing-passing-admin/change-status", "user"=>$model->id, "test" => $test->id], ["title" => "Изменить на ДА"]);
-							}
-						},
-						'format' => 'html',
-					]
+							return Html::a("Да", ["/testings/testing-passing-admin/change-status", "user"=>$model->id, "test" => $test->id], ["title" => "Изменить на НЕТ"]);
+						}
+						else
+						{
+							return Html::a("Нет", ["/testings/testing-passing-admin/change-status", "user"=>$model->id, "test" => $test->id], ["title" => "Изменить на ДА"]);
+						}
+					},
+					'format' => 'html',
 				]
-			);
-		}
-
-		// $this->tabs = array(
-		// 	'разослать уведомления всем' => $this->createUrl('/testings/testingSessionAdmin/sendMessageToAll',array('id'=>$session->id)),
-		// 	'история отправки дубликатов' => $this->createUrl('/testings/testingSendHistoryAdmin/manage', array('session'=>$session->id)),
-		// 	'импорт пользователей из CSV' => $this->createUrl(
-		// 		'/testings/testingSessionAdmin/importPassings',
-		// 		array('id'=>$session->id)
-		// 	),
-		// );
-
-		// $buttons = array(
-		// 	'class' => 'CButtonColumn',
-		// 	'template' => '{sendEmail}{view}{update}',
-		// 	'buttons'         => array(
-		// 		'sendEmail' => array(
-		// 			'url'      => 'array("/testings/testingSessionAdmin/sendMessage","id"=>'.$session->id.',"user"=>$data->id)',
-		// 			'imageUrl' => '/images/icons/mail.png',
-		// 			'options'  => array(
-		// 				'title' => 'Уведомить о тестировании',
-		// 			),
-		// 		),
-		// 	),
-		// );
+			]			
+		);
 	}
+
+	$buttons = [
+		[
+            'class' => \common\components\ColorActionColumn::className(),
+	        'template' => '{send} {view} {update}',
+	        'buttons' => [
+	        	'send' => function ($url, $model, $key) use($session)
+	        	{
+			        return Html::a('<i class="fa fa-envelope fa-lg"></i>', Url::to(['testings/testing-session-admin/send-message', 'id' => $session->id, 'user' => $model->id]), [
+	                    'title' => 'Уведомить о тестировании',
+	                    'data-toggle' => 'tooltip',
+	                    'data-pjax' => '0',
+	                ]);
+			    },
+	        ]
+        ]
+    ];
+
+    $columns = ArrayHelper::merge($columns, $buttons);
 }
 
 
 echo AdminGrid::widget([
     'dataProvider' => $dataProvider,
 	'filterModel' => $searchModel,
-    'columns' => $columns
+    'columns' => $columns,
 ]); 
-
-
-
-// $this->widget('AdminGrid', array(
-// 	'id' => 'testing-user-grid',
-// 	'dataProvider' => $model->search(),
-// 	'filter' => $model,
-// 	'columns' => $columns,
-// 	'template' => "$link {pagerSelect}{summary}<br/>{pager}<br/>{items}<br/>{pager}",
-// ));
