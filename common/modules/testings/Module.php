@@ -41,9 +41,10 @@ class Module extends \common\components\WebModule
 	public static function adminMenu()
     {
         return array(
-            'Список сессий'      => '/testings/testing-session-admin/manage',
-            'Список тестов'      => '/testings/testing-test-admin/manage',
-            'Список вопросов'      => '/testings/testing-question-admin/manage',
+            'Список сессий'      => '/testings/session-admin/manage',
+            'Список тестов'      => '/testings/test-admin/manage',
+            'Список вопросов'      => '/testings/question-admin/manage',
+            'Список тем'      => '/testings/theme-admin/manage',
         );
     }
 }
