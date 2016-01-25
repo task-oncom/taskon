@@ -148,10 +148,9 @@ class TestingTestAdminController extends AdminController
 				    $objReader = \PHPExcel_IOFactory::createReader($inputFileType);
 				    $objPHPExcel = $objReader->load($model->file);
 
-				    $sheet = $objPHPExcel->getSheet(0); 
-					$highestRow = $sheet->getHighestRow();
+				    $sheet = $objPHPExcel->getSheet(0);
 
-					for ($i = 3; $i <= $highestRow; $i++)
+					for ($i = 3; $i <= $sheet->getHighestRow(); $i++)
 					{
 						// извлечение переменных из XLS
 						$theme_name = trim(preg_replace('/\s+/', ' ', $sheet->getCell('A' . $i)->getValue()));
