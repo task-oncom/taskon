@@ -1,4 +1,4 @@
- $(document).ready(function() {
+$(document).ready(function() {
 	$.parallaxify();
 
 	$(".player").mb_YTPlayer();
@@ -258,6 +258,7 @@
 		offset : "20%"
 	});
 
+
 	$(".section4 .ul_check").waypoint(function() {
 
 		$(".section4 .puls").each(function(index) {
@@ -352,6 +353,11 @@
 			container: '.validreg_form',
 		});
 	});
+	$(function () {
+		window.validation.init({
+			container: '.sh_reg_form',
+		});
+	});
 	$(".toggle-mnu").click(function () {
     	$(".menu").toggleClass("menu_active");
     });
@@ -368,7 +374,6 @@ $(window).load(function() {
 	$(".loader").delay(400).fadeOut("slow");
 
 });
- 
 $(window).scroll(function() {
 	var st = $(this).scrollTop();
 
@@ -493,3 +498,51 @@ $('.txt_server').hover(
 		$('.set7').removeClass('set7_hover');
 	}
 );
+$('.ls_block_item').hover(
+	function()
+	{
+		$(this).addClass('ls_block_item-hover');
+	},
+	function()
+	{
+		$(this).removeClass('ls_block_item-hover');
+	}
+);
+$('.ls_block_btn').hover(
+	function()
+	{
+		$(this).addClass('ls_block_item-hover');
+	},
+	function()
+	{
+		$(this).removeClass('ls_block_item-hover');
+	}
+);
+$(function() {
+	$('.ball-link').hover(function() {
+		if($('.ball_hover').is(':visible')) {
+			$('.ball_hover').removeClass('show_ball_hover'); 
+		}
+		else {
+			$('.ball_hover').addClass('show_ball_hover'); 
+		}   
+	}); 
+});
+$(function() {
+	$('.ball-link_testing').hover(function() {
+		if($('.ball_hover').is(':visible')) {
+			$('.ball_hover').removeClass('show_ball_hover'); 
+		}
+		else {
+			$('.ball_hover').addClass('show_ball_hover'); 
+		}   
+	}); 
+});
+
+jQuery(document).ready(function(){ 
+    
+    $(".box_off").on('click', function () {
+   		$(this).parent().toggleClass("box_off_hide");
+	});
+	
+});

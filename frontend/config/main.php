@@ -19,8 +19,49 @@ return [
         'request' => ['class' => 'common\modules\request\Module',],
 	    'faq' => ['class' => 'common\modules\faq\Module'],
         'main' => ['class' => 'common\modules\main\main'],
+        'sitemap' => [
+            'class' => 'himiklab\sitemap\Sitemap',
+            'models' => [
+                // your models
+                'common\modules\faq\models\Faq',
+            ],
+            'urls'=> [
+                // your additional urls
+                [
+                    'loc' => '/faq',
+                    'changefreq' => \himiklab\sitemap\behaviors\SitemapBehavior::CHANGEFREQ_DAILY,
+                    'priority' => 0.8,
+                    'faq' => [
+                        'publication'   => [
+                            'name'          => 'Вопрос-Ответ',
+                            'language'      => 'ru',
+                        ],
+                        // 'access'            => 'Subscription',
+                        // 'genres'            => 'Blog, UserGenerated',
+                        // 'publication_date'  => 'YYYY-MM-DDThh:mm:ssTZD',
+                        // 'title'             => 'Example Title',
+                        // 'keywords'          => 'example, keywords, comma-separated',
+                        // 'stock_tickers'     => 'NASDAQ:A, NASDAQ:B',
+                    ],
+                    // 'images' => [
+                    //     [
+                    //         'loc'           => 'http://example.com/image.jpg',
+                    //         'caption'       => 'This is an example of a caption of an image',
+                    //         'geo_location'  => 'City, State',
+                    //         'title'         => 'Example image',
+                    //         'license'       => 'http://example.com/license',
+                    //     ],
+                    // ],
+                ],
+            ],
+            'enableGzip' => true, // default is false
+            'cacheExpire' => 1, // 1 second. Default is 24 hours
+        ],
     ],
     'components' => [
+        'cache' => [
+            'class' => 'yii\caching\FileCache',
+        ],
         'user' => [
             'identityClass' => 'common\modules\scoring\models\ScClient',
             'loginUrl' => ['/site/login'],
@@ -91,6 +132,8 @@ return [
             'showScriptName' => false,
             'enableStrictParsing' => true,
             'rules' => [
+                ['pattern' => 'sitemap', 'route' => 'sitemap/default/index', 'suffix' => '.xml'],
+
                 '' => 'content/page/view',
 
                 '<page:(/)>' => 'content/page/view',

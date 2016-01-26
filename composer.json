@@ -30,7 +30,8 @@
         "mpdf/mpdf": "dev-master",
         "dompdf/dompdf": "dev-master",
         "tecnick.com/tcpdf": "dev-master",
-        "mikehaertl/phpwkhtmltopdf": "^2.0@dev"
+        "mikehaertl/phpwkhtmltopdf": "^2.0@dev",
+        "himiklab/yii2-sitemap-module" : "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
