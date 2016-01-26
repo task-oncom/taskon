@@ -34,7 +34,7 @@ class PageController extends \common\components\BaseController
         }
 
         $content = $model->getContent();
-        $this->meta_title = $model->metaTags->title;
+        $this->meta_title = $model->metaTags->title . ' - ' . \Yii::$app->params['name'];
         $this->meta_description = $model->metaTags->description;
         $this->meta_keywords = $model->metaTags->keywords;
 
