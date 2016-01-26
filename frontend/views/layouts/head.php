@@ -20,5 +20,3 @@
 	<?php $this->registerCssFile('/css/fonts.css');?>
 	<?php $this->registerCssFile('/css/screen.css');?>
 	<?php $this->registerCssFile('/css/media.css');?>
-
-	<?php $this->registerJsFile('/js/modernizr.js', ['position' => yii\web\View::POS_HEAD ]);?>

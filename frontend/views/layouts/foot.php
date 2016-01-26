@@ -14,7 +14,7 @@
 	<?php $this->registerJsFile('/js/jquery.parallax.min.js', ['position' => yii\web\View::POS_END ]);?>
 	<?php $this->registerJsFile('/js/parallax.min.js', ['position' => yii\web\View::POS_END ]);?>
 	<?php $this->registerJsFile('/js/wow.min.js', ['position' => yii\web\View::POS_END ]);?>
-	<?php $this->registerJsFile('/js/jquery-validate.js', ['position' => yii\web\View::POS_END ]);?>
+	<?php $this->registerJsFile('/js/jquery-validate.min.js', ['position' => yii\web\View::POS_END ]);?>
 	<?php $this->registerJsFile('/js/jquery.mb.YTPlayer.min.js', ['position' => yii\web\View::POS_END ]);?>
 	<?php $this->registerJsFile('/js/jquery.PageScroll2id.min.js', ['position' => yii\web\View::POS_END ]);?>
 	<?php $this->registerJsFile('/js/common.js', ['position' => yii\web\View::POS_END ]);?>
