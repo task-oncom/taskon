@@ -62,6 +62,18 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'view' => [
+            'class' => '\mirocow\minify\View',
+            'base_path' => '@app/web', // path alias to web base
+            'minify_path' => '@app/web/minify', // path alias to save minify result
+            'minify_css' => true,
+            'minify_js' => true,
+            'minify_html' => true,
+            'js_len_to_minify' => 1000, // Больше этого размера inlinejs будет сжиматься и упаковываться в файл
+            'force_charset' => 'UTF-8', // charset forcibly assign, otherwise will use all of the files found charset
+            'expand_imports' => true, // whether to change @import on content
+            //'css_linebreak_pos' => false,
+        ],
         'user' => [
             'identityClass' => 'common\modules\scoring\models\ScClient',
             'loginUrl' => ['/site/login'],

@@ -31,7 +31,8 @@
         "dompdf/dompdf": "dev-master",
         "tecnick.com/tcpdf": "dev-master",
         "mikehaertl/phpwkhtmltopdf": "^2.0@dev",
-        "himiklab/yii2-sitemap-module" : "*"
+        "himiklab/yii2-sitemap-module" : "*",
+        "mirocow/yii2-minify-view" : "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
