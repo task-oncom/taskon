@@ -7,6 +7,7 @@ use common\components\AdminController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use yii\web\UploadedFile;
 
 use common\modules\testings\models\Question;
 use common\modules\testings\models\SearchQuestion;
@@ -54,9 +55,23 @@ class QuestionAdminController extends AdminController
             'Добавить вопрос'
         ];
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $model->load(Yii::$app->request->post());
+        $model->filesUpload = UploadedFile::getInstances($model, 'filesUpload');
+
+        if (Yii::$app->request->isPost && $model->validate()) 
+        {
+            if($model->filesUpload)
+            {
+                $model->upload();
+                $model->filesUpload = null;
+            }
+
+            $model->save();
+
             return $this->redirect(['manage']);
-        } else {
+        } 
+        else 
+        {
             $form = new \common\components\BaseForm('/common/modules/testings/forms/QuestionForm', $model);
             return $this->render('create', [
                 'model' => $model,
@@ -75,9 +90,28 @@ class QuestionAdminController extends AdminController
 
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $model->load(Yii::$app->request->post());
+        $model->filesUpload = UploadedFile::getInstances($model, 'filesUpload');
+
+        if (Yii::$app->request->isPost && $model->validate()) 
+        {
+            if($model->filesUpload) 
+            {
+                if($model->files)
+                {
+                    $model->deleteFiles();
+                }
+
+                $model->upload();
+                $model->filesUpload = null;
+            }
+
+            $model->save();
+
             return $this->redirect(['manage']);
-        } else {
+        } 
+        else 
+        {
             $form = new \common\components\BaseForm('/common/modules/testings/forms/QuestionForm', $model);
             return $this->render('update', [
                 'model' => $model,
@@ -97,8 +131,7 @@ class QuestionAdminController extends AdminController
 	{
         $questions = [];
 
-        $param = 'карт, изобр, изображение, скриншот, картинка, схема, рисунок, рис';
-        // $param = trim(Setting::getValue('testings_questions_with_picture'));
+        $param = trim(\common\models\Settings::getValue('testings_questions_with_picture'));
 
         $words = empty($param) ? array() : explode(',', trim($param));
 

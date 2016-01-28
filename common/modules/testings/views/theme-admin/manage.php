@@ -25,7 +25,7 @@ if ($test)
 <p>
     <?= Html::a('Добавить', ['create'], ['class' => 'btn btn-success']) ?>
 
-    <?php if($question_id) : ?>
+    <?php if($test_id) : ?>
         <?= Html::a('Импорт вопросов из XLS-файла', ['testings/test-admin/import-tests', 'id' => $test_id], ['class' => 'btn btn-info']) ?>
     <?php endif; ?>
 </p>

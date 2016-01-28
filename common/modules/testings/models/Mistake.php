@@ -16,6 +16,7 @@ class Mistake extends \common\components\ActiveRecordModel
 	public $company;
 	public $managerField;
 	public $mistakeField;
+	public $retest = 0;
 
     public static $state_list = [
         self::NOT_AGREED => 'Не согласовано',
@@ -29,8 +30,18 @@ class Mistake extends \common\components\ActiveRecordModel
 
     public function name()
     {
-        return 'Переназначения';
+        return 'Сообщения об ошибках';
     }
+
+    public function attributeLabels() 
+	{
+		return [
+			'passing_id' => 'Прохождение',
+			'description' => 'Описание ошибки',
+			'is_expert_agreed' => 'Согласовано ли с экспертом',
+			'create_date' => 'Время создания',
+		];
+	}
 
     /**
      * @inheritdoc
@@ -56,7 +67,7 @@ class Mistake extends \common\components\ActiveRecordModel
 			[['passing_id', 'description', 'is_expert_agreed'], 'required'],
 			[['passing_id', 'is_expert_agreed'], 'integer'],
 			[['description'], 'string', 'max' => 3000],
-			// array('id, passing_id, description, is_expert_agreed, create_date', 'safe', 'on' => 'search'),
+			[['retest'], 'safe']
         ];
 	}
 
@@ -74,18 +85,4 @@ class Mistake extends \common\components\ActiveRecordModel
 	   //      ])
 	   //      ->orderBy(['files.order DESC']);
     // }
-
-	public function search()
-	{
-		$criteria = new CDbCriteria;
-		$criteria->compare('id', $this->id);
-		$criteria->compare('passing_id', $this->passing_id);
-		$criteria->compare('description', $this->description, true);
-		$criteria->compare('is_expert_agreed', $this->is_expert_agreed);
-		$criteria->compare('create_date', $this->create_date, true);
-
-		return new ActiveDataProvider(get_class($this), array(
-			'criteria' => $criteria
-		));
-	}
 }

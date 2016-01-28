@@ -1,9 +1,20 @@
 <?php
 use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 
 use common\modules\testings\models\Test;
 use common\modules\testings\models\Theme;
 use common\modules\testings\models\Question;
+
+$files = '';
+
+if($model->files)
+{
+	foreach ($model->files as $file) 
+	{
+		$files .= Html::img($file->getUrl(), ['width' => 150]) . ' ';
+	}
+}
 
 $elements = [
 	'test_id' => [
@@ -23,12 +34,14 @@ $elements = [
 		'type' => 'dropdownlist',
 		'items' => Question::$type_list,
 	],
-	// 'files' => [
-	// 	'type'      => 'file_manager',
-	// 	'data_type' => 'any',
-	// 	'title'     => 'Файлы для скачивания ',
-	// 	'tag'       => 'files'
-	// ],
+	$files,
+	'filesUpload[]' => [
+		'type'      => 'file',
+		'fileOptions'	=> [
+			'multiple' => true,
+			'accept' => 'image/*',
+		]
+	],
 	// 'Ответы' => [
 	// 	'title'	=> 'Ответы',
 	// 	'type'		=> 'answers',
@@ -47,6 +60,9 @@ if (\Yii::$app->request->get('test'))
 return [
     'activeForm'=>[
         'id' => 'testing-question-form',
+        'options' => [
+            'enctype' => 'multipart/form-data'
+        ],
     ],
     'elements'       => $elements,
     'buttons' => [

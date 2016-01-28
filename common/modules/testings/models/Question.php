@@ -10,6 +10,7 @@ use common\modules\testings\models\Answer;
 use common\modules\testings\models\Theme;
 use common\modules\testings\models\Test;
 use common\modules\testings\models\QuestionPassing;
+use common\modules\testings\models\QuestionImage;
 
 class Question extends \common\components\ActiveRecordModel
 {
@@ -23,6 +24,10 @@ class Question extends \common\components\ActiveRecordModel
 
 	const ACTIVE = 1;
 	const HIDDEN = 0;
+
+	const IMAGES_FOLDER = '/uploads/questions/';
+
+	public $filesUpload;
 
     public static $type_list = [
         self::ONE_OPTION => 'Нужно выбрать один вариант',
@@ -54,6 +59,7 @@ class Question extends \common\components\ActiveRecordModel
 			'text' => 'Текст вопроса',
 			'type' => 'Тип вопроса',
 			'create_date' => 'Время создания',
+			'filesUpload' => 'Изображения'
 		];
 	}
 
@@ -65,6 +71,7 @@ class Question extends \common\components\ActiveRecordModel
 		return [
 			[['theme_id', 'test_id', 'text', 'is_active', 'type'], 'required'],
 			[['theme_id', 'test_id', 'type', 'is_active'], 'integer'],
+			[['filesUpload'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif', 'maxFiles' => 4],
         ];
 	}
 
@@ -82,6 +89,19 @@ class Question extends \common\components\ActiveRecordModel
 	        ],
         ];
     }
+
+    public function beforeDelete()
+	{
+	    if (parent::beforeDelete()) 
+	    {
+	       	$this->deleteFiles();
+	        return true;
+	    } 
+	    else 
+	    {
+	        return false;
+	    }
+	}
 
     public function getAnswers()
     {
@@ -105,10 +125,7 @@ class Question extends \common\components\ActiveRecordModel
 
     public function getFiles()
     {
-        return $this->hasMany(FileManager::className(), ['object_id' => 'id'])
-        	->andWhere([FileManager::tableName() . '.model_id' => get_class($this)])
-        	->andWhere([FileManager::tableName() . '.tag' => 'files'])
-        	->orderBy(FileManager::tableName() . '.order DESC');
+        return $this->hasMany(QuestionImage::className(), ['question_id' => 'id']);
     }
 
 	public function getRightAnswer() 
@@ -170,4 +187,52 @@ class Question extends \common\components\ActiveRecordModel
 	{
 		return \yii\helpers\ArrayHelper::map(Theme::find()->all(), 'id', 'name');
 	}
+
+	public function getPath() 
+	{
+		return Yii::getAlias('@frontend/web') . self::IMAGES_FOLDER;
+	}
+
+	public function upload()
+    {
+        if ($this->validate()) 
+        {
+        	if(!file_exists($this->getPath()))
+            {
+                mkdir($this->getPath(), 0777, true);
+            }
+
+            foreach ($this->filesUpload as $file) 
+            {
+            	$filename = date('dmYHis-') . uniqid() . '.' . $file->extension;
+                $file->saveAs($this->getPath() . $filename);
+
+                $image = new QuestionImage;
+                $image->question_id = $this->id;
+                $image->filename = $filename;
+                $image->save();
+            }
+
+            return true;
+        } 
+        else 
+        {
+            return false;
+        }
+    }
+
+    public function deleteFiles()
+    {
+    	if($this->files)
+    	{
+    		foreach ($this->files as $file) 
+    		{
+    			if(file_exists($this->getPath() . $file->filename))
+		        {
+		        	unlink($this->getPath() . $file->filename);
+		        }
+		        $file->delete();
+    		}
+    	}
+    }
 }

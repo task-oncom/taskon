@@ -140,29 +140,29 @@ class PassingAdminController extends AdminController
 		return sprintf("%02d:%02d:%02d", (int)($time / 3600), (int)(($time % 3600) / 60), $time % 60);
 	}
 
-	public function actionReAttempt($id)
-	{
-		$passing = $this->loadModel($id);
+	// public function actionReAttempt($id)
+	// {
+	// 	$passing = $this->loadModel($id);
 
-		$passing->attempt = 0;
+	// 	$passing->attempt = 0;
 
-		$passing->save(false, array('attempt'));
+	// 	$passing->save(false, array('attempt'));
 
-		$subject = 'Тестирование - переназначение теста';
-		$body    = Setting::getValue('email_reattempt_body');
+	// 	$subject = 'Тестирование - переназначение теста';
+	// 	$body    = Setting::getValue('email_reattempt_body');
 
-		$mailer_letter = MailerLetter::model();
-		$body          = $mailer_letter->compileText($body, array(
-			'test_name' => $passing->test->name,
-		));
-		unset($mailer_letter);
+	// 	$mailer_letter = MailerLetter::model();
+	// 	$body          = $mailer_letter->compileText($body, array(
+	// 		'test_name' => $passing->test->name,
+	// 	));
+	// 	unset($mailer_letter);
 
-      	$result = MailerModule::sendMailUniSender($passing->user->email, $subject, $body);
+ //      	$result = MailerModule::sendMailUniSender($passing->user->email, $subject, $body);
 
-      	$this->render('reattempt', array(
-			'result' => $result
-		));
-	}
+ //      	$this->render('reattempt', array(
+	// 		'result' => $result
+	// 	));
+	// }
 
 	public function actionChangeAnswerStatus($qp_id) 
 	{

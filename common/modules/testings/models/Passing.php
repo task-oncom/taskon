@@ -67,10 +67,9 @@ class Passing extends \common\components\ActiveRecordModel
 	{
 		return [
 			[['user_id', 'test_id'], 'required'],
+			[['user_id', 'test_id', 'is_passed'], 'integer'],
 			[['pass_date', 'pass_date_start', 'attempt'], 'safe'],
-			[['test_id'], 'string', 'max' => 11],
 			[['end_date'], 'required', 'on' => 'extend'],
-			[['user_id', 'is_passed'], 'integer'],
 		];
 	}
 
@@ -78,7 +77,7 @@ class Passing extends \common\components\ActiveRecordModel
 	{
 		return [
 			'is_passed' => 'Состояние',
-			'test_id' => 'Тип теста',
+			'test_id' => 'Tест',
 			'user_id' => 'ФИО',
 			'create_date' => 'Дата создания',
 			'pass_date' => 'Дата прохождения теста',

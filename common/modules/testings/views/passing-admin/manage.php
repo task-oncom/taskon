@@ -88,7 +88,7 @@ use common\modules\testings\models\Passing;
             	return Html::tag("span", Passing::$state_list[$model->status], ["class" => "STATE" . $model->status]);
             }
         ],
-		'pass_date',
+        'pass_date',
 		[
             'header' => 'Ответственный менеджер',
             'format' => 'html',

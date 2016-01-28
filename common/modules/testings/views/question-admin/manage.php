@@ -50,6 +50,9 @@ $this->registerJs($js, yii\web\View::POS_READY, 'expnd.info');
 
 <p>
     <?= Html::a('Добавить', ['create'], ['class' => 'btn btn-success']) ?>
+    <?php if($test_id) : ?>
+        <?= Html::a('Импорт вопросов из XLS', ['/testings/test-admin/import-tests', 'id' => $test_id], ['class' => 'btn btn-info']) ?>
+    <?php endif; ?>
 </p>
 
 <?php echo AdminGrid::widget([
