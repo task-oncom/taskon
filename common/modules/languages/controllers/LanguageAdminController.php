@@ -19,7 +19,8 @@ class LanguageAdminController extends AdminController
 			'Manage' 		  => 'Управление языками',
 			'Create' 		  => 'Добавить язык',
 			'Update' 		  => 'Редактированть язык',
-			'View'	 		  => 'Просмотр языка',
+            'View'            => 'Просмотр языка',
+			'Delete'	 		  => 'Удаление языка',
 		];
 	}
 	
@@ -78,7 +79,7 @@ class LanguageAdminController extends AdminController
         $model = new Languages();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['manage']);
         } else {
             return $this->render('create', [
                 'model' => $model,
@@ -97,7 +98,7 @@ class LanguageAdminController extends AdminController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['manage']);
         } else {
             return $this->render('update', [
                 'model' => $model,
@@ -115,7 +116,7 @@ class LanguageAdminController extends AdminController
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['manage']);
     }
 
     /**

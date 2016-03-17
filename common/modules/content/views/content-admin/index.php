@@ -2,7 +2,9 @@
 
 use yii\helpers\Html;
 use yii\helpers\Url;
+use yii\helpers\ArrayHelper;
 use yii\grid\GridView;
+use common\modules\content\models\CoCategory;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\modules\content\models\SearchCoContent */
@@ -18,19 +20,20 @@ use yii\grid\GridView;
 
     <?= \common\components\zii\AdminGrid::widget([
         'dataProvider' => $dataProvider,
-        //'filterModel' => $searchModel,
+        'filterModel' => $searchModel,
         'columns' => [
-            'name',
+            // 'name',
             //'url:url',
             [
                 'attribute' => 'url',
                 'format' => 'raw',
                 'value' => function($data) {
-                    return Html::a($data->url, 'http://soc-zaim.ru/'.$data->url, ['target' => '_blank', 'title' => 'Просмотреть как страницу видит пользователь', 'data-toggle'=>"tooltip"]);$data->category->name;
+                    return Html::a($data->url, Yii::$app->params['frontUrl'].($data->url!='/'?'/':'').$data->url, ['target' => '_blank', 'title' => 'Просмотреть как страницу видит пользователь', 'data-toggle'=>"tooltip"]);
                 }
             ],
             [
                 'attribute' => 'category_id',
+                'filter' => ArrayHelper::map(CoCategory::find()->all(), 'id', 'name'),
                 'format' => 'text',
                 'value' => function($data) {
                     if(!empty($data->category))
@@ -42,10 +45,8 @@ use yii\grid\GridView;
                 'class' => 'common\components\ColorActionColumn',
                 'template' => '{copy} {update} {delete}',
                 'buttons' => [
-
-                    // Дмитрий Королев: хочется посмотреть как это будет вглядеть
                     'copy' => function ($url, $model, $key) {
-                        return '<a href="'.Url::toRoute(['copypage', 'id' => $model->id]).'">'.Html::beginTag('i', [
+                        return '<a href="'.Url::toRoute(['copy', 'id' => $model->id]).'">'.Html::beginTag('i', [
                             'title' => "Копировать страницу",
                             'data-toggle' => 'tooltip',
                             'class' => 'fa fa-copy fa-lg'

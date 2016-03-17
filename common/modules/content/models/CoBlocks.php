@@ -4,6 +4,9 @@ namespace common\modules\content\models;
 
 use Yii;
 
+use common\modules\languages\models\Languages;
+use common\modules\content\models\CoBlocksLang;
+
 /**
  * This is the model class for table "co_blocks".
  *
@@ -25,8 +28,24 @@ class CoBlocks extends \common\components\ActiveRecordModel
         return 'co_blocks';
     }
 
-    public function name() {
+    public function name() 
+    {
         return 'Блоки';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'langs' => [
+                'class' => 'common\modules\languages\components\LanguageHelperBehavior',
+                'field' => 'block_id',
+                'langClass' => 'common\modules\content\models\CoBlocksLang',
+                'actions' => ['create', 'update', 'copy']
+            ],
+        ];
     }
 
     /**
@@ -35,15 +54,12 @@ class CoBlocks extends \common\components\ActiveRecordModel
     public function rules()
     {
         return [
-            [['title', 'name', 'text'], 'required'],
-            [['text'], 'string'],
-            [['date_create', 'category_id'], 'safe'],
-            [['lang'], 'string', 'max' => 2],
-            [['module'], 'string', 'max' => 100],
+            [['title', 'name'], 'required'],
+            [['title'], 'unique'],
+            [['category_id'], 'safe'],
             [['title'], 'string', 'max' => 250],
             [['name'], 'string', 'max' => 50],
-            [['lang', 'title'], 'unique', 'targetAttribute' => ['lang', 'title'], 'message' => 'The combination of Язык and Заголовок has already been taken.'],
-            [['lang', 'name'], 'unique', 'targetAttribute' => ['lang', 'name'], 'message' => 'The combination of Язык and Название (англ.) has already been taken.']
+            [['name'], 'unique']
         ];
     }
 
@@ -58,40 +74,29 @@ class CoBlocks extends \common\components\ActiveRecordModel
             'title' => Yii::t('content', 'Заголовок'),
             'name' => Yii::t('content', 'Наименование виджета'),
             'text' => Yii::t('content', 'Текст'),
-            'date_create' => Yii::t('content', 'Добавлено'),
             'category_id' => 'Категория',
         ];
+    }
+
+    public function getLang($lang_id = null)
+    {
+        $lang_id = ($lang_id === null)? Languages::getCurrent()->id: $lang_id;
+
+        return $this->hasOne(CoBlocksLang::className(), ['block_id' => 'id'])->where('lang_id = :lang_id', [':lang_id' => $lang_id]);
     }
 
     /**
      * @block string name block
      * @return HTML string
      */
-    public static function printBlock($block) {
-        $model = self::findOne(['name'=>$block]);
-        return $model->text;
-    }
-
-    public static function printStaticBlock($block, $addPath = false)
+    public static function printBlock($block) 
     {
-        return \yii::$app->getView()->render( '@app/views/layouts/block/' . $block . '.php');
-        if ($addPath) {
-            return \yii::$app->getView()->render( '@app/views/layouts/block/' . $block . '.php');
-        }
-        else
-            return \yii::$app->getView()->render( '/block/'.$block);
+        $model = self::findOne(['name' => $block]);
+        return $model->lang->text;
     }
 
-    public function afterFind() {
-        parent::afterFind();
-        if(Yii::$app->controller->id !='block-admin')
-        $this->text = \common\components\AppManager::prepareWidget($this->text);
-        $this->text = str_replace('../../../','/',$this->text);
+    public static function printStaticBlock($block, $params = [])
+    {
+        return Yii::$app->getView()->render( '@app/views/layouts/block/' . $block . '.php', $params);
     }
-
-    public function beforeSave($insert) {
-        $this->text = str_replace("../../../source/","http://taskon.soc-zaim.ru/source/",$this->text);
-        return parent::beforeSave($insert);
-    }
-
 }

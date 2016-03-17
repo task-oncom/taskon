@@ -3,11 +3,14 @@
 namespace common\modules\content\controllers;
 
 use Yii;
-use common\modules\content\models\CoBlocks;
-use common\modules\content\models\SearchCoBlocks;
 use common\components\AdminController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+
+use common\modules\content\models\CoBlocks;
+use common\modules\content\models\CoBlocksLang;
+use common\modules\content\models\SearchCoBlocks;
+use common\modules\languages\models\Languages;
 
 /**
  * BlockAdminController implements the CRUD actions for CoBlocks model.
@@ -17,13 +20,11 @@ class BlockAdminController extends AdminController
     public static function actionsTitles(){
         return [
             'Manage' 		  => 'Управление блоками',
-            'Create' 		  => 'Добавление контента',
-            'Update' 		  => 'Редактирование контента',
-            'Delete' 		  => 'Удаление контента',
-            'View'	 		  => 'Просмотр контента',
-            'Createcontent'	  => 'Добавление данных контента',
-            'Updatecontent'   => 'Редактирование данных контента',
-            'Deletecontent'   => 'Удаление данных контента',
+            'Create' 		  => 'Добавление блока',
+            'Update'          => 'Редактирование блока',
+            'Copy' 		      => 'Копирование блока',
+            'Delete' 		  => 'Удаление блока',
+            'View'	 		  => 'Просмотр блока',
         ];
     }
 
@@ -78,7 +79,39 @@ class BlockAdminController extends AdminController
      */
     public function actionCreate()
     {
-        return $this->actionUpdate();
+        $model = new CoBlocks;      
+        
+        Yii::$app->controller->page_title = 'Добавить блок';
+    
+        Yii::$app->controller->breadcrumbs = [
+            ['Управление блоками' => \yii\helpers\Url::toRoute('manage')],
+            'Добавить блок',
+        ];
+
+        if (Yii::$app->request->isPost) 
+        {
+            $transaction = Yii::$app->db->beginTransaction();
+
+            try 
+            {
+                $model->attributes = Yii::$app->request->post('CoBlocks');
+
+                if($model->save())
+                {                        
+                    $transaction->commit();
+                    return $this->redirect(['manage']);
+                }
+            } 
+            catch (\Exception $e) 
+            {
+                $transaction->rollBack();
+                throw $e;
+            }
+        } 
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -87,33 +120,82 @@ class BlockAdminController extends AdminController
      * @param string $id
      * @return mixed
      */
-    public function actionUpdate($id=null)
+    public function actionUpdate($id)
     {
-        if(empty($id)){
-            $model = new CoBlocks();
-            \yii::$app->controller->page_title = 'Создание блока';
-            \yii::$app->controller->breadcrumbs = [
-                ['Список блоков' => \yii\helpers\Url::toRoute('manage')],
-                'Создание блока'
-            ];
-        }
-        else {
-            $model = $this->findModel($id);
-            \yii::$app->controller->page_title = 'Редактирование блока';
-            \yii::$app->controller->breadcrumbs = [
-                ['Список блоков' => \yii\helpers\Url::toRoute('manage')],
-                'Редактирование блока'
-            ];
-        }
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['manage']);
-        } else {
-            $form = new \common\components\BaseForm('/common/modules/content/forms/BlockForm', $model);
-            return $this->render('update', [
-                'model' => $model,
-                'form' => $form->out,
-            ]);
-        }
+        $model = $this->findModel($id);   
+        
+        Yii::$app->controller->page_title = 'Редактировать блок';
+    
+        Yii::$app->controller->breadcrumbs = [
+            ['Управление блоками' => \yii\helpers\Url::toRoute('manage')],
+            'Редактировать блок',
+        ];
+
+        if (Yii::$app->request->isPost) 
+        {
+            $transaction = Yii::$app->db->beginTransaction();
+
+            try 
+            {
+                $model->attributes = Yii::$app->request->post('CoBlocks');
+
+                if($model->save())
+                {                        
+                    $transaction->commit();
+                    return $this->redirect(['manage']);
+                }
+            } 
+            catch (\Exception $e) 
+            {
+                $transaction->rollBack();
+                throw $e;
+            }
+        } 
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionCopy($id)
+    {
+        $model = $this->findModel($id);  
+
+        $model->name = $model->title = null; 
+        
+        Yii::$app->controller->page_title = 'Копировать блок';
+    
+        Yii::$app->controller->breadcrumbs = [
+            ['Управление блоками' => \yii\helpers\Url::toRoute('manage')],
+            'Копировать блок',
+        ];
+
+        if (Yii::$app->request->isPost) 
+        {
+            $transaction = Yii::$app->db->beginTransaction();
+
+            try 
+            {
+                $model = new CoBlocks;
+
+                $model->attributes = Yii::$app->request->post('CoBlocks');
+
+                if($model->save())
+                {                        
+                    $transaction->commit();
+                    return $this->redirect(['manage']);
+                }
+            } 
+            catch (\Exception $e) 
+            {
+                $transaction->rollBack();
+                throw $e;
+            }
+        } 
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
     /**

@@ -19,7 +19,7 @@ class SearchCoBlocks extends CoBlocks
     {
         return [
             [['id'], 'integer'],
-            [['lang', 'title', 'name', 'text', 'date_create', 'category_id'], 'safe'],
+            [['lang', 'title', 'name', 'category_id'], 'safe'],
         ];
     }
 
@@ -57,14 +57,12 @@ class SearchCoBlocks extends CoBlocks
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'date_create' => $this->date_create,
             'category_id' => $this->category_id,
         ]);
 
         $query->andFilterWhere(['like', 'lang', $this->lang])
             ->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'text', $this->text]);
+            ->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

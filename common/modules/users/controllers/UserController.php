@@ -1,5 +1,14 @@
 <?php
 namespace common\modules\users\controllers;
+
+use Yii;
+use common\modules\users\models\User;
+use \common\modules\rbac\models\AuthAssignment; 
+use common\modules\messageTemplate\models\MessageTemplate;
+use yii\base\Exception;
+use yii\web\BadRequestHttpException;
+use common\models\LoginForm;
+
 class UserController extends \common\components\BaseController {
     const ERROR_PASSWORD_RECOVER_AUTH = 'Вы не можете восстановить пароль будучи авторизованным!';
     public $cats;
@@ -36,7 +45,7 @@ class UserController extends \common\components\BaseController {
             "Login" => "Авторизация",
             "Logout" => "Выход",
             "Registration" => "Регистрация",
-            "ActivateAccount" => "Активация аккаунта",
+            "Activate" => "Активация аккаунта",
             "ActivateAccountRequest" => "Запрос на активацию аккаунта",
             "ChangePassword" => "Смена пароля",
             "ChangePasswordRequest" => "Запрос на смену пароля",
@@ -46,7 +55,7 @@ class UserController extends \common\components\BaseController {
     }
 
 
-    public function loadModel($id) {
+    public function loadModel($id, $scopes = array(), $attribute = NULL) {
         $model = User::model()->findByPk((int)$id);
         if ($model === null) {
             $this->pageNotFound();
@@ -97,74 +106,85 @@ class UserController extends \common\components\BaseController {
     }
 
 
-    public function actionLogout() {
-        Yii::app()->user->logout();
-        $this->redirect(Yii::app()->homeUrl);
+    public function actionLogout()
+    {
+        Yii::$app->user->logout();
+
+        return $this->goHome();
     }
 
 
-    public function actionRegistration() {
-        $model = new User;
+    public function actionRegistration() 
+    {
+        $model = new User();
         $model->scenario = User::SCENARIO_REGISTRATION;
-
-        $form = new BaseForm('users.RegistrationForm', $model);
-        $this->performAjaxValidation($model);
-        unset($form->elements['captcha']);
-
-        $is_created = false;
+        $model->role = User::ROLE_USER;
 
         if (isset($_POST['User'])) {
             $model->attributes = $_POST['User'];
-
             if ($model->validate()) {
                 $password = $model->password;
-
-                $model->password = md5($model->password);
-                $model->activate_code = md5($model->password . 'xdf5sf');
+                $model->password = Yii::$app->getSecurity()->generatePasswordHash($model->password);
+                if(Yii::$app->request->cookies->get('source')=='email'){
+                   $model->source = User::SOURCE_MESSAGE; 
+                }
+                else{
+                  $model->source = User::SOURCE_DEFAULT;  
+                }
+                
                 $model->save(false);
 
                 $assignment = new AuthAssignment();
-                $assignment->itemname = 'user';
-                $assignment->userid = $model->id;
+                $assignment->item_name = 'user';
+                $assignment->user_id = $model->id;
                 $assignment->save();
-                $this->saveEmailToNewUser($model, $password, $model->activate_code);
-                $is_created = true;
+
+                $modelLogin = new LoginForm();
+                $modelLogin->password = $password;
+                $modelLogin->username = $model->email;
+                if ($modelLogin->validate()) {
+                    Yii::$app->user->login($modelLogin->getUser(), $modelLogin->rememberMe ? 3600 * 24 * 30 : 0);
+                    $this->redirect(array("/school/course/index")); 
+                } else {
+                     echo json_encode(array('errors'=>$modelLogin->getErrors()));
+                }
+                /*$linkActivate = Yii::$app->params['frontUrl'].'/activate/'.$model->activate_code;
+                $subject = 'Регистрация на сайте '.Yii::$app->params['frontUrl'];
+                Yii::$app->mailer->compose('activate', ['link' => Yii::$app->params['frontUrl'], 'linkActivate' => $linkActivate])
+                    ->setFrom(Yii::$app->params['adminEmail'])
+                    ->setTo($model->email)
+                    ->setSubject($subject)
+                    ->send(); */
+                /*$params = [];
+                $params['link_activate'] = Yii::$app->params['frontUrl'].'/activate/'.$model->activate_code;
+                $params['link'] = Yii::$app->params['frontUrl'];*/
+
+            } else {
+                echo json_encode(array('errors'=>$model->getErrors()));
             }
         }
-        $this->cats = Categories::model()->parentCats()->findAll();
-        $this->render(
-            'registration',
-            array(
-                'form' => $form,
-                'model' => $model,
-                'is_created' => $is_created
-            )
-        );
     }
 
 
-    public function actionActivateAccount($code, $login) {
-        $this->cats = Categories::model()->parentCats()->findAll();
-        $user = User::model()->findByAttributes(array('activate_code' => $code, 'email' => $login));
+    public function actionActivate($code) {
+        $user = User::findOne(['activate_code' => $code]);
 
         if ($user===null) 
-            $activate_error = 'Неверные данные активации аккаунта!';
-		else {
-            if (strtotime($user->date_create) + 24 * 3600 > time()) {
-                $user->activate_date = null;
-                $user->activate_code = null;
-                $user->status = User::STATUS_ACTIVE;
-                $user->save(false);
-
-                $message = 'Ваш аккаунт был успешно подтвержден. Хотите ' . CHtml::link('авторизироваться', '#', array('onclick' => '$("#login_box_display").click();')) . '?';
-            } else
-                $activate_error = 'С момента регистрации прошло больше суток!';
-        } 
-		
-        $this->render('activateAccount', array(
-            'activate_error' => isset($activate_error) ? $activate_error : null,
-            'message' => isset($message) ? $message : null
-        ));
+            \Yii::$app->getSession()->setFlash('error_activate', 'Неверные данные активации аккаунта!');
+        else {
+            $user->activate_date = date('Y-m-d H:i:s');
+            $user->activate_code = null;
+            $user->status = User::STATUS_ACTIVE;
+            $user->save(false);
+            \Yii::$app->getSession()->setFlash('success_activate', 'Вы активировали свой аккаунт.');
+            $subject = 'Активация аккаунта на сайте '.Yii::$app->params['frontUrl']; 
+            Yii::$app->mailer->compose('activateSuccess', ['link' => Yii::$app->params['frontUrl']])
+                ->setFrom(Yii::$app->params['adminEmail'])
+                ->setTo($user->email)
+                ->setSubject($subject)
+                ->send(); 
+         } 
+        $this->redirect(array("/school/course/index")); 
     }
 
 

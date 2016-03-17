@@ -1,8 +1,11 @@
 <?php
 
 namespace common\modules\content\controllers;
+
+use Yii;
 use yii\web\BadRequestHttpException;
 use common\modules\content\models\CoContent;
+use common\modules\school\models\Lessons;
 
 class PageController extends \common\components\BaseController
 {
@@ -20,8 +23,8 @@ class PageController extends \common\components\BaseController
     public function actionView($id = null, $page = null)
     {
         if(empty($id) && empty($page)) {
-            if(!\Yii::$app->user->isGuest)
-                return $this->redirect(\yii\helpers\Url::toRoute('/scoring/clients/cabinet'));
+            // if(!\Yii::$app->user->isGuest)
+            //     return $this->redirect(\yii\helpers\Url::toRoute('/scoring/clients/cabinet'));
             $page = '/';
         }
         if(!empty($id))
@@ -32,13 +35,16 @@ class PageController extends \common\components\BaseController
         {
             $model = CoContent::findOne(['url' => $page]);
         }
+        
+        $content = $model->lang->getFinishedContent();
+        $this->meta_title = $model->metaTag->title;
+        $this->meta_description = $model->metaTag->description;
+        $this->meta_keywords = $model->metaTag->keywords;
 
-        $content = $model->getContent();
-        $this->meta_title = $model->metaTags->title . ' - ' . \Yii::$app->params['name'];
-        $this->meta_description = $model->metaTags->description;
-        $this->meta_keywords = $model->metaTags->keywords;
-
-        return $this->render('view', ['content'=>$content]);
+        return $this->render('view', [
+            'content' => $content,
+            'model' => $model
+        ]);
     }
 
 }

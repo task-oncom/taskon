@@ -19,7 +19,7 @@ class SearchCoContent extends CoContent
     {
         return [
             [['id', 'category_id', 'active', 'created_at', 'updated_at'], 'integer'],
-            [['url', 'name', 'title'], 'safe'],
+            [['url'], 'safe'],
         ];
     }
 
@@ -63,9 +63,7 @@ class SearchCoContent extends CoContent
             'updated_at' => $this->updated_at,
         ]);
 
-        $query->andFilterWhere(['like', 'url', $this->url])
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'title', $this->title]);
+        $query->andFilterWhere(['like', 'url', $this->url]);
 
         return $dataProvider;
     }

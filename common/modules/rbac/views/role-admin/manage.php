@@ -42,30 +42,11 @@ echo AdminGrid::widget([
 
 
 		$view = $this;
-		$view->registerJsFile('/plugins/switchery/switchery.min.js', ['position' => \yii\web\View::POS_END ]);
-		$view->registerJsFile('/plugins/powerange/powerange.min.js', ['position' => \yii\web\View::POS_END ]);
-		$view->registerJsFile('/js/form-slider-switcher.demo.min.js', ['position' => \yii\web\View::POS_END ]);
-		
-		$view->registerCssFile('/plugins/switchery/switchery.min.css', ['position' => \yii\web\View::POS_HEAD ]);
-		$view->registerCssFile('/plugins/powerange/powerange.min.css', ['position' => \yii\web\View::POS_HEAD ]);
 		$view->registerCss('.table.table-striped.table-bordered.dataTable.DTFC_Cloned .sc.sortt.ui-sortable tr {height: 59px;}');
-		
-$tbl = <<<JS
-var TableManageFixedColumns = function () {
-	"use strict";
-    return {
-        //main function
-        init: function () {
-			FormSliderSwitcher.init();
-        }
-    };
-}();
-JS;
-		$view->registerJs($tbl, $view::POS_END);
+
 
 $url = \yii\helpers\Url::toRoute('changeaccess');		
 $js = <<<JS
-	TableManageFixedColumns.init(); 
 	$(document).on("click","span.switchery", function(){
 		var state = $(this).prev().attr("checked");
 		var user_id = $(this).prev().attr("user-id");

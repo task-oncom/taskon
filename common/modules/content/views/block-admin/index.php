@@ -1,7 +1,7 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use yii\helpers\Url;
 use \yii\helpers\ArrayHelper;
 use \common\modules\content\models\CoCategory;
 /* @var $this yii\web\View */
@@ -45,9 +45,17 @@ use \common\modules\content\models\CoCategory;
 
             [
                 'class' => 'common\components\ColorActionColumn',
-                'template' => '{update} {delete}',
-            ]
-                ,
+                'template' => '{copy} {update} {delete}',
+                'buttons' => [
+                    'copy' => function ($url, $model, $key) {
+                        return '<a href="'.Url::toRoute(['copy', 'id' => $model->id]).'">'.Html::beginTag('i', [
+                            'title' => "Копировать блок",
+                            'data-toggle' => 'tooltip',
+                            'class' => 'fa fa-copy fa-lg'
+                        ]) . Html::endTag('i') . '</a>';
+                    },
+                ],
+            ],
         ],
     ]); ?>
 

@@ -1,25 +1,31 @@
 <?php
-use common\modules\rbac\models\AuthItem;
+
+use \yii\helpers\ArrayHelper;
+
 use common\modules\users\models\User;
-use yii\helpers\ArrayHelper;
 
-$roles = AuthItem::find(
-	['type' => AuthItem::TYPE_ROLE],
-	"name != '" . AuthItem::ROLE_GUEST . "'"
-)->all();
-
+$js = <<<JS
+    visibleSupport();
+    $('#user-role').change(function(){
+        visibleSupport();
+    });
+    function visibleSupport()
+    {
+        if($('#user-role').val() == 'support')
+        {
+            $('#user-redmine_key').closest('.form-group').show();
+        }
+        else
+        {
+            $('#user-redmine_key').closest('.form-group').hide();
+        }
+    }
+JS;
+\Yii::$app->view->registerJs($js, \yii\web\View::POS_READY, 'SupportID');
 
 return [
     'activeForm'=>[
         'id' => 'user-form',
-        'class' => 'ActiveForm',
-		'options' => ['class' => 'form-horizontal'],
-		'fieldConfig' => [
-//			'template' => '<div class="form-group">{label}<div class="col-md-9">{input}</div><div class="col-md-9">{error}</div></div>',
-			'labelOptions' => ['class' => 'col-md-3 control-label'],
-		],
-        'enableAjaxValidation' => false,
-// 	'htmlOptions'=>['class'=>'registr'),
     ],
     'elements'       => [
         'send_email' => ['type' => 'checkbox'],
@@ -30,11 +36,6 @@ return [
         'phone'      => ['type' => 'text', 'class' => 'form-control'],
         'mobile_phone'      => ['type' => 'text', 'class' => 'form-control'],
         'skype'      => ['type' => 'text', 'class' => 'form-control'],
-        /*'status' => [
-            'type'  => 'dropdownlist',
-            'items' => User::$status_list,
-			'class' => 'form-control',
-    	],*/
         'status' => [
             'type' => 'checkbox',
             'value' => 'active',
@@ -45,16 +46,15 @@ return [
         ],
         'role' => [
             'type'  => 'dropdownlist',
-            'items' => ArrayHelper::map($roles, 'name', 'description'),
+            'items' => User::$role_list,
 			'class' => 'form-control',
     	],
+        'redmine_key' => [
+            'type'  => 'text',
+            'class' => 'form-control',
+        ],
         'password'   => ['type' => 'password', 'class' => 'form-control', 'pwd-id' => 'passwordStrengthDiv'],
         'password_c' => ['type' => 'password', 'class' => 'form-control', 'pwd-id' => 'passwordStrengthDiv2'],
-        /*'captcha' => [
-            'type' => 'captcha',
-            'label' => 'Введите код с картинки',
-			'class' => 'form-control'
-        ],*/
     ],
     'buttons' => [
         'sp1' => ['type' => 'htmlBlock', 'value' => '<div class="col-md-8 col-sm-6" style="padding-left: 0;">',],

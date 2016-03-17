@@ -3,6 +3,7 @@
 namespace common\modules\reviews\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "reviews".
@@ -61,7 +62,8 @@ class Reviews extends \common\components\ActiveRecordModel
         ],
     ];
 
-    public static function getSource($type) {
+    public static function getSource($type) 
+    {
         return self::$rate[$type];
     }
 
@@ -77,12 +79,25 @@ class Reviews extends \common\components\ActiveRecordModel
         return 'Отзывы';
     }
 
-    // public function getUser() {
-    //     return $this->hasOne(\common\modules\scoring\models\ScClient::className(), ['id' => 'user_id']);
-    // }
-
-    public function getOperator() {
-        return $this->hasOne(\common\modules\users\models\User::className(), ['id' => 'admin_id']);
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'file' => [
+                'class' => 'common\components\activeRecordBehaviors\FileUploadBehavior',
+                'path' => '@frontend/web',
+                'folder' => '/uploads/reviews/',
+                'field' => 'photo'
+            ],
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'createdAtAttribute' => 'created_at',
+                'updatedAtAttribute' => 'updated_at',
+                'value' => time(),
+            ],
+        ];
     }
 
     /**
@@ -91,23 +106,16 @@ class Reviews extends \common\components\ActiveRecordModel
     public function rules()
     {
         return [
-            [['user_id', 'text', 'state', 'date', 'notification_send', 'show_in_module'], 'required'],
-            [['user_id', 'admin_id', 'priority', 'notification_send', 'order', 'cat_id', 'show_in_module', 'rate_usability', 'rate_loyality', 'rate_profit'], 'integer'],
+            [['text', 'date', 'notification_send', 'show_in_module'], 'required'],
+            [['admin_id', 'priority', 'notification_send', 'order', 'cat_id', 'show_in_module', 'rate_usability', 'rate_loyality', 'rate_profit'], 'integer'],
+            [['file'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, gif'],
             [['text', 'state', 'attendant_products'], 'string'],
             [['admin_id'], 'adminIdValidate'],
-            [['date', 'answer', 'good', 'bad', 'date_create', 'notification_date', 'rate_usability', 'rate_loyality', 'rate_profit', 'title', 'order'], 'safe'],
-            [['lang'], 'string', 'max' => 2],
+            [['date', 'answer', 'good', 'bad', 'date_create', 'notification_date', 'rate_usability', 'rate_loyality', 'rate_profit', 'title', 'order', 'photo', 'state', 'video', 'unlinkFile'], 'safe'],
+            // [['lang'], 'string', 'max' => 2],
             [['title'], 'string', 'max' => 250],
-            [['photo'], 'string', 'max' => 50],
-            [['email'], 'string', 'max' => 255]
+            [['email', 'video'], 'string', 'max' => 255]
         ];
-    }
-
-    public function adminIdValidate($attr, $value) {
-        if(empty($this->answer))
-            if(empty($this->$attr))
-                $this->addError($attr, 'Выберите опреатора');
-
     }
 
     /**
@@ -126,10 +134,12 @@ class Reviews extends \common\components\ActiveRecordModel
             'good' => Yii::t('reviews', 'Понравилось'),
             'bad' => Yii::t('reviews', 'Не понравилось'),
             'photo' => Yii::t('reviews', 'Фото'),
+            'video' => Yii::t('reviews', 'Ссылка на видео'),
+            'file' => Yii::t('reviews', 'Фото'),
             'state' => Yii::t('reviews', 'Состояние'),
             'date' => Yii::t('reviews', 'Дата'),
             'date_create' => Yii::t('reviews', 'Создана'),
-            'priority' => Yii::t('reviews', 'Priority'),
+            'priority' => Yii::t('reviews', 'Приоритет'),
             'email' => Yii::t('reviews', 'Email'),
             'notification_date' => Yii::t('reviews', 'Notification Date'),
             'notification_send' => Yii::t('reviews', 'Notification Send'),
@@ -140,7 +150,15 @@ class Reviews extends \common\components\ActiveRecordModel
             'rate_usability' => Yii::t('reviews', 'Удобство'),
             'rate_loyality' => Yii::t('reviews', 'Лояльность'),
             'rate_profit' => Yii::t('reviews', 'Выгода'),
+            'unlinkFile' => 'Удалить фото'
         ];
+    }
+
+    public function adminIdValidate($attr, $value) {
+        if(empty($this->answer))
+            if(empty($this->$attr))
+                $this->addError($attr, 'Выберите опреатора');
+
     }
 
     public function hasComment() {
@@ -196,5 +214,10 @@ class Reviews extends \common\components\ActiveRecordModel
         }
 
         return parent::beforeSave($insert);
+    }
+
+    public function getOperator() 
+    {
+        return $this->hasOne(\common\modules\users\models\User::className(), ['id' => 'admin_id']);
     }
 }

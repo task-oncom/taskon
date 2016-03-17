@@ -31,14 +31,15 @@ class AuthAssignment extends \common\components\ActiveRecordModel
 
 	public function rules()
 	{
-		return array(
-			array('item_name, user_id', 'required'),
-			array('item_name, user_id', 'string', 'max' => 64),
+		return [
+			[['item_name', 'user_id'], 'required'],
+			[['item_name'], 'string', 'max' => 64],
+            [['user_id'], 'integer'],
 			//array('user_id', 'unique'),
-			array('created_at, updated_at', 'safe'),
+			[['created_at'], 'safe'],
 
 			//array('item_name, user_id', 'safe', 'on' => 'search'),
-		);
+		];
 	}
 
 
@@ -67,6 +68,13 @@ class AuthAssignment extends \common\components\ActiveRecordModel
 		));
 	}
 
+    public function behaviors()
+    {
+        return [
+            
+        ];
+    }
+    
 
     public static function updateuser_idRole($user_id, $role)
     {

@@ -79,7 +79,7 @@ class AuthItem extends \common\components\ActiveRecordModel
 	}
 
 	public function getAssignment() {
-		return $this->hasOne(AuthAssignment::className(), ['name' => 'item_name']);
+		return $this->hasMany(AuthAssignment::className(), ['item_name' => 'name']);
 	}
 	
 	public function relations()
@@ -97,7 +97,6 @@ class AuthItem extends \common\components\ActiveRecordModel
 				'auth_items_childs(parent, child)',
 				'condition' => 'type = "' . self::TYPE_TASK . '"'
 			),
-			'assignments' => array(self::HAS_MANY, 'AuthAssignment', 'itemname'),
 			'users' => array(self::HAS_MANY, 'User', 'userid', 'through' => 'assignments')
 		);
 	}
@@ -184,11 +183,11 @@ class AuthItem extends \common\components\ActiveRecordModel
 	public function getRoles()
 	{
 		static $roles;
-
 		if(!$roles)
 		{
 			$roles = $this->findAllByAttributes(array(
-				'type' => self::TYPE_ROLE
+				//'type' => self::TYPE_ROLE
+                'rule_name' => 'group'
 			));
 		}
 		return $roles;

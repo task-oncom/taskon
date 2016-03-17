@@ -18,8 +18,8 @@ class SearchLanguages extends Languages
     public function rules()
     {
         return [
-            [['id'], 'integer'],
-            [['code', 'codeFull', 'name'], 'safe'],
+            [['id', 'default'], 'integer'],
+            [['url', 'local', 'name', 'default'], 'safe'],
         ];
     }
 
@@ -57,10 +57,11 @@ class SearchLanguages extends Languages
 
         $query->andFilterWhere([
             'id' => $this->id,
+            'default' => $this->default,
         ]);
 
-        $query->andFilterWhere(['like', 'code', $this->code])
-            ->andFilterWhere(['like', 'codeFull', $this->codeFull])
+        $query->andFilterWhere(['like', 'url', $this->url])
+            ->andFilterWhere(['like', 'local', $this->local])
             ->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;

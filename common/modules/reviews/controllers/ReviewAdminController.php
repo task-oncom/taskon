@@ -8,6 +8,7 @@ use common\modules\reviews\models\SearchReviews;
 use common\components\AdminController;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * ReviewAdminController implements the CRUD actions for Reviews model.
@@ -28,12 +29,12 @@ class ReviewAdminController extends AdminController
 
     public static function actionsTitles() {
         return [
-            "Create"           	=> "Добавление группы",
-            "Update"           	=> "Редактирование группы",
-            "View"             	=> "Просмотр группы",
-            "Manage"           	=> "Управление группами",
-            "Delete"           	=> "Удаление группы",
-            "Updateanswer"      => "Ответить",
+            "Create"           	=> "Добавление отзыва",
+            "Update"           	=> "Редактирование отзыва",
+            "View"             	=> "Просмотр отзыва",
+            "Manage"           	=> "Управление отзывами",
+            "Delete"           	=> "Удаление отзыва",
+            "Update-answer"      => "Ответить",
         ];
     }
 
@@ -42,7 +43,8 @@ class ReviewAdminController extends AdminController
      * $id integer
      * @return mixed
      */
-    public function actionUpdateanswer($id) {
+    public function actionUpdateAnswer($id) 
+    {
         $model = $this->findModel($id);
 
         \yii::$app->controller->page_title = 'Ответ на отзыв <small>'.$model->user->email.'</small>';
@@ -108,9 +110,12 @@ class ReviewAdminController extends AdminController
             'Добавить отзыв'
         ];
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) 
+        {
             return $this->redirect(['manage']);
-        } else {
+        } 
+        else 
+        {
             //die(print_r($model->errors));
             $form = new \common\components\BaseForm('/common/modules/reviews/forms/ReviewForm', $model);
             return $this->render('create', [
@@ -130,15 +135,18 @@ class ReviewAdminController extends AdminController
     {
         $model = $this->findModel($id);
 
-        \yii::$app->controller->page_title = 'Редактировать отзыв <small>'.$model->user->email.'</small>';
+        \yii::$app->controller->page_title = 'Редактировать отзыв';
         \yii::$app->controller->breadcrumbs = [
             ['Список отзывов' => '/reviews/review-admin/manage'],
             'Редактировать отзыв'
         ];
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) 
+        {
             return $this->redirect(['manage']);
-        } else {
+        } 
+        else 
+        {
             $form = new \common\components\BaseForm('/common/modules/reviews/forms/ReviewForm', $model);
             return $this->render('update', [
                 'model' => $model,

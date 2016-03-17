@@ -27,24 +27,32 @@ class RoleAdminController extends \common\components\AdminController
 
 
     public function actionChangeaccess() {
-		if(!empty($_GET['user_id']) && !empty($_GET['item']) && !empty($_GET['op'])) {
+		if(!empty($_GET['user_id']) && !empty($_GET['item']) && !empty($_GET['op'])) 
+        {
 			$op = $_GET['op'];
 			$user_id = $_GET['user_id'];
 			$item = $_GET['item'];
+            
 			$r = \yii::$app->authManager->getPermission($item);
+
 			if($op == 'assign')
-				if(!\yii::$app->authManager->checkAccess($user_id, $item)) {
-					
+            {
+				if(!\yii::$app->authManager->checkAccess($user_id, $item)) 
+                {
 					\yii::$app->authManager->assign($r, $user_id);
 					echo 'assigned';
 					die();
 				}
+            }
 			else
-				if(\yii::$app->authManager->checkAccess($user_id, $item)) {
+            {
+				if(\yii::$app->authManager->checkAccess($user_id, $item)) 
+                {
 					\yii::$app->authManager->revoke($r, $user_id);
 					echo 'deassigned';
 					die();
 				}
+            }
 		}
 	}
 	

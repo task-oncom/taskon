@@ -3,14 +3,14 @@
 namespace common\modules\faq\models;
 
 use Yii;
-use \common\components\validators\TransliterateValidator;
 use yii\behaviors\TimestampBehavior;
 use \yii\helpers\StringHelper;
-use \common\models\MetaTags;
 use yii\helpers\Url;
 use yii\db\Expression;
 
-use himiklab\sitemap\behaviors\SitemapBehavior;
+use \common\models\MetaTags;
+use \common\components\validators\TransliterateValidator;
+
 /**
  * This is the model class for table "faq".
  *
@@ -43,23 +43,6 @@ class Faq extends \common\components\ActiveRecordModel
         return [
             'meta' => [
                 'class' => 'common\components\activeRecordBehaviors\MetaTagBehavior',
-            ],
-            'sitemap' => [
-                'class' => SitemapBehavior::className(),
-                'scope' => function ($model) {
-                    /** @var \yii\db\ActiveQuery $model */
-                    $model->select(['url', 'updated_at']);
-                    // $model->andWhere(['is_deleted' => 0]);
-                },
-                'dataClosure' => function ($model) {
-                    /** @var self $model */
-                    return [
-                        'loc' => Url::to($model->url, true),
-                        'lastmod' => date('c', $model->updated_at),
-                        'changefreq' => SitemapBehavior::CHANGEFREQ_DAILY,
-                        'priority' => 0.8
-                    ];
-                }
             ],
             'timestamp' => [
                 'class' => TimestampBehavior::className(),

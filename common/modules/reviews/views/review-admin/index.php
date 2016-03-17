@@ -28,23 +28,7 @@ use yii\grid\GridView;
 
             // 'id',
             // 'lang',
-            [
-                'attribute' => 'user_id',
-                'format' => 'raw',
-                'value' => function($data){
-                    if(!$data->hasComment()){
-                        $add = Html::a('Ответить',Url::toRoute(['updateanswer', 'id'=>$data->id]), ['class' => 'btn btn-primary m-r-5 m-b-5']);
-                    }
-                    else {
-                        $add = Html::a('Редактировать',Url::toRoute(['updateanswer', 'id'=>$data->id]), ['class' => 'btn btn-primary m-r-5 m-b-5']);
-                    }
-                    if(!empty($data->user))
-                        return $data->user->fullName . '<br >' . $add;
-
-                    return 'Удален ' . '<br >' . $add;
-                }
-            ],
-            //'title',
+            'title',
             [
                 'attribute' => 'text:ntext',
                 'header' => 'Отзыв',

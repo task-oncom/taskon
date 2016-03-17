@@ -138,13 +138,7 @@ echo AdminGrid::widget([
    // 'filter_hint'    => $filter_hint,
     'columns'        => [
 		['class'=>'yii\grid\SerialColumn'],
-        /*array(
-            'name' => 'fio',
-            'value'=> '$data->last_name." ".$data->first_name." ".$data->patronymic',
-            'type' => 'raw'
-        ), **/
 		'name',
-        'surname',
 		'email',
 		'date_create',
 		[
@@ -158,12 +152,12 @@ echo AdminGrid::widget([
             'name'   => 'status',
             'value'  => 'User::$status_list[$data->status]',
             'filter' => false
-        ), */
+        ),
 		[
             'header' => 'Группа пользователей',
             'value'  => 'roleName',
             'filter' => Html::dropDownList('role', '', $roles, ['empty'=> 'Все', 'class'=>'form-control']),
-        ], 
+        ], */
 		$buttons
     ],
 ]);
