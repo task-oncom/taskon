@@ -117,3 +117,16 @@ a.desc:after {
 .advanced-filter input[type="date"] {
     width: 145px;
 }
+.file-widget{
+    margin-bottom: 20px;
+}
+.control-label {min-width: 100px;}
+.file-drop-zone {
+    height: auto;
+}
+.file-drop-zone-title {
+    padding: 35px 10px;
+}
+.file-preview-image {
+    height: 100px !important;
+}
