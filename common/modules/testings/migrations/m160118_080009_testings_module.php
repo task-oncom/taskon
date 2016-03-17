@@ -7,12 +7,6 @@ class m160118_080009_testings_module extends Migration
 {
     public function safeUp()
     {
-        $tableOptions = null;
-        if ($this->db->driverName === 'mysql') 
-        {
-            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB';
-        }
-
         // Структура таблицы `testings_answers`
  
         $this->createTable('testings_answers', [
@@ -21,7 +15,7 @@ class m160118_080009_testings_module extends Migration
             'text' => Schema::TYPE_TEXT . ' NOT NULL',
             'is_right' => 'tinyint(1) NOT NULL',
             'create_date' => Schema::TYPE_TIMESTAMP . ' NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',      
-        ], $tableOptions);
+        ]);
 
         // Структура таблицы `testings_themes`
 
@@ -30,7 +24,7 @@ class m160118_080009_testings_module extends Migration
             'name' => Schema::TYPE_STRING . '(200) NOT NULL', 
             'type' => Schema::TYPE_INTEGER . '(5) NOT NULL', 
             'create_date' => Schema::TYPE_TIMESTAMP . ' NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP', 
-        ], $tableOptions);
+        ]);
 
         // Структура таблицы `testings_mistakes`
 
@@ -40,7 +34,7 @@ class m160118_080009_testings_module extends Migration
             'description' => Schema::TYPE_STRING . '(3000) NOT NULL', 
             'is_expert_agreed' => 'tinyint(1) NOT NULL', 
             'create_date' => Schema::TYPE_TIMESTAMP . ' NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP', 
-        ], $tableOptions);
+        ]);
 
         // Структура таблицы `testings_passings`
 
@@ -55,7 +49,7 @@ class m160118_080009_testings_module extends Migration
             'pass_date_start' => Schema::TYPE_STRING . '(22) NOT NULL', 
             'create_date' => Schema::TYPE_TIMESTAMP . ' NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP', 
             'end_date' => Schema::TYPE_STRING . '(22) DEFAULT NULL', 
-        ], $tableOptions);
+        ]);
 
         // Структура таблицы `testings_questions`
 
@@ -68,7 +62,7 @@ class m160118_080009_testings_module extends Migration
             'is_active' => 'tinyint(1) NOT NULL', 
             'author' => Schema::TYPE_STRING . '(100) NOT NULL', 
             'create_date' => Schema::TYPE_TIMESTAMP . ' NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
-        ], $tableOptions);
+        ]);
 
         // Структура таблицы `testings_questions_passings`
 
@@ -81,7 +75,7 @@ class m160118_080009_testings_module extends Migration
             'user_answer' => Schema::TYPE_TEXT . ' NOT NULL', 
             'answer_time' => Schema::TYPE_INTEGER . '(5) DEFAULT NULL',  
             'create_date' => Schema::TYPE_TIMESTAMP . ' NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
-        ], $tableOptions);
+        ]);
 
         // Структура таблицы `testings_sessions`
 
@@ -91,7 +85,7 @@ class m160118_080009_testings_module extends Migration
             'start_date' => Schema::TYPE_STRING . '(20) NOT NULL', 
             'end_date' => Schema::TYPE_STRING . '(20) NOT NULL', 
             'create_date' => Schema::TYPE_TIMESTAMP . ' NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
-        ], $tableOptions);
+        ]);
 
         // Структура таблицы `testings_tests`
 
@@ -105,7 +99,7 @@ class m160118_080009_testings_module extends Migration
             'attempt' => Schema::TYPE_INTEGER . '(3) NOT NULL', 
             'mix' => Schema::TYPE_INTEGER . '(1) NOT NULL', 
             'create_date' => Schema::TYPE_TIMESTAMP . ' NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
-        ], $tableOptions);
+        ]);
 
         // Структура таблицы `testings_users`
 
@@ -125,7 +119,7 @@ class m160118_080009_testings_module extends Migration
             'region' => Schema::TYPE_STRING . '(100) DEFAULT NULL', 
             'is_auth' => "tinyint(1) DEFAULT '0'", 
             'create_date' => Schema::TYPE_TIMESTAMP . ' NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
-        ], $tableOptions);
+        ]);
 
         // Структура таблицы `testings_users_groups`
 
@@ -134,7 +128,7 @@ class m160118_080009_testings_module extends Migration
             'session_id' => Schema::TYPE_INTEGER . '(11) NOT NULL', 
             'name' => Schema::TYPE_STRING . '(255) DEFAULT NULL', 
             'created' => Schema::TYPE_TIMESTAMP . ' NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
-        ], $tableOptions);
+        ]);
 
         // Структура таблицы `testings_users_groups_assign`
 
@@ -142,7 +136,7 @@ class m160118_080009_testings_module extends Migration
             'user_id' => Schema::TYPE_INTEGER . '(11) NOT NULL', 
             'group_id' => Schema::TYPE_INTEGER . '(11) NOT NULL', 
             'session_id' => Schema::TYPE_INTEGER . '(11) NOT NULL', 
-        ], $tableOptions);
+        ]);
 
         // Структура таблицы `testings_users_history`
 
@@ -157,7 +151,7 @@ class m160118_080009_testings_module extends Migration
             'unisender_status' => Schema::TYPE_STRING . '(20) DEFAULT NULL', 
             'notified' => Schema::TYPE_INTEGER . '(1) NOT NULL', 
             'created' => Schema::TYPE_TIMESTAMP . ' NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
-        ], $tableOptions);
+        ]);
 
         $this->createIndex('testings_answers2testings_questions', 'testings_answers', 'question_id');
         $this->createIndex('testings_mistakes2testings_passings', 'testings_mistakes', 'passing_id');

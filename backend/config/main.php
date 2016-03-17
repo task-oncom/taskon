@@ -21,7 +21,6 @@ return [
 		'testings' => ['class' => 'common\modules\testings\Module'],
 		'main' => ['class' => 'common\modules\main\main'],
 		'rbac' => ['class' => 'common\modules\rbac\rbac'],
-		'utility' => ['class' => 'c006\utility\migration\Module'],
 	],
     'components' => [
 		'session' => [

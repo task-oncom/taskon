@@ -1,10 +1,14 @@
 <?php
-use \common\components;
 namespace common\components; 
+
+use Yii;
+use yii\base\NotSupportedException;
+
+use common\modules\users\models\User;
 
 abstract class AdminController extends \common\components\BaseController
 {
-    public $layout='//main';
+    public $layout = '//main';
 
     public $tabs;
 	
@@ -17,23 +21,14 @@ abstract class AdminController extends \common\components\BaseController
     {
 		parent::init();
 
-        $admin_url = $this->url('/users/userAdmin/login');
-		
-		if(\Yii::$app->user->isGuest)
+		if(Yii::$app->user->isGuest)
         {
-			$this->redirect('/site/login');
-            \Yii::$app->end();
+			return $this->redirect('/site/login');
         }
 
-		if(\Yii::$app->user->identity->getRole() == 'user')
-			$this->redirect('/');
-        if (\Yii::$app->user->isGuest && $_SERVER['REQUEST_URI'] != $admin_url)
+		if(Yii::$app->user->identity->role != User::ROLE_ADMIN)
         {
-            $this->redirect($admin_url);
+			throw new NotSupportedException('The requested page does not exist.');
         }
-
-        $this->view->registerJsFile('/js/packages/adminBaseClasses/buttonSet.js');
-		$this->view->registerJsFile('/js/packages/adminBaseClasses/gridBase.js');
-
     }
 }

@@ -27,6 +27,8 @@ abstract class BaseController extends Controller
     {
         parent::init();
 
+        $this->_initSession();
+
         $this->_initLanguage();
 	    if (YII_DEBUG)
         {
@@ -34,6 +36,14 @@ abstract class BaseController extends Controller
         }
     }
 
+    private function _initSession()
+    {
+        $request = Yii::$app->request;
+        if($request->isGet && !$request->isAjax)
+        {
+            Yii::$app->session->set('SessionData', [$request->url, $request->referrer]);
+        }
+    }
 
     private function _initLanguage()
     {
@@ -51,41 +61,6 @@ abstract class BaseController extends Controller
 
     public function beforeAction($action)
     {
-
-        /*if(substr($currentUrl, -1) == '/' && $currentUrl!="/") {
-        	$urlWithoutSlash = substr($currentUrl, 0, -1);
-        	return $this->redirect($urlWithoutSlash,true,301);
-        }*/
-
-        $actions = ['/login', '/changePasswordRequest', '/changePassword', '/error'];
-
-        $curr_action = lcfirst($action->id);
-
-        $feedback_action = $action->controller->id == 'feedback' && $curr_action == 'create';
-
-		$testing_controller = $action->controller->id == 'testingTest';
-
-
-        if (!empty(Yii::$app->request->cookies['startPage']->value)) {
-			Yii::$app->response->cookies->add(new \yii\web\Cookie([
-				'name' => 'startPage',
-				'value' => "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"
-			]));
-        }
-
-
-        if (Yii::$app->user->isGuest && !in_array($curr_action, $actions) && !$feedback_action && !$testing_controller)
-        {
-            //$this->redirect($this->url('/users/user/login'));
-        }
-
-	 /*$item_name = common\modules\rbac\models\AuthItem::constructName(Yii::$app->controller->id, $action->id);
-	
-        if (isset(Yii::$app->params->save_site_actions) && Yii::$app->params->save_site_actions)
-        {
-            common\modules\main\MainModule::saveSiteAction();
-        }*/
-
         $this->setTitle($action);
         $this->_setMetaTags($action);
 
@@ -95,7 +70,6 @@ abstract class BaseController extends Controller
 
     private function _setMetaTags($action)
     {
-
         if ($action->id != 'view' || $this instanceof AdminController)
         {
             return false;
@@ -127,7 +101,13 @@ abstract class BaseController extends Controller
         {
             $class = $this->getModelClass();
             if($class == 'Faq')
+            {
                 $class = '\common\modules\faq\models\Faq';
+            }
+            elseif($class == 'Post')
+            {
+                $class = '\common\modules\blog\models\Post';
+            }
 
             $page_model = new $class;
             $page_model = $page_model::findOne(['url' => $url]);
@@ -232,7 +212,7 @@ abstract class BaseController extends Controller
 
         if (!isset($action_titles[ucfirst($action->id)]))
         {
-            throw new \yii\web\HttpException('Не найден заголовок для дейсвия ' . ucfirst($action->id));
+            throw new \yii\web\HttpException('Не найден заголовок для действия ' . ucfirst($action->id));
         }
 
         $title = $action_titles[ucfirst($action->id)];
@@ -279,16 +259,6 @@ abstract class BaseController extends Controller
         return "<div class='message {$type}' style='display: block;'>
                     <p>{$msg}</p>
                 </div>";
-    }
-
-
-    protected function performAjaxValidation($model)
-    {
-        if (isset($_POST['ajax']))
-        {
-            echo CActiveForm::validate($model);
-            Yii::$app->end();
-        }
     }
 
 

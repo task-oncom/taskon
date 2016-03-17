@@ -2,6 +2,7 @@
 namespace common\components;
 use \yii\db\ActiveRecord;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
 
 class BaseForm extends \yii\widgets\ActiveForm
 {
@@ -15,101 +16,10 @@ class BaseForm extends \yii\widgets\ActiveForm
 
     public $cancel_button_show = true;
 	
-	public function run() {
-		//parent::run();
-        //$out = ob_get_contents();
-
-        //ob_get_clean();
-
-		$view = $this->getView();
-        //ActiveFormAsset::register($view);
-		/*$view->registerCssFile('/plugins/bootstrap-datepicker/css/datepicker.css', ['position' => \yii\web\View::POS_HEAD ]);*/
-		$view->registerCssFile('/plugins/bootstrap-datepicker/css/datepicker3.css', ['position' => \yii\web\View::POS_HEAD ]);
-		$view->registerCssFile('/plugins/bootstrap-datetimepicker/css/datetimepicker.css', ['position' => \yii\web\View::POS_HEAD ]);
-		
-		$view->registerCssFile('/plugins/switchery/switchery.min.css', ['position' => \yii\web\View::POS_HEAD ]);
-		$view->registerCssFile('/plugins/powerange/powerange.min.css', ['position' => \yii\web\View::POS_HEAD ]);
-		$view->registerJsFile('/js/form-plugins.demo.js', ['position' => \yii\web\View::POS_END ]);
-
-
-        // $view->registerJsFile('/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js', ['position' => \yii\web\View::POS_END ]);
-        // $view->registerJsFile('/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.ru.js', ['position' => \yii\web\View::POS_END ]);
-
-        $view->registerJsFile('/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js', ['position' => \yii\web\View::POS_END ]);
-		$view->registerJsFile('/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.ru.js', ['position' => \yii\web\View::POS_END ]);
-
-        $view->registerJsFile('/plugins/switchery/switchery.min.js', ['position' => \yii\web\View::POS_HEAD ]);
-		$view->registerJsFile('/plugins/powerange/powerange.min.js', ['position' => \yii\web\View::POS_HEAD ]);
-		$view->registerJsFile('/js/form-slider-switcher.demo.min.js', ['position' => \yii\web\View::POS_HEAD ]);
-		
-		/*$view->registerJsFile('/plugins/ckeditor/ckeditor.js', ['position' => \yii\web\View::POS_HEAD ]);
-		$view->registerJsFile('/plugins/ckeditor/config.js', ['position' => \yii\web\View::POS_HEAD ]);*/
-		
-		//$view->registerJsFile('//tinymce.cachefly.net/4.1/tinymce.min.js', ['position' => \yii\web\View::POS_HEAD ]);
-		$view->registerJsFile('/plugins/tinymce/js/tinymce/tinymce.min.js', ['position' => \yii\web\View::POS_END ]);
-		
-		$view->registerJsFile('/js/apps.min.js', ['position' => \yii\web\View::POS_HEAD ]);
-
-$js = <<<JS
-    /*"use strict";
-    $.fn.datepicker.defaults.format = "dd.mm.yyyy";
-    $.fn.datepicker.defaults.language= 'ru';*/
-JS;
-        $view->registerJs($js, \yii\web\View::POS_END, 'formLoad1');
-$js = <<<JS
-	//$('.datepicker-autoClose').datetimepicker({
-    "use strict";
-
-	$('.datepicker-autoClose').datepicker({
-	    dateFormat: 'dd.mm.yy',
-        todayHighlight: true,
-		regional: 'ru',
-        autoclose: true,
-        todayBtn: true
-    });
-
-	$('.datetimepicker-autoClose').datetimepicker({
-        todayHighlight: true,
-		language: 'ru',
-        autoclose: true,
-        todayBtn: true,
-		format: 'dd.mm.yyyy hh:ii'
-    });
-
-	FormSliderSwitcher.init();
-tinymce.init({
-    selector: "textarea",theme: "modern",
-    language: "ru_RU",
-    custom_elements: "emstart,emend,header,main,span",
-    extended_valid_elements: "span[id|name|class|style]",
-    height: '350px',
-    menubar: "edit insert view format table tools",
-    plugins: [
-         "advlist autolink link image code lists charmap print preview hr anchor pagebreak",
-         "searchreplace wordcount visualblocks visualchars insertdatetime media nonbreaking",
-         "table contextmenu directionality emoticons paste textcolor responsivefilemanager"
-   ],
-   toolbar1: "undo redo | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | styleselect",
-   toolbar2: "| responsivefilemanager | link unlink anchor | image media | forecolor backcolor  | print preview code ",
-   image_advtab: true ,
-   forced_root_block : false,
-   external_filemanager_path:"/filemanager/",
-   filemanager_title:"Responsive Filemanager" ,
-   external_plugins: { "filemanager" : "/filemanager/plugin.min.js"}
- });
-JS;
-		
-		$view->registerJs($js, \yii\web\View::POS_READY, 'formLoad');
-		$view->registerCss(".control-label {min-width: 100px;}");
-
-        //return $out;
-	}
-	
 	public function __construct($config, $model = null, $parent = null)
     {
         $this->model = $model;
         $behaviors = $model->behaviors();
-
         //die(print_r($behaviors));
 
         $metaFlags = false;
@@ -133,11 +43,11 @@ JS;
 
         if (is_string($config))
         {
-            $config = self::getFormConfig($config);
+            $config = self::getFormConfig($config, $model);
         }
 		//$config['ActiveForm'] = $config['activeForm'];
 		//die(print_r($config['elements']));
-		unset($config['activeForm']);
+		// unset($config['activeForm']);
 		$config['options'] = [];
 		//die(print_r(\yii::$app->controller->getAction('captcha')));
         //$config['options'][] = $this->errorSummary($model);
@@ -163,8 +73,14 @@ JS;
                     $opt['value'] = $element['value'];
                 if(!empty($element['options']['label']))
                     $optEl['labelOptions'] = ['label' => $element['options']['label']];
+                if(!empty($element['fileOptions']))
+                    $opt = $element['fileOptions'];
                 if(!empty($element['empty']))
                     $opt['value'] = $element['empty'];
+                if(!empty($element['inputOptions']))
+                    $optEl['inputOptions'] =  $element['inputOptions'];
+                if(!empty($element['inputOptions']))
+                    $opt['inputOptions'] =  $element['inputOptions'];
                 switch($element['type']) {
                     case 'checkbox':
                         $opt['data-render'] = 'switchery';
@@ -188,12 +104,15 @@ JS;
                     case 'email':
                         $tmp = $this->field($this->model, $key, $optEl)->input($element['type'], $opt);
                         if(!empty($element['hint'])) $tmp = $tmp->hint($element['hint']);
+                        if(array_key_exists('options', $element) && $element['options']['label'] === false) $tmp = $tmp->label(false);
                         $config['options'][] = $tmp;
                         break;
                     case 'password':
                         //$opt['value'] = '';
                         $optEl['template'] = '{label}{input}<div id="'.$element['pwd-id'].'" class="is0 m-t-5"></div>{error}';
-                        $config['options'][] = $this->field($this->model, $key, $optEl)->input($element['type'], $opt);
+                        $tmp = $this->field($this->model, $key, $optEl)->input($element['type'], $opt);
+                        if($element['options']['label'] === false) $tmp = $tmp->label(false);
+                        $config['options'][] = $tmp;
                     break;
                     case 'hidden':
                         $config['options'][] = $this->field($this->model, $key, $optEl)->hiddenInput($opt)->label(false);
@@ -206,6 +125,7 @@ JS;
                         //$optEl['template'] = '{label}<div class="col-md-8">{input}</div>{error}{hint}';
                         $tmp = $this->field($this->model, $key, $optEl)->dropDownList($element['items'],$opt);
                         if(!empty($element['hint'])) $tmp = $tmp->hint($element['hint']);
+                        if(array_key_exists('options', $element) && $element['options']['label'] === false) $tmp = $tmp->label(false);
                         $config['options'][] = $tmp;
                     break;
                     case 'listBox':
@@ -247,13 +167,15 @@ JS;
                             '</div>';
                         break;
                     case 'file':
-                        $config['options'][] = $this->field($this->model, $key, $optEl)->fileInput();
+                        $config['options'][] = $this->field($this->model, $key, $optEl)->fileInput($opt);
                         break;
                 }
             }
-			/*временная заплатка*/
-			$config['options'][] = '<div style="clear: both;"></div>';
-			/* **************** */
+            if($element != '</div>'){
+                /*временная заплатка*/
+                $config['options'][] = '<div style="clear: both;"></div>';
+                /* **************** */ 
+            }
 		}
 		unset($config['elements']);
         if($metaFlags) {
@@ -264,18 +186,30 @@ JS;
             $config['options'][] = $this->field($meta, 'description');
             $config['options'][] = $this->field($meta, 'keywords');
         }
-		foreach($config['buttons'] as $buttonName => $button) {
-            if($button['type'] == 'htmlBlock')
-                $config['options'][] = $button['value'];
-            else if($button['type'] == 'submit')
-				$config['options'][] = \yii\helpers\Html::submitButton($button['value'], ['class'=> 'btn btn-success']);
-			else if($button['type'] == 'cancel')
-				$config['options'][] = \yii\helpers\Html::resetButton($button['value'], ['class'=> 'btn btn-default']);
-            else if($button['type'] == 'danger')
-                $config['options'][] = \yii\helpers\Html::button($button['value'], ['class'=> 'btn btn-danger', 'id' => $buttonName]);
-			else
-				$config['options'][] = \yii\helpers\Html::button($button['value'], ['class'=> 'btn btn-info', 'id' => $buttonName]);
-		}
+        if ($config['buttons']){
+            foreach($config['buttons'] as $buttonName => $button) 
+            {
+                if($button['type'] == 'htmlBlock')
+                    $config['options'][] = $button['value'];
+                else if($button['type'] == 'submit')
+                    $config['options'][] = (!empty($button['class'])) ? \yii\helpers\Html::submitButton($button['value'], ['class'=> $button['class']])
+                        : \yii\helpers\Html::submitButton($button['value'], ['class'=> 'btn btn-success']);
+                else if($button['type'] == 'cancel')
+                    $config['options'][] = \yii\helpers\Html::resetButton($button['value'], ['class'=> 'btn btn-default']);
+                else if($button['type'] == 'danger')
+                    $config['options'][] = \yii\helpers\Html::button($button['value'], ['class'=> 'btn btn-danger', 'id' => $buttonName]);
+                else
+                    $config['options'][] = \yii\helpers\Html::button($button['value'], ['class'=> 'btn btn-info', 'id' => $buttonName]);
+
+                $config['options'][] = ' ';
+            }
+        }
+        if (array_key_exists('activeForm', $config)) {
+            foreach($config['activeForm'] as $key=>$option) {
+                $this->options[$key] = $option;
+            }
+        }
+		
 		unset($config['buttons']);
 
         self::initCustom($config);
@@ -286,11 +220,14 @@ JS;
     public function initCustom($config) {
         ob_start();
         ob_implicit_flush(false);
-        $form = ActiveForm::begin([
-            'enableAjaxValidation' => true,
-            'enableClientValidation' => false,
-            'validateOnType' => true,
-        ]);
+        $form = ActiveForm::begin(ArrayHelper::merge(
+            [
+                'enableAjaxValidation' => true,
+                'enableClientValidation' => false,
+                'validateOnType' => true,
+            ],
+            $config['activeForm']
+        ));
         foreach($config['options'] as $item) {
             echo $item;
         }
@@ -308,11 +245,9 @@ JS;
 		list($module, $form) = explode(".", $alias, 2);
         return "application.modules.{$module}.forms.{$form}";
     }
-	
-	/*public function render*/
 
     // Убран static
-    public function getFormConfig($alias)
+    public function getFormConfig($alias, $model)
     {
         if (is_string($alias))
         {
@@ -324,58 +259,6 @@ JS;
             return $alias;
         }
     }
-
-
-    /*public function __toString()
-    {
-        try
-        {
-            $cs = Yii::app()->clientScript;
-
-            if (!($this->parent instanceof self))
-            {
-                //$id = $this->activeForm['id'];
-                if ($this->side == 'client')
-                {
-//                    $cs
-//                        ->registerScriptFile('/js/plugins/clientForm/inFieldLabel/jquery.infieldlabel.js')
-//                        ->registerScriptFile('/js/plugins/clientForm/clientForm.js')
-//                        ->registerCssFile('/js/plugins/clientForm/form.css')->registerScript(
-//                        $id . '_baseForm', "$('#{$id}').clientForm()");
-                }
-                else
-                {
-                    $cs->registerScriptFile('/js/admin/admin_form.js')
-                        ->registerScriptFile('/js/admin/admin_form.js')
-                        ->registerScriptFile('/js/plugins/adminForm/buttonSet.js')
-                        ->registerScriptFile('/js/plugins/adminForm/tooltips/jquery.atooltip.js')
-                        ->registerCssFile('/js/plugins/adminForm/tooltips/atooltip.css')
-                        ->registerScriptFile('/js/plugins/adminForm/chosen/chosen.jquery.js')
-                        ->registerCssFile('/js/plugins/adminForm/chosen/chosen.css');
-                    ;
-                }
-            }
-
-            if ($this->_clear)
-            {
-                $cs->registerScript('clearForm', '$(function()
-                {
-                    $(":input","#' . $this->activeForm['id'] . '")
-                        .not(":button, :submit, :reset, :hidden")
-                        .val("")
-                        .removeAttr("checked")
-                        .removeAttr("selected");
-                })');
-            }
-
-
-            return parent::__toString();
-        } catch (Exception $e)
-        {
-            Yii::app()->handleException($e);
-        }
-    }*/
-
 
     public function renderBody()
     {

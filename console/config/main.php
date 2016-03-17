@@ -28,7 +28,7 @@ return [
         ],
 		'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=mfo',
+            'dsn' => 'mysql:host=localhost;dbname=cms.taskon',
             'username' => 'root',
             'password' => '',
             'charset' => 'utf8',

@@ -121,7 +121,7 @@ JS;
                 if(!empty($element['options']['label']))
                     $optEl['labelOptions'] = ['label' => $element['options']['label']];
                 if(!empty($element['empty']))
-                    $opt['value'] = $element['empty'];
+                    $opt['value'] = $element['empty'];    
                 switch($element['type']) {
                     case 'checkbox':
                         $opt['data-render'] = 'switchery';
@@ -182,10 +182,11 @@ JS;
                         break;
                 }
             }
-			/*временная заплатка*/
-			$config['options'][] = '<div style="clear: both;"></div>';
-			/* **************** */
+                /*временная заплатка*/
+                $config['options'][] = '<div style="clear: both;"></div>';
+                /* **************** */ 
 		}
+
 		unset($config['elements']);
         if($meta) {
             //die(print_r($model->metaTag));

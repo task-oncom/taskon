@@ -679,5 +679,21 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
             }
         }
     }
+
+	/**
+	 * @return bool
+	 */
+	public function checkToAutoAuthByHash($hash)
+	{
+		return true;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function authUser()
+	{
+		return true;
+	}
 }
 
