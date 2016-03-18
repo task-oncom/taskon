@@ -1,27 +1,35 @@
 <?php
 
 use yii\helpers\Html;
+use common\models\Settings;
 
 /* @var $this yii\web\View */
 /* @var $name string */
 /* @var $message string */
 /* @var $exception Exception */
 
-$this->title = $name;
 ?>
-<div class="site-error">
+<!-- begin #page-loader -->
+<div id="page-loader" class="fade in"><span class="spinner"></span></div>
+<!-- end #page-loader -->
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <div class="alert alert-danger">
-        <?= nl2br(Html::encode($message)) ?>
+<!-- begin #page-container -->
+<div id="page-container" class="fade">
+    <!-- begin error -->
+    <div class="error">
+        <div class="error-code m-b-10">404 <i class="fa fa-warning"></i></div>
+        <div class="error-content">
+            <div class="error-message">Произошла какая-то ошибка</div>
+            <div class="error-desc m-b-20">
+                Страница не существует или у вас нет прав для ее просмотра.<br />
+                Проверьте введенный URL-адрес страницы или обратитесь в Службу технической поддержки для решения данного вопроса
+                <?=Html::a(Settings::getValue('content-support-email'), 'mailto:'.Settings::getValue('content-support-email'))?>
+            </div>
+            <div>
+                <a href="/" class="btn btn-success">Вернуться на главную страницу</a>
+            </div>
+        </div>
     </div>
-
-    <p>
-        The above error occurred while the Web server was processing your request.
-    </p>
-    <p>
-        Please contact us if you think this is a server error. Thank you.
-    </p>
-
+    <!-- end error -->
 </div>
+<!-- end page container -->

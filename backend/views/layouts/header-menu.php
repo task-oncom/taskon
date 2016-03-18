@@ -22,7 +22,7 @@ use frontend\widgets\Alert;
             <li><a href="javascript:;">Calendar</a></li-->
             <li><a href="javascript:;">Настройки</a></li>
             <li class="divider"></li>
-            <li><a data-method="post" href="/site/logout">Выход</a></li>
+            <li><a href="/site/logout">Выход</a></li>
         </ul>
     </li>
     <?php endif?>

@@ -1,5 +1,5 @@
 <?php
-use backend\assets\AppAsset;
+use backend\assets;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
@@ -8,7 +8,7 @@ use yii\widgets\Breadcrumbs;
 /* @var $this \yii\web\View */
 /* @var $content string */
 //die('-!-!-');
-AppAsset::register($this);
+assets\AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -69,8 +69,11 @@ AppAsset::register($this);
 							<a href="javascript:;"><img src="/img/user-13.jpg" alt="" /></a>
 						</div-->
 						<div class="info">
-							<?php echo \yii::$app->user->identity->name?>
-							<small><?php echo \yii::$app->user->identity->getPost()?></small>
+							<?php if(!\yii::$app->user->isGuest)
+							{
+								echo \yii::$app->user->identity->name ?>
+								<small><?php echo \yii::$app->user->identity->getPost()?></small>
+							<?php } ?>
 						</div>
 					</li>
 				</ul>
@@ -145,6 +148,7 @@ AppAsset::register($this);
 
 	<!-- end page container -->
 	<?php $this->endBody() ?>
+	<?php $this->registerJsFile('/plugins/jquery-tag-it/js/tag-it.min.js', ['position' => \yii\web\View::POS_END ]);?>
 	<?php echo $this->render('foot')?>
 </body>
 </html>

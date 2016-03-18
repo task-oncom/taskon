@@ -29,7 +29,7 @@ AppAsset::register($this);
 	$this->registerCssFile('/plugins/font-awesome/css/font-awesome.min.css', ['position' => \yii\web\View::POS_HEAD]);
 	$this->registerCssFile('/css/animate.min.css', ['position' => \yii\web\View::POS_HEAD]);
 	$this->registerCssFile('/css/style.min.css', ['position' => \yii\web\View::POS_HEAD]);
-    $this->registerCssFile('/css/simple_line_icons.css', ['position' => \yii\web\View::POS_HEAD]);
+    // $this->registerCssFile('/css/simple_line_icons.css', ['position' => \yii\web\View::POS_HEAD]);
 	$this->registerCssFile('/css/style-responsive.min.css', ['position' => \yii\web\View::POS_HEAD]);
 	$this->registerCssFile('/css/theme/default.css', ['position' => \yii\web\View::POS_HEAD]);
 	?>
@@ -54,11 +54,6 @@ AppAsset::register($this);
 
     <?php $this->endBody() ?>
     <?php
-	$this->registerJsFile('/plugins/jquery/jquery-1.9.1.js', ['position' => \yii\web\View::POS_END]);
-	$this->registerJsFile('/plugins/jquery/jquery-migrate-1.1.0.js', ['position' => \yii\web\View::POS_END ]);
-	$this->registerJsFile('/plugins/jquery-ui/ui/minified/jquery-ui.min.js', ['position' => \yii\web\View::POS_END ]);
-	$this->registerJsFile('/plugins/bootstrap/js/bootstrap.min.js', ['position' => \yii\web\View::POS_END ]);
-	$this->registerJsFile('/js/yii.activeForm.js', ['position' => \yii\web\View::POS_END]);
 	
 	$this->registerJsFile('/plugins/jquery/jquery-1.9.1.js', ['position' => \yii\web\View::POS_HEAD]);
 	$this->registerJsFile('/plugins/jquery/jquery-migrate-1.1.0.js', ['position' => \yii\web\View::POS_HEAD ]);
@@ -72,12 +67,7 @@ AppAsset::register($this);
 	$this->registerJsFile('/plugins/slimscroll/jquery.slimscroll.min.js', ['position' => \yii\web\View::POS_END ]);
 	$this->registerJsFile('/plugins/jquery-cookie/jquery.cookie.js', ['position' => \yii\web\View::POS_END ]);
 	?>
-<?php
-$script = <<<JS
-			
-JS;
-$this->registerJs($script, \yii\web\View::POS_READY);
-?>
+
 </body>
 </html>
 <?php $this->endPage() ?>

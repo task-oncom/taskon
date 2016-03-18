@@ -119,6 +119,6 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php
 	
 	$this->registerJsFile('/js/login-v2.demo.min.js', ['position' => \yii\web\View::POS_END ]);
-	$this->registerJsFile('/js/apps.min.js', ['position' => \yii\web\View::POS_END ]);
+	// $this->registerJsFile('/js/apps.min.js', ['position' => \yii\web\View::POS_END ]);
 	$this->registerJs('App.init();LoginV2.init();',  \yii\web\View::POS_READY);
 ?>

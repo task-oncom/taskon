@@ -90,18 +90,24 @@ class SettingsController extends AdminController
      */
     public function actionCreate($module_id)
     {
-        
-		return $this->actionUpdate($module_id);
-		die('---');
-		$model = new Settings();
+        $model = new Settings;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
+        Yii::$app->controller->page_title = 'Создание свойства для модуля <small>' .\Yii::$app->getModule($module_id)->name(). '</small>';
+        Yii::$app->controller->breadcrumbs = [
+            ['Свойства модуля ' .\Yii::$app->getModule($module_id)->name() => \yii\helpers\Url::toRoute(['manage', 'module_id'=>$module_id])],
+            'Создание свойства для модуля ' .\Yii::$app->getModule($module_id)->name(),
+        ];
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) 
+        {
+            return $this->redirect(['manage', 'module_id' => $module_id]);
+        } 
+
+        $form = new \common\components\BaseForm('/backend/forms/SettingsForm', $model);
+        return $this->render('create', [
+            'model' => $model,
+            'form' => $form->out
+        ]);
     }
 
     /**
@@ -110,45 +116,27 @@ class SettingsController extends AdminController
      * @param string $id
      * @return mixed
      */
-    public function actionUpdate($module_id, $id = null)
-    {
-        
-//die(print_r(\common\components\AppManager::getSettingsParam('scoring_low')));		
-		if(!empty($id)) {
-			$model = $this->findModel($id);
-			\yii::$app->controller->page_title = 'Редактирование свойства для модуля <small>' .\Yii::$app->getModule($module_id)->name(). '</small>';
-		
-			\yii::$app->controller->breadcrumbs = [
-				['Свойства модуля ' .\Yii::$app->getModule($module_id)->name() => \yii\helpers\Url::toRoute(['manage', 'module_id'=>$module_id])],
-				'Редактирование свойства для модуля ' .\Yii::$app->getModule($module_id)->name(),
-			];
-		}
-		else {
-			$model = new Settings();
-			$model->module_id = $module_id;
-			\yii::$app->controller->page_title = 'Добавление свойства для модуля <small>' .\Yii::$app->getModule($module_id)->name(). '</small>';
-		
-		\yii::$app->controller->breadcrumbs = [
-				['Свойства модуля ' .\Yii::$app->getModule($module_id)->name() => \yii\helpers\Url::toRoute(['manage', 'module_id'=>$module_id])],
-				'Добавление свойства для модуля ' .\Yii::$app->getModule($module_id)->name(),
-			];
-		}
+    public function actionUpdate($id)
+    {	
+        $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['manage', 'module_id' => $module_id]);
-        } else {
-			if($model->hasErrors()) 
-				 \Yii::$app->getSession()->setFlash('error', $model->getErrors());
+        Yii::$app->controller->page_title = 'Редактирование свойства для модуля <small>' .\Yii::$app->getModule($model->module_id)->name(). '</small>';
+        Yii::$app->controller->breadcrumbs = [
+            ['Свойства модуля ' .\Yii::$app->getModule($model->module_id)->name() => \yii\helpers\Url::toRoute(['manage', 'module_id'=>$model->module_id])],
+            'Редактирование свойства для модуля ' .\Yii::$app->getModule($model->module_id)->name(),
+        ];
 
-			if($id == 87)
-                $form = new \common\components\BaseForm('/backend/forms/SettingsForm1', $model);
-            else
-                $form = new \common\components\BaseForm('/backend/forms/SettingsForm', $model);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) 
+        {
+            return $this->redirect(['manage', 'module_id' => $model->module_id]);
+        } 
+        else 
+        {
+            $form = new \common\components\BaseForm('/backend/forms/SettingsForm', $model);
 
             return $this->render('update', [
-                //'model' => $model,
+                'model' => $model,
 				'form' => $form->out,
-				//'module_id' => $module_id
             ]);
         }
     }

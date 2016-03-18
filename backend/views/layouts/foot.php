@@ -1,7 +1,5 @@
 ﻿<!-- ================== BEGIN BASE JS ================== -->
-	<?php $this->registerJsFile('/plugins/jquery/jquery-1.9.1.min.js', ['position' => \yii\web\View::POS_HEAD ]);?>
     <?php $this->registerJsFile('/plugins/jquery/jquery-migrate-1.1.0.min.js', ['position' => \yii\web\View::POS_END ]);?>
-    <?php $this->registerJsFile('/plugins/jquery-ui/ui/minified/jquery-ui.min.js', ['position' => \yii\web\View::POS_END ]);?>
     <?php $this->registerJsFile('/plugins/bootstrap/js/bootstrap.min.js', ['position' => \yii\web\View::POS_END ]);?>
 
 	<!--[if lt IE 9]>
@@ -28,7 +26,6 @@
     <?php $this->registerJsFile('/plugins/bootstrap-select/bootstrap-select.js', ['position' => \yii\web\View::POS_END ]);?>
     <?php //$this->registerJsFile('/js/dashboard.min.js', ['position' => \yii\web\View::POS_END ]);?>
     <?php $this->registerJsFile('/js/dashboard.js', ['position' => \yii\web\View::POS_END ]);?>
-    <?php $this->registerJsFile('/js/apps.min.js', ['position' => \yii\web\View::POS_END ]);?>
 
 	<!-- ================== END PAGE LEVEL JS ================== -->
 	

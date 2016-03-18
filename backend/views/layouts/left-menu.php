@@ -1,7 +1,6 @@
 ﻿<?php
 
 $menu = \common\components\AppManager::getAdminMenu();
-
 ?>
 <!-- begin sidebar nav -->
 <ul class="nav">
