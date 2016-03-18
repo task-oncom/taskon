@@ -36,7 +36,7 @@ class Settings extends \common\components\ActiveRecordModel
     public function rules()
     {
         return [
-            [['module_id', 'code', 'name', 'value', 'element', 'description'], 'required'],
+            [['module_id', 'code', 'name', /*'value',*/ 'element', /*'description'*/], 'required'],
             [['value', 'element'], 'string'],
             [['hidden'], 'integer'],
             [['module_id', 'code'], 'string', 'max' => 50],
@@ -54,13 +54,25 @@ class Settings extends \common\components\ActiveRecordModel
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'module_id' => Yii::t('app', 'Module ID'),
-            'code' => Yii::t('app', 'Code'),
-            'name' => Yii::t('app', 'Name'),
-            'value' => Yii::t('app', 'Value'),
-            'element' => Yii::t('app', 'Element'),
-            'hidden' => Yii::t('app', 'Hidden'),
-            'description' => Yii::t('app', 'Description'),
+            'module_id' => 'Модуль',
+            'code' => 'Код',
+            'name' => 'Название',
+            'value' => 'Значение',
+            'element' => 'Элемент',
+            'hidden' => 'Скрытый',
+            'description' => 'Описание',
         ];
+    }
+
+    public static function getValue($code)
+    {
+        $model = Settings::find()->where(['code' => $code])->one();
+
+        if($model)
+        {
+            return $model->value;
+        }
+
+        return;
     }
 }

@@ -16,51 +16,36 @@ return [
     'modules' => [
         'content' => ['class' => 'common\modules\content\Module',],
         'reviews' => ['class' => 'common\modules\reviews\Module',],
-        'request' => ['class' => 'common\modules\request\Module',],
 	    'faq' => ['class' => 'common\modules\faq\Module'],
-        'main' => ['class' => 'common\modules\main\main'],
+        'bids' => ['class' => 'common\modules\bids\Module'],
+        'blog' => ['class' => 'common\modules\blog\Module'],
         'sitemap' => [
-            'class' => 'himiklab\sitemap\Sitemap',
+            'class' => 'frontend\modules\sitemap\Sitemap',
             'models' => [
                 // your models
-                'common\modules\faq\models\Faq',
+                'common\modules\content\models\CoContent',
             ],
             'urls'=> [
-                // your additional urls
-                [
-                    'loc' => '/faq',
-                    'changefreq' => \himiklab\sitemap\behaviors\SitemapBehavior::CHANGEFREQ_DAILY,
-                    'priority' => 0.8,
-                    'faq' => [
-                        'publication'   => [
-                            'name'          => 'Вопрос-Ответ',
-                            'language'      => 'ru',
-                        ],
-                        // 'access'            => 'Subscription',
-                        // 'genres'            => 'Blog, UserGenerated',
-                        // 'publication_date'  => 'YYYY-MM-DDThh:mm:ssTZD',
-                        // 'title'             => 'Example Title',
-                        // 'keywords'          => 'example, keywords, comma-separated',
-                        // 'stock_tickers'     => 'NASDAQ:A, NASDAQ:B',
-                    ],
-                    // 'images' => [
-                    //     [
-                    //         'loc'           => 'http://example.com/image.jpg',
-                    //         'caption'       => 'This is an example of a caption of an image',
-                    //         'geo_location'  => 'City, State',
-                    //         'title'         => 'Example image',
-                    //         'license'       => 'http://example.com/license',
-                    //     ],
-                    // ],
-                ],
+                // // your additional urls
+                // [
+                //     'loc' => '/faq',
+                //     'changefreq' => \himiklab\sitemap\behaviors\SitemapBehavior::CHANGEFREQ_DAILY,
+                //     'priority' => 0.8,
+                //     'faq' => [
+                //         'publication'   => [
+                //             'name'          => 'Вопрос-Ответ',
+                //             'language'      => 'ru',
+                //         ],
+                //     ],
+                // ],
             ],
             'enableGzip' => true, // default is false
             'cacheExpire' => 1, // 1 second. Default is 24 hours
         ],
     ],
     'components' => [
-        'cache' => [
-            'class' => 'yii\caching\FileCache',
+        'request' => [
+            'class' => 'common\components\LangRequest'
         ],
         'view' => [
             'class' => '\mirocow\minify\View',
@@ -75,7 +60,7 @@ return [
             //'css_linebreak_pos' => false,
         ],
         'user' => [
-            'identityClass' => 'common\modules\scoring\models\ScClient',
+            'identityClass' => 'common\modules\users\models\User',
             'loginUrl' => ['/site/login'],
             'enableAutoLogin' => true,
         ],
@@ -118,14 +103,14 @@ return [
                         '/js/libs/jquery/jquery-1.11.2.min.js'
                     ],
                     'jsOptions' => [
-                        //'position' => \yii\web\View::POS_HEAD,
-                        'position' => \yii\web\View::POS_BEGIN,
+                        'position' => \yii\web\View::POS_HEAD,
+                        // 'position' => \yii\web\View::POS_BEGIN,
                     ],
                 ],
                 'yii\jui\JuiAsset' => [
                     'sourcePath' => null,
                     'js' => [
-                        //'plugins/jquery-ui/ui/minified/jquery-ui.min.js',
+                        'plugins/jquery-ui/ui/minified/jquery-ui.min.js',
                         //'plugins/jquery-ui/ui/minified/jquery.ui.widget.min.js',
                     ],
                     'jsOptions' => [
@@ -153,6 +138,9 @@ return [
                 'faq/view/all' => 'faq/faq/all',
                 'faq/<url>' => 'faq/faq/view',
                 'faq' => 'faq/faq/index',
+                'blog' => 'blog/post/index',
+                'blog/tag/<tag>' => 'blog/post/tag',
+                'blog/<url>' => 'blog/post/view',
 
                 '<_m>/<_c>/<_a>/<id:\d+>' => '<_m>/<_c>/<_a>',
                 '<_m>/<_c>/<_a>/<page>' => '<_m>/<_c>/<_a>',

@@ -1,42 +1,41 @@
 <?php
 namespace frontend\controllers;
 
-use common\modules\scoring\models\ScRequest;
 use Yii;
-use frontend\models\LoginForm;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
-use frontend\models\ContactForm;
-use yii\base\InvalidParamException;
-use yii\helpers\Html;
-use yii\web\BadRequestHttpException;
-use yii\web\Controller;
+
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\helpers\Url;
-use common\components\BaseController;
-use common\models\Cities;
-use yii\helpers\ArrayHelper;
-use common\modules\request\models\ScZodiac;
-use \yii\web\Response;
-use \yii\widgets\ActiveForm;
-use common\modules\scoring\models\ScClient;
+
+use common\components\FrontendController;
+use common\models\LoginForm;
+use common\modules\users\models\User;
+use common\modules\eauth\components\GoogleOAuth2Service;
+use common\modules\eauth\models\UserEAuth;
 
 /**
  * Site controller
  */
-class SiteController extends BaseController
+class SiteController extends FrontendController
 {
     public $layout = '//main';
 
     public static function actionsTitles(){
         return [
-            'Index' 		  => 'Главная страница',
+            'Index'           => 'Главная страница',
+            'Contacts'           => 'Контакты',
             'Error'           => 'Error',
-            'Login'            => '',
-            'Logout'            => '',
+            'Login'            => 'Вход',
+            'Logout'            => 'Выход',
         ];
+    }
+
+    // TEMP
+    public function actionContacts()
+    {
+        Yii::$app->controller->meta_title = 'Контакты ООО "Арт Проект"';
+
+        return $this->render('contacts');
     }
 
     /**
@@ -47,10 +46,10 @@ class SiteController extends BaseController
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'only' => ['logout', 'signup', 'login'],
                 'rules' => [
                     [
-                        'actions' => ['signup'],
+                        'actions' => ['signup', 'login'],
                         'allow' => true,
                         'roles' => ['?'],
                     ],
@@ -61,11 +60,10 @@ class SiteController extends BaseController
                     ],
                 ],
             ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
+            'eauth' => [
+                // required to disable csrf validation on OpenID requests
+                'class' => \nodge\eauth\openid\ControllerBehavior::className(),
+                'only' => ['login'],
             ],
         ];
     }
@@ -90,10 +88,10 @@ class SiteController extends BaseController
     {
         $model = \common\modules\content\models\CoContent::findOne(['url' => 'site/error']);
 
-        $content = $model->getContent();
-        $this->meta_title = $model->metaTags->title;
-        $this->meta_description = $model->metaTags->description;
-        $this->meta_keywords = $model->metaTags->keywords;
+        $content = $model->lang->getFinishedContent();
+        $this->meta_title = $model->metaTag->title;
+        $this->meta_description = $model->metaTag->description;
+        $this->meta_keywords = $model->metaTag->keywords;
 
         return $this->render('error', ['content'=>$content]);
     }
@@ -107,67 +105,68 @@ class SiteController extends BaseController
 
     public function actionLogin()
     {
-        $this->layout = '//main-short';
-        $model = new \frontend\models\LoginForm();
+         $serviceName = Yii::$app->request->getQueryParam('service_eauth');
 
-        if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())) {
-            Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
-            return  \yii\widgets\ActiveForm::validate($model);
-            die();
-        }
+         if (isset($serviceName)) {
+            /** @var $eauth \nodge\eauth\ServiceBase */
+            $eauth = Yii::$app->get('eauth')->getIdentity($serviceName);
+            $eauth->setRedirectUrl(Yii::$app->getUser()->getReturnUrl());
+            $eauth->setCancelUrl(Yii::$app->getUrlManager()->createAbsoluteUrl('site/login'));
 
-        if (!\Yii::$app->user->isGuest) {
-            if(\Yii::$app->user->identity->active > 3)
-                return $this->goHome();
-            else
-                return $this->redirect(Url::toRoute(['/scoring/register/step', 'step'=>\Yii::$app->user->identity->active]));
-        }
-
-
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            // if(\Yii::$app->user->identity->active > 3)
-            //     return $this->goHome();
-            // else {
-            //     $step = \Yii::$app->user->identity->active;
-            //     if($step < 1) $step = 1;
-            //     return $this->redirect(Url::toRoute(['/scoring/register/step', 'step' => $step]));
-            // }
-
-            switch (\Yii::$app->user->identity->result) {
-                case ScClient::STATUS_STEP_1:
-                    return $this->redirect(Url::toRoute(['/scoring/register/step', 'step'=>1]));
-                    break;
-                case ScClient::STATUS_STEP_2:
-                    return $this->redirect(Url::toRoute(['/scoring/register/step', 'step'=>2]));
-                    break;
-                case ScClient::STATUS_STEP_3:
-                    return $this->redirect(Url::toRoute(['/scoring/register/step', 'step'=>3]));
-                    break;
-                case ScClient::STATUS_CABINET:
-                    return $this->redirect(Url::toRoute(['/scoring/clients/cabinet']));
-                    break;
-                case ScClient::STATUS_PAYDETAIL:
-                    $request = ScRequest::find()->where(['user_id' => Yii::$app->user->id, 'status' => ScRequest::STATUS_NEW])->one();
-                    if($request)
-                    {
-                        Yii::$app->session['Pay'] = ScRequest::$namePay[$request->payment];
-                        Yii::$app->session['Request_id'] = $request->id;
-                        return $this->redirect(Url::toRoute(['/scoring/clients/paydetails']));
-                    }
-                    else
-                    {
-                        return $this->redirect(Url::toRoute(['/scoring/clients/cabinet']));
-                    }
-                    break;
-                default:
-                    return $this->goHome();
-                    break;
+            if ($serviceName == 'facebook' || $serviceName == 'vk') {
+                $eauth->setScope('email');
+            }
+            else if ($serviceName == 'google') {
+                $eauth->setScope(GoogleOAuth2Service::SCOPE_EMAIL);
             }
 
-        } else {
-            return $this->render('login', [
-                'model' => $model,
-            ]);
+            try {
+                if ($eauth->authenticate()) {
+                    $eauth->getAttributes(); // get EAuth info
+                    // Добавить проверку обязательных полей - если нет какого-то
+                    // обязательного поля, то выводить форму для заполнения
+                    $eauth->checkAttributes();
+
+                    $userEAuthModel = new UserEAuth();
+                    $identity = $userEAuthModel->getByEAuth($eauth);
+                    Yii::$app->getUser()->login($identity);
+
+                    // special redirect with closing popup window
+                    $eauth->redirect('/school');
+                }
+                else {
+                    // close popup window and redirect to cancelUrl
+                    $eauth->cancel('/school');
+                }
+            }
+            catch (\nodge\eauth\ErrorException $e) {
+                echo '<pre>'; die(var_dump($e->getMessage())); echo '</pre>';
+                // save error to show it later
+                Yii::$app->getSession()->setFlash('error', 'EAuthException: '.$e->getMessage());
+
+                // close popup window and redirect to cancelUrl
+                $eauth->cancel('/school');
+            }
+        }
+
+        //Yii::$app->user->getIdentity()->getRole()
+        $model = new LoginForm(); 
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) 
+        {
+            if($model->user->role == User::ROLE_USER)
+            {
+                $model->login();
+            }
+            else
+            {
+                echo json_encode(['errors' => []]);
+            }
+
+            $this->redirect(['/support']);
+        }
+        else 
+        {
+            echo json_encode(array('errors'=>$model->getErrors()));
         }
     }
 

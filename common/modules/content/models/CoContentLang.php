@@ -125,24 +125,24 @@ class CoContentLang extends \common\components\ActiveRecordModel
             }
         }
 
-        $arrWhatReplaceNext[] = '[about-reviews]';
-        $arrReplaceNext[] = CoBlocks::printStaticBlock('about-reviews');
-        $arrWhatReplaceNext[] = '[reviews]';
-        $arrReplaceNext[] = CoBlocks::printStaticBlock('reviews');
-        $arrWhatReplaceNext[] = '[content-phone]';
-        $arrReplaceNext[] = \common\models\Settings::getValue('content-phone');
-        $arrWhatReplaceNext[] = '[cases]';
-        $arrReplaceNext[] = CoBlocks::printStaticBlock('cases');
-        $arrWhatReplaceNext[] = '[projects]';
-        $arrReplaceNext[] = CoBlocks::printStaticBlock('projects');
-        $arrWhatReplaceNext[] = '[case-subscribe]';
-        $arrReplaceNext[] = CoBlocks::printStaticBlock('case-subscribe', ['title' => $this->title]);
-        $arrWhatReplaceNext[] = '[case-more]';
-        $arrReplaceNext[] = CoBlocks::printStaticBlock('case-more', ['model' => $this->content]);
-        $arrWhatReplaceNext[] = '[footer]';
-        $arrReplaceNext[] = \Yii::$app->getView()->render('@app/views/layouts/footer');
-        $arrWhatReplaceNext[] = '[footer-index]';
-        $arrReplaceNext[] = \Yii::$app->getView()->render('@app/views/layouts/footer-index');
+        // $arrWhatReplaceNext[] = '[about-reviews]';
+        // $arrReplaceNext[] = CoBlocks::printStaticBlock('about-reviews');
+        // $arrWhatReplaceNext[] = '[reviews]';
+        // $arrReplaceNext[] = CoBlocks::printStaticBlock('reviews');
+        // $arrWhatReplaceNext[] = '[content-phone]';
+        // $arrReplaceNext[] = \common\models\Settings::getValue('content-phone');
+        // $arrWhatReplaceNext[] = '[cases]';
+        // $arrReplaceNext[] = CoBlocks::printStaticBlock('cases');
+        // $arrWhatReplaceNext[] = '[projects]';
+        // $arrReplaceNext[] = CoBlocks::printStaticBlock('projects');
+        // $arrWhatReplaceNext[] = '[case-subscribe]';
+        // $arrReplaceNext[] = CoBlocks::printStaticBlock('case-subscribe', ['title' => $this->title]);
+        // $arrWhatReplaceNext[] = '[case-more]';
+        // $arrReplaceNext[] = CoBlocks::printStaticBlock('case-more', ['model' => $this->content]);
+        // $arrWhatReplaceNext[] = '[footer]';
+        // $arrReplaceNext[] = \Yii::$app->getView()->render('@app/views/layouts/footer');
+        // $arrWhatReplaceNext[] = '[footer-index]';
+        // $arrReplaceNext[] = \Yii::$app->getView()->render('@app/views/layouts/footer-index');
 
         return str_replace($arrWhatReplaceNext, $arrReplaceNext,str_replace($arrWhatReplace, $arrReplace, $content));
     }

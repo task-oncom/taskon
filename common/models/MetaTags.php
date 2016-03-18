@@ -37,12 +37,11 @@ class MetaTags extends \common\components\ActiveRecordModel
     public function rules()
     {
         return [
-            [['object_id', 'model_id', 'language'], 'required'],
-            [['object_id', 'created_at', 'updated_at'], 'integer'],
+            [['object_id', 'model_id', 'lang_id'], 'required'],
+            [['object_id', 'created_at', 'updated_at', 'lang_id'], 'integer'],
             [['model_id'], 'string', 'max' => 50],
-            [['language'], 'string', 'max' => 5],
             [['title', 'keywords', 'description'], 'string', 'max' => 300],
-            [['object_id', 'model_id'], 'unique', 'targetAttribute' => ['object_id', 'model_id'], 'message' => 'The combination of ID объекта and Модель has already been taken.']
+            [['object_id', 'model_id', 'lang_id'], 'unique', 'targetAttribute' => ['object_id', 'model_id', 'lang_id'], 'message' => 'The combination of ID объекта and Модель has already been taken.']
         ];
     }
 
@@ -55,10 +54,10 @@ class MetaTags extends \common\components\ActiveRecordModel
             'id' => Yii::t('content', 'ID'),
             'object_id' => Yii::t('content', 'ID объекта'),
             'model_id' => Yii::t('content', 'Модель'),
-            'language' => Yii::t('content', 'Язык'),
-            'title' => /*Yii::t('content', 'Заголовок')*/'Title',
-            'keywords' => /*Yii::t('content', 'Ключевые слова')*/'Keywords',
-            'description' => /*Yii::t('content', 'Описание')*/ 'Description',
+            'lang_id' => Yii::t('content', 'Язык'),
+            'title' => 'Title',
+            'keywords' => 'Keywords',
+            'description' => 'Description',
             'created_at' => Yii::t('content', 'Создано'),
             'updated_at' => Yii::t('content', 'Отредактирован'),
         ];
