@@ -60,8 +60,6 @@ return [
 		'assetManager'=>[
 			'linkAssets' => true,
             'bundles' => [
-                'yii\web\YiiAsset' => [
-				],
 				'yii\bootstrap\BootstrapPluginAsset' => [
 					'js' => [
 					],
@@ -72,7 +70,7 @@ return [
                          'plugins/jquery/jquery-1.9.1.min.js',
                     ],
 					'jsOptions' => [
-						'position' => \yii\web\View::POS_BEGIN,
+						'position' => \yii\web\View::POS_HEAD,
 					],
                 ],
 				'yii\jui\JuiAsset' => [
@@ -82,7 +80,7 @@ return [
 						 'plugins/jquery-ui/ui/minified/jquery.ui.widget.min.js',
                     ],
 					'jsOptions' => [
-						'position' => \yii\web\View::POS_BEGIN,
+						'position' => \yii\web\View::POS_HEAD,
 					],
 					'css' => [],
                 ],
