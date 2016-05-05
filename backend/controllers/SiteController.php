@@ -28,13 +28,19 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
                 ],
             ],
         ];
+    }
+
+    public function actionIndex()
+    {
+        $this->page_title = 'Просмотр главной страницы';
+        return $this->render('index');
     }
 
     public function actionError()

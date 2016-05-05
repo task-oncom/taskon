@@ -107,29 +107,20 @@ return [
             'showScriptName' => false,
 			'enableStrictParsing' => true,
             'rules' => [
-				/*[
-					'class' => 'yii\rest\UrlRule',
-					'controller' => 'mainAdmin',
-				]
-				'main/mainAdmin/index'	=> 'main/mainAdmin/index',*/
 				'<module_id>/settings/manage'		=> 'settings/manage',
 				'<module_id>/settings/create'		=> 'settings/create',
 				'<module_id>/settings/update/<id>'	=> 'settings/update',
 				'<module_id>/settings/delete/<id>'	=> 'settings/delete',
 				'<module_id>/settings/view/<id>'	=> 'settings/view',
 				
-				'main/mainAdmin'	=> 'main/main-admin/index',
-				'/'					=> 'main/main-admin/index',
-                '' 					=> 'main/main-admin/index',
+				'/'					=> 'site/index',
+                '' 					=> 'site/index',
 				
 				'users/user-admin/manage/is_deleted/<is_deleted>' => 'users/user-admin/manage',
-				'users/userAdmin/SetDeletedFlag/id/<id>/is_deleted/<is_deleted>' => 'users/userAdmin/SetDeletedFlag',
-				'users/userAdmin/delete/id/<id>/ajax/<ajax>' => 'users/userAdmin/delete',
 				
 				'<_m>/<_c>/<_a>/<id>' => '<_m>/<_c>/<_a>',
 				'<_m>/<_c>/<_a>' => '<_m>/<_c>/<_a>',
 				'<_c>/<_a>' => '<_c>/<_a>',
-				//'module/<module:\w+>/<controller:\w+>/<action:\w+>' => '<module>/<controller>/<action>',
             ]
         ],
         'formatter' => [

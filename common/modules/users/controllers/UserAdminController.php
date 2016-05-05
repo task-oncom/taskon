@@ -247,8 +247,6 @@ class UserAdminController extends \common\components\AdminController
 
             if($model->save())
             {
-                AuthAssignment::updateUserRole($model->id, $_POST['User']['role']);
-
                 return $this->redirect(array(
                     '/rbac/role-admin/manage'
                 ));

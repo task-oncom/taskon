@@ -9,13 +9,8 @@ class MainAdminController extends \common\components\AdminController
 	public static function actionsTitles() 
     {
         return array(
-            'Index'            => 'Просмотр главной страницы',
         );
     }
 	
-	public function actionIndex()
-    {
-		return $this->render('index');
-    }
 
 }
