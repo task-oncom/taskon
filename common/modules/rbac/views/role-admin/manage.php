@@ -12,7 +12,7 @@ use common\components\zii\AdminGrid;
 ];
 ?>
 <p>
-        <?= Html::a(Yii::t('units', 'Создать пользователя', [
+        <?= Html::a(Yii::t('units', 'Создать нового пользователя', [
     'modelClass' => 'Modules',
 ]), ['/users/user-admin/create'], ['class' => 'btn btn-success']) ?>
 </p>
@@ -29,6 +29,7 @@ $not_system_role = '!in_array($data->name, AuthItem::$system_roles)';
 echo AdminGrid::widget([
 	'id' => 'access-grid-roles',
 	'dataProvider' => $dataProvider,
+	'filterModel' => $searchModel,
     'rowOptions' => function ($model, $index, $widget, $grid){
         if($model->status == 'blocked')
             //return ['style'=>'background-color:#575d63 !important;'];

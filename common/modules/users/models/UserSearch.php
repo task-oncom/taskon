@@ -19,8 +19,8 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['id', 'is_deleted', 'sort'], 'integer'],
-            [['fio', 'status', 'email'], 'safe'],
+            [['id', 'is_deleted', 'sort', 'last_logon'], 'integer'],
+            [['fio', 'status', 'email', 'fullName'], 'safe'],
         ];
     }
 
@@ -44,26 +44,26 @@ class UserSearch extends User
     {
         $query = User::find();
 
-
-        $sort = new Sort([
-            'attributes' => [
-                'status' => [
-                    'asc' => ['status' => SORT_ASC],
-                    'desc' => ['status' => SORT_DESC],
-                    'default' => SORT_DESC,
-                    'label' => 'Статус',
-                ],
-            ],
-        ]);
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort'=> ['defaultOrder' => ['status'=>SORT_ASC]]
-            //'sort' => $sort
+            'sort' => [
+                'defaultOrder' => ['status'=>SORT_ASC],
+                'attributes' => [
+                    'status' => [
+                        'asc' => ['status' => SORT_ASC],
+                        'desc' => ['status' => SORT_DESC],
+                        'default' => SORT_DESC,
+                        'label' => 'Статус',
+                    ],
+                    'fullName' => [
+                        'asc' => ['fullName' => SORT_ASC],
+                        'desc' => ['fullName' => SORT_DESC],
+                    ],
+                    'date_create',
+                    'last_logon'
+                ],
+            ]
         ]);
-
-        /*$dataProvider->setSort([
-            'defaultOrder' => ['status'=>SORT_DESC],]);*/
 
         $this->load($params);
 
@@ -73,25 +73,20 @@ class UserSearch extends User
             return $dataProvider;
         }
 
+        $query->select(['*', "CONCAT(name, ' ', surname) as fullName"]);
+
+        if($this->fullName)
+        {
+            $query->andHaving([
+                'fullName' => $this->fullName,
+            ]);
+        }
+
         $query->andFilterWhere([
             'id' => $this->id,
             'is_deleted' => $this->is_deleted,
             'sort' => $this->sort,
-        ]);
-
-        $query->andFilterWhere([
-			'email', 'name', $this->email,
-			'fio', 'name', $this->fio,
-			'status', 'name', $this->status,
 		]);
-
-        if(!empty($_REQUEST['Search']['phrase']))
-            $query->andFilterWhere([
-                'like', 'first_name', $this->first_name,
-                'like', 'last_name', $this->last_name,
-                'like', 'patronymic', $this->patronymic,
-                'like', 'email', $this->email,
-            ]);
 
         return $dataProvider;
     }

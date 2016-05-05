@@ -155,7 +155,7 @@ class GridView extends \himiklab\sortablegrid\SortableGridView
             $return .= "<table class='".$this->tableOptions['class']."' cellpadding='0' cellspacing='0' width='100%'>\n";
             $return .= $this->renderTableHeader();
             $return .= $this->renderTableBody();
-            $return .= $this->renderTableFooter();
+            // $return .= $this->renderTableFooter();
             $return .= "</table>";
 
             if ($this->mass_removal)

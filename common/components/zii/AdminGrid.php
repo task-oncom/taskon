@@ -4,7 +4,6 @@ namespace common\components\zii;
 use common\components\zii\AdminLinkPager;
 class AdminGrid extends GridView
 {   
-
     public $sortable = false;
     public $pager = array('class'=> '\common\components\zii\AdminLinkPager');
     public $cssFile = "/css/admin/gridview/styles.css";

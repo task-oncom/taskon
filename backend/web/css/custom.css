@@ -9,6 +9,62 @@
 	border-color: #79C137;
 }
 
+.btn.btn-success.active, .btn.btn-success:active, .btn.btn-success:focus, .btn.btn-success:hover, .open .dropdown-toggle.btn-success {
+	background: #487421;
+	border-color: #487421;
+}
+
 .color-column {
 	white-space: nowrap;
+}
+
+.btn.btn-inverse-grey {
+    background: #6d7479;
+    border-color: #6d7479;
+    color: white;
+}
+
+.btn.btn-inverse-grey.active, .btn.btn-inverse-grey:active, .btn.btn-inverse-grey:focus, .btn.btn-inverse-grey:hover, .open .dropdown-toggle.btn-inverse-grey {
+	background: #2d353c;
+	border-color: #2d353c;
+}
+
+.progress-bar.progress-bar-success {
+	background-color: #79c137;
+}
+
+.dataTables_filter {
+	float: left;
+	width: 75%;
+}
+
+.dataTables_filter label {
+	width: 100%;
+}
+
+.dataTables_filter input {
+	margin-left: 0;
+	width: 100% !important;
+}
+
+.dt-buttons.btn-group {
+	float: right;
+}
+
+.dataTables_info {
+	padding-bottom: 8px;
+}
+
+.has-success .form-control {
+	border-color: #79C137;
+}
+.has-success .checkbox, .has-success .checkbox-inline, .has-success .control-label, .has-success .form-control-feedback, .has-success .help-block, .has-success .radio, .has-success .radio-inline {
+	color: #79C137;
+}
+.alert.alert-success {
+	background-color: #e1ecd8;
+	color: #365e11;
+}
+.progress-bar.progress-bar-success {
+	background-color: #79c137;
 }

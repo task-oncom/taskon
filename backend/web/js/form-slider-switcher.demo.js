@@ -11,6 +11,7 @@ var green = '#00acac',
     purple = '#727cb6',
     orange = '#f59c1a',
     black = '#2d353c';
+    success = '#79C137';
 
 var renderSwitcher = function() {
     if ($('[data-render=switchery]').length !== 0) {
@@ -32,6 +33,9 @@ var renderSwitcher = function() {
                         break;
                     case 'black':
                         themeColor = black;
+                        break;
+                    case 'success':
+                        themeColor = success;
                         break;
                 }
             }

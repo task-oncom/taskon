@@ -61,6 +61,9 @@ class LoginForm extends Model
     {
         $user = $this->getUser();
 
+        $user->last_logon = time();
+        $user->save(false, ['last_logon']);
+
         return Yii::$app->user->login($user, $this->rememberMe ? 3600 * 24 * 30 : 0);
     }
 

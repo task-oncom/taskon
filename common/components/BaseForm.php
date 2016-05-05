@@ -84,7 +84,7 @@ class BaseForm extends \yii\widgets\ActiveForm
                 switch($element['type']) {
                     case 'checkbox':
                         $opt['data-render'] = 'switchery';
-                        $opt['data-theme'] = 'default';
+                        $opt['data-theme'] = 'success';
                         $opt['data-classname'] = 'switchery';
                         if(!empty($element['opts']))
                             $opt = array_merge($opt, $element['opts']);
@@ -133,7 +133,7 @@ class BaseForm extends \yii\widgets\ActiveForm
                     break;
                     case 'checkboxList':
                         $opt['data-render'] = 'switchery';
-                        $opt['data-theme'] = 'default';
+                        $opt['data-theme'] = 'success';
                         $opt['data-classname'] = 'switchery';
                         $config['options'][] = $this->field($this->model, $key, $optEl)->checkboxList(
                             $element['items'],

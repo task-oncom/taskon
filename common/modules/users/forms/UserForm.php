@@ -44,6 +44,7 @@ return [
                 'data-change' => 'check-switchery-state-text'
             ]
         ],
+        '<div class="col-md-4 col-sm-6" style="float:right;margin-top:-47px;"><div class="widget widget-stats bg-blue"><span><i class="icon-question"></i>&nbsp;&nbsp;&nbsp;<b>Заблокирован</b><br>Если пользователь заблокирован, то он не сможет войти в систему.<br>Данные внесенные пользователем не удаляются. </span></div></div>',
         'role' => [
             'type'  => 'dropdownlist',
             'items' => User::$role_list,
@@ -55,15 +56,12 @@ return [
     'buttons' => [
         'sp1' => ['type' => 'htmlBlock', 'value' => '<div class="col-md-8 col-sm-6" style="padding-left: 0;">',],
         'submit' => ['type' => 'submit', 'value' => 'Cохранить'],
-        'sp11' => ['type' => 'htmlBlock', 'value' => '&nbsp;&nbsp;&nbsp;&nbsp;',],
-        'block' => ['type' => 'info', 'value' => 'Заблокировать'],
         'sp12' => ['type' => 'htmlBlock', 'value' => '&nbsp;&nbsp;&nbsp;&nbsp;',],
         'delete' => ['type' => 'danger', 'value' => 'Удалить'],
         'sp2' => ['type' => 'htmlBlock', 'value' => '</div>',],
 
         'sp3' => ['type' => 'htmlBlock', 'value' => '<div class="col-md-4 col-sm-6" style="padding-right: 0;">',],
         'sp4' => ['type' => 'htmlBlock', 'value' => '<div class="widget widget-stats bg-blue">',],
-        'sp5' => ['type' => 'htmlBlock', 'value' => '<span class=""><i class="icon-question"></i>&nbsp;&nbsp;&nbsp;<b>Заблокирован</b><br>Если пользователь заблокирован, то он не сможет войти в систему.<br>Данные внесенные пользователем не удаляются. </span><br><br>',],
         'sp6' => ['type' => 'htmlBlock', 'value' => '<span class=""><i class="icon-question"></i>&nbsp;&nbsp;&nbsp;<b>Удален</b><br>Внимание! Все данные пользователя введенные<br>под его именем будут безвозвратно удалены</span><br>',],
         'sp7' => ['type' => 'htmlBlock', 'value' => '</div>',],
         'sp8' => ['type' => 'htmlBlock', 'value' => '</div>',],

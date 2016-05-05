@@ -147,15 +147,27 @@ class RoleAdminController extends \common\components\AdminController
         ];
 
         $modules = [];
-		$columns = [];
-
-        $columns[] = [
-            'label' => 'ФИО',
-            'format' => 'raw',
-            /*'contentOptions' => ['style'=>'width: 100px;'],*/
-            'value' => function($model) {
-                return \yii\helpers\Html::a($model->getCustomName(),\yii\helpers\Url::toRoute(['/users/user-admin/update', 'id'=>$model->id]));
-            }
+		$columns = [
+            [
+                'label' => 'ФИО',
+                'attribute' => 'fullName',
+                'format' => 'raw',
+                'value' => function($model) {
+                    return \yii\helpers\Html::a($model->getCustomName(),\yii\helpers\Url::toRoute(['/users/user-admin/update', 'id'=>$model->id]));
+                }
+            ],
+            [
+                'label' => 'Дата добавления пользователя',
+                'attribute' => 'date_create',
+            ],
+            [
+                'label' => 'Последний вход в систему',
+                'attribute' => 'last_logon',
+                'filter' => false,
+                'value' => function($model) {
+                    return ($date->last_logon?date('d.m.Y H:i', $date->last_logon):null);
+                }
+            ]
         ];
 		
 		foreach(\common\components\AppManager::getModulesList() as $module_id => $module_name) {
@@ -187,7 +199,7 @@ class RoleAdminController extends \common\components\AdminController
                     $val = \yii::$app->authManager->checkAccess($model->id, $module_id);
                     return \yii\helpers\Html::checkBox($module_id.'_'.$model->id, $val, [
                         'data-render'=>'switchery',
-                        'data-theme'=>'default',
+                        'data-theme'=>'success',
                         'data-classname'=>'switchery',
                         'user-id' => $model->id,
                         'item' => $module_id,

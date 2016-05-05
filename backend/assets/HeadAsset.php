@@ -23,7 +23,7 @@ class HeadAsset extends AssetBundle
         'plugins/switchery/switchery.min.js',
         'plugins/powerange/powerange.min.js',
         'plugins/pace/pace.min.js',
-        'js/form-slider-switcher.demo.min.js',
+        'js/form-slider-switcher.demo.js',
         'js/packages/adminBaseClasses/buttonSet.js',
         'js/packages/adminBaseClasses/gridBase.js',
         'js/apps.min.js',

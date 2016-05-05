@@ -85,6 +85,7 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
     public $tmp; //for external using. no delete!
 
     public $profile;
+    public $fullName;
 
     public static $role_list = [
     	self::ROLE_ADMIN => 'Доступ в админ-панель',
@@ -148,7 +149,7 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
 				self::SCENARIO_SEND_NEW_PASSWORD,
 				self::SCENARIO_RECOVER_PASSWORD
 			], 'message' => 'Пожалуйста, укажите корректный e-mail адрес'],
-			[['send_email'], 'safe'], 
+			[['send_email', 'fullName', 'last_logon'], 'safe'],
 			[['fio','name', 'surname'], 'safe', 'on' => [
 				self::SCENARIO_CREATE,
 			], 'message' => 'Пожалуйста, укажите Ваше имя'],
@@ -346,12 +347,10 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
 		return parent::model($className);
 	}
 
-
 	public static function tableName()
 	{
 		return 'users';
 	}
-
 
 	public function name()
 	{
@@ -374,6 +373,16 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
 		}
 
 		return $score;
+	}
+
+	public function getFullName()
+	{
+		return  $this->name . ' ' . $this->surname;
+	}
+
+	public function setFullName($value)
+	{
+		$this->fullName = $value;
 	}
 
 	public function getCustomName($user = null)
