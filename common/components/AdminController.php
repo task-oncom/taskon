@@ -31,12 +31,35 @@ abstract class AdminController extends \common\components\BaseController
 			throw new NotSupportedException('The requested page does not exist.');
         }
 
-        if(isset($this->module) && $this->module->id)
+        $module = $this->getModuleName();
+
+		if($module && !Yii::$app->authManager->checkAccess(Yii::$app->user->id, $module))
+    	{
+    		throw new \Exception('There is no access to this page', 403);
+    	}
+    }
+
+    private function getModuleName()
+    {
+    	if(isset($this->module) && $this->module->id)
         {
-        	if(!Yii::$app->authManager->checkAccess(Yii::$app->user->id, $this->module->id))
+        	if($this->module->id == Yii::$app->id)
         	{
-        		throw new \Exception('There is no access to this page', 403);
+        		return null;
         	}
-        }
+
+	    	switch ($this->module->id) 
+	    	{
+	    		case 'users':
+	    			return 'rbac';
+	    			break;
+	    		
+	    		default:
+	    			return $this->module->id;
+	    			break;
+	    	}
+	    }
+
+	    return null;
     }
 }

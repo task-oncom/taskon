@@ -49,10 +49,6 @@ return [
             'items' => User::$role_list,
 			'class' => 'form-control',
     	],
-        'redmine_key' => [
-            'type'  => 'text',
-            'class' => 'form-control',
-        ],
         'password'   => ['type' => 'password', 'class' => 'form-control', 'pwd-id' => 'passwordStrengthDiv'],
         'password_c' => ['type' => 'password', 'class' => 'form-control', 'pwd-id' => 'passwordStrengthDiv2'],
     ],

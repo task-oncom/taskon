@@ -118,7 +118,6 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
 		$attrs = array_merge(parent::attributeLabels(), array(
 			"password_c"   => "Пароль еще раз",
 			"fio"          => "Фамилия имя отчество",
-			'redmine_key' => 'API Key Redmine',
             "name"          => "Имя",
             "surname"       => "Фамилия",
 			"remember_me"  => "Запомни меня",
@@ -149,7 +148,7 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
 				self::SCENARIO_SEND_NEW_PASSWORD,
 				self::SCENARIO_RECOVER_PASSWORD
 			], 'message' => 'Пожалуйста, укажите корректный e-mail адрес'],
-			[['send_email', 'redmine_key'], 'safe'], 
+			[['send_email'], 'safe'], 
 			[['fio','name', 'surname'], 'safe', 'on' => [
 				self::SCENARIO_CREATE,
 			], 'message' => 'Пожалуйста, укажите Ваше имя'],
