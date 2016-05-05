@@ -213,7 +213,6 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
 			//array('phone', 'integer'),
 			[['fio'], 'string','min' => 2],
 			[['email'], 'string','max' => 200],
-            [['source'], 'string','max' => 50],
 			[['status'], '\yii\validators\RangeValidator', 'range' => ['active','new','blocked'], 'allowArray' => true],
 			[['activate_code'], 'safe'],
 			[['email'], 'filter','filter' => 'trim'],
@@ -225,7 +224,6 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
 				self::SCENARIO_SEARCH,
 				self::SCENARIO_CREATE,
 			]],
-            [['occupation'], 'integer', 'max' => 11],
 			[['tmp','role','sort','fio','name', 'surname','email', 'mobile_phone'], 'safe'],
 		];
 	}
