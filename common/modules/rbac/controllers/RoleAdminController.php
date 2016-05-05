@@ -165,7 +165,7 @@ class RoleAdminController extends \common\components\AdminController
                 'attribute' => 'last_logon',
                 'filter' => false,
                 'value' => function($model) {
-                    return ($date->last_logon?date('d.m.Y H:i', $date->last_logon):null);
+                    return ($model->last_logon?date('d.m.Y H:i', $model->last_logon):null);
                 }
             ]
         ];
