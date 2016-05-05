@@ -200,12 +200,11 @@ class UserAdminController extends \common\components\AdminController
 
                 $model->password = \Yii::$app->security->generatePasswordHash($model->password);
                 $model->activate_code=\Yii::$app->security->generatePasswordHash($model->password.'xdf5sf');
-                if(!$model->save(false)) die(print_r($model->error));
+                
+                $model->save(false);
 
-                $this->redirect(array(
+                return $this->redirect(array(
                     '/rbac/role-admin/manage',
-                    'id' => $model->id,
-                    'is_created'=>1
                 ));
             }
         }
@@ -251,8 +250,7 @@ class UserAdminController extends \common\components\AdminController
                 AuthAssignment::updateUserRole($model->id, $_POST['User']['role']);
 
                 return $this->redirect(array(
-                    '/rbac/role-admin/manage',
-                    'id'=> $model->id
+                    '/rbac/role-admin/manage'
                 ));
             }
         }
