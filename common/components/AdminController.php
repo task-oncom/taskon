@@ -30,5 +30,13 @@ abstract class AdminController extends \common\components\BaseController
         {
 			throw new NotSupportedException('The requested page does not exist.');
         }
+
+        if(isset($this->module) && $this->module->id)
+        {
+        	if(!Yii::$app->authManager->checkAccess(Yii::$app->user->id, $this->module->id))
+        	{
+        		throw new \Exception('There is no access to this page', 403);
+        	}
+        }
     }
 }
