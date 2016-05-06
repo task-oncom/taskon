@@ -45,7 +45,7 @@ class ResetPasswordForm extends Model
     public function rules()
     {
         return [
-            ['password', 'required'],
+            ['password', 'required', 'message' => 'Введите новый пароль'],
             ['password', 'string', 'min' => 7],
         ];
     }

@@ -54,7 +54,7 @@ class SiteController extends Controller
 
     public function actionLogin()
     {
-        if (!\Yii::$app->user->isGuest) 
+        if (!Yii::$app->user->isGuest) 
         {
             return $this->goHome();
         }
@@ -86,7 +86,7 @@ class SiteController extends Controller
 
     public function actionRecovery()
     {
-        if (!\Yii::$app->user->isGuest) 
+        if (!Yii::$app->user->isGuest) 
         {
             return $this->goHome();
         }
@@ -113,13 +113,15 @@ class SiteController extends Controller
 
     public function actionResetPassword($token)
     {
-        if (!\Yii::$app->user->isGuest) 
+        if (!Yii::$app->user->isGuest) 
         {
             return $this->goHome();
         }
         
-        $success = false;
+        $this->page_title = 'Востановление пароля';
+        $this->layout = "blank";
 
+        $success = false;
         try {
             $model = new ResetPasswordForm($token);
         } catch (InvalidParamException $e) {
