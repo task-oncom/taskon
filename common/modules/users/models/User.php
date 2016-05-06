@@ -187,11 +187,6 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
 			[['password'], 'safe', 'on'  => [
 				self::SCENARIO_UPDATE,
 			]],
-			/*[['email'], 'email', 'message' => $this->emailErrorMessage(), 'on'=> [
-				self::SCENARIO_RECOVER_PASSWORD,
-				self::SCENARIO_SEND_NEW_PASSWORD,
-				self::SCENARIO_LOGIN,
-			]],*/
 			[['email'], 'unique','on' => [
 				self::SCENARIO_REGISTRATION,
 				self::SCENARIO_CREATE,
@@ -278,9 +273,44 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
         }
 
         return static::findOne([
-            'password_reset_token' => $token,
+            'password_change_code' => $token,
             'status' => self::STATUS_ACTIVE,
         ]);
+    }
+
+    /**
+     * Finds out if password reset token is valid
+     *
+     * @param string $token password reset token
+     * @return boolean
+     */
+    public static function isPasswordResetTokenValid($token)
+    {
+        if (empty($token)) 
+        {
+            return false;
+        }
+
+        $timestamp = (int) substr($token, strrpos($token, '_') + 1);
+        $expire = Yii::$app->params['user.passwordResetTokenExpire'];
+        return $timestamp + $expire >= time();
+    }
+
+    /**
+     * Generates new password reset token
+     */
+    public function generatePasswordResetToken()
+    {
+        $this->password_change_code = Yii::$app->security->generateRandomString() . '_' . time();
+        $this->password_change_date = date('Y-m-d H:i:s');
+    }
+
+    /**
+     * Removes password reset token
+     */
+    public function removePasswordResetToken()
+    {
+        $this->password_change_code = null;
     }
 	
 	public function getPost() 
@@ -355,24 +385,6 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
 		return "Пользователи";
 	}
 
-	public function clearScoreCache()
-	{
-		Yii::$app->cache->delete(self::CACHE_SCORE . $this->id);
-	}
-
-	public function getScores()
-	{
-		$score = Yii::$app->cache->get(self::CACHE_SCORE . $this->id);
-		
-		if($score === false)
-		{
-			
-			Yii::$app->cache->set(self::CACHE_SCORE . $this->id, $score);
-		}
-
-		return $score;
-	}
-
 	public function getFullName()
 	{
 		return  $this->name . ' ' . $this->surname;
@@ -392,40 +404,6 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
 
 		return  $user->name . ' ' . $user->surname;
 	}
-
-
-	public function getShortName()
-	{
-		return $this->fio;
-	}
-
-
-	public function getUserDir()
-	{
-		$dir  = "upload/users/" . $this->id . "/";
-		$path = $_SERVER["DOCUMENT_ROOT"] . $dir;
-
-		if (!file_exists($path))
-		{
-			mkdir($path);
-			chmod($path, 0777);
-		}
-
-		return $dir;
-	}
-
-	public function emailErrorMessage()
-	{
-		if ($this->scenario == self::SCENARIO_LOGIN)
-			return 'Вы ввели некорректный логин или пароль';
-		else
-			return 'Введенный E-mail адрес некорректен. Пожалуйста, проверьте правильность ввода';
-	}
-
-    public function getEauth()
-    {
-        return $this->hasOne(UserEAuth::className(), ['user_id'=>'id']);
-    }
 
     public function getAssignment()
     {
@@ -488,67 +466,6 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
 		return $this->role->name == AuthItem::ROLE_ROOT;
 	}
 
-	public function sendActivationMail()
-	{
-		$mailler_letter = MailerLetter::model();
-
-		$subject = Setting::model()->getValue(self::SETTING_REGISTRATION_MAIL_SUBJECT);
-		$subject = $mailler_letter->compileText($subject);
-
-		$body = Setting::model()->getValue(self::SETTING_REGISTRATION_MAIL_BODY);
-		$body = $mailler_letter->compileText($body, array('user' => $this));
-
-		MailerModule::sendMail($this->email, $subject, $body);
-	}
-
-
-	public function activateAccountUrl()
-	{
-		$url = 'http://' . $_SERVER['HTTP_HOST'];
-		$url .= Yii::app()->controller->url(
-			'/activateAccount/' . $this->activate_code . '/' . md5($this->email)
-		);
-
-		return $url;
-	}
-
-
-	public function changePasswordUrl()
-	{
-		$url = 'http://' . $_SERVER['HTTP_HOST'];
-		$url .= Yii::app()->controller->url(
-			'/changePassword/' . $this->password_change_code . '/' . md5($this->email)
-		);
-
-		return $url;
-	}
-
-	public function validate($attributeNames = null, $clearErrors = true) {
-		if (!parent::validate($attributeNames = null, $clearErrors = true))
-			return false;
-
-//		if ($this->scenario===self::SCENARIO_REGISTRATION || $this->scenario===self::SCENARIO_SOCIAL_REGISTRATION) {
-//			if (!$this->afterRegistration(['email' => $this->email, 'user_fio' => $this->getFio()]))
-//				return false;
-//		}
-		return true;
-	}
-
-	public function afterSave($insert, $changedAttributes)
-	{
-		parent::afterSave($insert, $changedAttributes);
-
-		if ($this->scenario===self::SCENARIO_REGISTRATION || $this->scenario===self::SCENARIO_SOCIAL_REGISTRATION) {
-			if (!$this->afterRegistration(['email' => $this->email, 'user_fio' => $this->getFio()]))
-				return false;
-		}
-	}
-
-	public function afterDelete()
-	{
-		TriggerSchedule::deleteAll(['email' => $this->email]);
-	}
-
 	public function getFio()
 	{
 		$result = $this->name;
@@ -556,14 +473,6 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
 			$result .= ' '.$this->surname;
 		}
 		return $result;
-	}
-
-	public function beforeDelete()
-	{
-		if (parent::beforeDelete())
-			return true;
-
-		return false;
 	}
 
     public static function getUsersByRole($moduleName) {
@@ -575,131 +484,5 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
         }
         return $granted;
     }
-
-    public function getByEAuth($service)
-    {
-        $socialProfile = $service->getSocialProfile();
-        $eauthField = $service->getServiceName().'_id';
-
-        return static::find()
-            ->joinWith('eauth')
-            ->where('users_eauth.'.$eauthField.' = :eauthId', [':eauthId' => $socialProfile['id']])
-            ->one();
-    }
-
-    public function isUserEmailExists($email)
-    {
-        return (bool)static::find()->where('email = :email', [':email'=>$email])->count();
-    }
-
-	/**
-	 * Проверяем есть ли среди активных триггеров тот, у которого указан параметр проверки регистрации.
-	 * Если указан, выполняем действия триггера
-	 */
-    public function afterRegistration($params=array()){
-		$date = new \DateTime();
-		$model = new TriggerLogs();
-		$model->user_id = $this->getPrimaryKey();
-		$model->action = TriggerLogs::USER_REGISTRATION;
-		$model->url = Yii::$app->request->getUrl();
-		$model->datetime = $date->format('Y-m-d H:i:s');
-		$model->presence_time = 1;
-		if ($model->save()) {
-			/** @var TriggerTrigger[] $actualTriggers */
-			$actualTriggers = TriggerTrigger::getActualTriggers();
-			foreach($actualTriggers as $trigger) {
-				$exists = TriggerCondition::find()->where(['trigger_id'=>$trigger->id, 'condition_id'=>CheckUserToRegistration::CONDITION_ID])->exists();
-				$count = TriggerCondition::find()->where(['trigger_id'=>$trigger->id])->count();
-				// Добавляем в расписание срабатывание триггера регистрации только при условии что у триггера условие регистрации есть и оно там одно
-				if ($exists===true && $count==1) {
-					$init = $trigger->initAction($params);
-					if ($init===true) {
-						$curl = curl_init();
-						curl_setopt($curl, CURLOPT_URL, Yii::$app->urlManager->createAbsoluteUrl('/triggers/default/rechecktriggers'));
-						curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-						if (!curl_exec($curl)) {
-							$this->addError('email', curl_error($curl));
-							return false;
-						}
-						return true;
-					} else {
-						$this->addError('email', $init);
-						return false;
-					}
-				}
-			}
-		} else {
-			$this->addError('email', current(current($model->getErrors())));
-			return false;
-		}
-		return true;
-    }
-
-    /**
-     * @param $template_id
-     */
-    public function afterSubscribe($template_id, $params=array()){
-        /** @var \DateTime $time_now */
-        $time_now=new \DateTime();
-        /** @var MessageTemplate $templateModel */
-        $templateModel = MessageTemplate::findOne($template_id);
-        /** @var Templates $template */
-        $template = new Templates($template_id, $params);
-        $email = $this->email;
-        $sender = new UnisenderAPI();
-        // Create the send list
-        $newList = $sender->createList();
-        $newListObject=Json::decode($newList);
-        if (array_key_exists('result', $newListObject) && array_key_exists('id', $newListObject['result'])) {
-            $newListId=$newListObject['result']['id'];
-            // Subscribe user to new List
-            $sender->subscribe(['list_ids' => $newListId, 'fields[email]' => $email, 'double_optin' => 1]);
-            // Create new message
-            $newMessage=$sender->createEmailMessage($this->name, $email, $templateModel->subject, $template->getTemplate(), $newListId);
-            // Decode result
-            $newMessageObject=Json::decode($newMessage);
-            if (array_key_exists('result', $newMessageObject) && array_key_exists('message_id', $newMessageObject['result'])) {
-                // Get the message ID
-                $newMessageId=$newMessageObject['result']['message_id'];
-                // Create new campaign
-                $newCampaign = $sender->createCampaign($newMessageId);
-                // Parse the result
-                $newCampaignObject = Json::decode($newCampaign);
-                if (array_key_exists('result', $newCampaignObject) && array_key_exists('campaign_id', $newCampaignObject['result'])) {
-                    $newCampaignId = $newCampaignObject['result']['campaign_id'];
-
-                    $schedule = new TriggerSchedule();
-                    $schedule->sended=1;
-                    $schedule->checked=0;
-                    $schedule->message_id=$newMessageId;
-                    $schedule->message=$template->getTemplate();
-                    $schedule->email=$email;
-                    $schedule->time=$time_now->format('Y-m-d H:i:s');
-                    $schedule->date_create=$time_now->format('Y-m-d H:i:s');
-                    $schedule->list_id=$newListId;
-                    $schedule->campaign_id=$newCampaignId;
-                    if (!$schedule->save()) {
-                        echo 'Письмо не было отправлено';
-                    }
-                }
-            }
-        }
-    }
-
-	/**
-	 * @return bool
-	 */
-	public function checkToAutoAuthByHash($hash)
-	{
-		return true;
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function authUser()
-	{
-		return true;
-	}
 }
 

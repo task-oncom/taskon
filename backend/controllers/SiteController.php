@@ -4,7 +4,9 @@ namespace backend\controllers;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+
 use common\models\LoginForm;
+use common\models\RecoveryForm;
 use common\modules\users\models\User;
 
 /**
@@ -24,7 +26,7 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['login', 'recovery', 'error'],
                         'allow' => true,
                     ],
                     [
@@ -79,6 +81,33 @@ class SiteController extends Controller
                 'model' => $model,
             ]);
         }
+    }
+
+    public function actionRecovery()
+    {
+        if (!\Yii::$app->user->isGuest) 
+        {
+            return $this->goHome();
+        }
+
+        $this->page_title = 'Востановление пароля';
+        $this->layout = "blank";
+
+        $success = false;
+
+        $model = new RecoveryForm();
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) 
+        {
+            $model->recovery();
+
+            $success = true;
+        }
+
+        return $this->render('recovery', [
+            'model' => $model,
+            'success' => $success,
+        ]);
     }
 
     public function actionLogout()

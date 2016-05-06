@@ -23,6 +23,9 @@ return [
 		'rbac' => ['class' => 'common\modules\rbac\rbac'],
 	],
     'components' => [
+        'mailer' => [
+            'class' => 'yii\swiftmailer\Mailer',
+        ],
 		'session' => [
 			'class' => 'yii\web\Session',
 		],
