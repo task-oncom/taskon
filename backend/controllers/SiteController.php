@@ -27,7 +27,7 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'recovery', 'error'],
+                        'actions' => ['login', 'recovery', 'reset-password', 'error'],
                         'allow' => true,
                     ],
                     [
@@ -113,6 +113,11 @@ class SiteController extends Controller
 
     public function actionResetPassword($token)
     {
+        if (!\Yii::$app->user->isGuest) 
+        {
+            return $this->goHome();
+        }
+        
         $success = false;
 
         try {
