@@ -7,6 +7,7 @@ use yii\web\Controller;
 
 use common\models\LoginForm;
 use common\models\RecoveryForm;
+use common\models\ResetPasswordForm;
 use common\modules\users\models\User;
 
 /**
@@ -105,6 +106,27 @@ class SiteController extends Controller
         }
 
         return $this->render('recovery', [
+            'model' => $model,
+            'success' => $success,
+        ]);
+    }
+
+    public function actionResetPassword($token)
+    {
+        $success = false;
+
+        try {
+            $model = new ResetPasswordForm($token);
+        } catch (InvalidParamException $e) {
+            throw new BadRequestHttpException($e->getMessage());
+        }
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) 
+        {
+            $success = true;
+        }
+
+        return $this->render('reset-password', [
             'model' => $model,
             'success' => $success,
         ]);
