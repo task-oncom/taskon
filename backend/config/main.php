@@ -25,6 +25,7 @@ return [
     'components' => [
         'mailer' => [
             'class' => 'yii\swiftmailer\Mailer',
+            'useFileTransport' => false,
         ],
 		'session' => [
 			'class' => 'yii\web\Session',
