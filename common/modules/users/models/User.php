@@ -131,6 +131,8 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
 			"post"   => "Должность",
             "status" => "Активен / заблокирован",
             "occupation"   => "Род занятий",
+            "phone"   => "Телефон",
+            "mobile_phone"   => "Мобильный телефон",
 		));
 		
 		return $attrs;
