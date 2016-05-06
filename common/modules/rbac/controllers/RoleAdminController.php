@@ -149,7 +149,7 @@ class RoleAdminController extends \common\components\AdminController
         $modules = [];
 		$columns = [
             [
-                'label' => 'ФИО',
+                'label' => 'Фамилия, Имя',
                 'attribute' => 'fullName',
                 'format' => 'raw',
                 'value' => function($model) {
@@ -157,15 +157,19 @@ class RoleAdminController extends \common\components\AdminController
                 }
             ],
             [
-                'label' => 'Дата добавления пользователя',
+                'label' => 'Дата добавления <br> пользователя',
+                'encodeLabel' => false,
                 'attribute' => 'date_create',
+                'value' => function($model) {
+                    return ($model->date_create?date('d.m.Y H:i', strtotime($model->date_create)):'Нет данных');
+                }
             ],
             [
-                'label' => 'Последний вход в систему',
+                'label' => 'Последний вход <br> в систему',
+                'encodeLabel' => false,
                 'attribute' => 'last_logon',
-                'filter' => false,
                 'value' => function($model) {
-                    return ($model->last_logon?date('d.m.Y H:i', $model->last_logon):null);
+                    return ($model->last_logon?date('d.m.Y H:i', $model->last_logon):'Нет данных');
                 }
             ]
         ];

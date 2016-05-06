@@ -69,7 +69,8 @@ class UserAdminController extends \common\components\AdminController
         ];
     }
 
-    public function actionBlock($id) {
+    public function actionBlock($id) 
+    {
         $model = User::find()->where(['id'=>$id])->one();
         if(empty($model)) $error;
 
@@ -77,60 +78,10 @@ class UserAdminController extends \common\components\AdminController
         $model->save(false);
         $this->redirect(['/rbac/role-admin/manage']);
     }
-	
-	
-
-    public function actionSendNewPassword($id)
-    {
-        $model           = $this->loadModel($id);
-        $model->scenario = User::SCENARIO_SEND_NEW_PASSWORD;
-
-        $form = new BaseForm('users.SendNewPasswordForm', $model);
-        //$this->performAjaxValidation($model);
-/*
-		print_r($form);
-		die();
-*/
-        if(isset($_POST['User'])) {
-			if (isset($_POST['User']['password']) && isset($_POST['User']['password_c'])) {
-				$model->password = $_POST['User']['password'];
-				$model->password_c = $_POST['User']['password_c'];
-			} else {
-				$model->password = 123;
-				$model->password_c = 123;
-			}
-			if ($model->validate()) {
-				if ($_POST['User']['generate_new'] == 1) {
-					$password = PasswordGenerator::generate(7);
-				} else {
-					$password = $_POST['User']['password'];
-				}
-				$model->password = md5($password);
-				$model->password_c = md5($password);
-				if ($model->save()) {
-					Yii::app()->user->setFlash('flash','Пароль для пользователя <b>'.$model->name.'</b> был изменён.');
-
-					$email = Yii::app()->email;
-					$email->to = $user;
-					$email->from = Setting::getValue('support_email');
-					$email->subject = 'Hello';
-					$email->message = Yii::app()->controller->renderInternal(Yii::getPathOfAlias('application.views.yii-mail.pass').'.php', array('password' => $password), true);
-					$email->send();
-					$this->redirect('/users/userAdmin/manage');
-				}
-			}
-
-        }
-
-        $this->render('sendNewPassword', array('form' => $form));
-    }
 
     public function actionManage($is_deleted = 0)
     {
-
-		//$is_deleted = $this->getRequest()->getQueryParam('is_deleted') ? $this->getRequest()->getQueryParam('is_deleted') : 0;
-
-        $model = new \common\modules\users\models\User(/*User::SCENARIO_SEARCH*/);
+        $model = new \common\modules\users\models\User;
 		$model->scenario = User::SCENARIO_SEARCH;
         
         $model->is_deleted = $is_deleted;
@@ -146,7 +97,6 @@ class UserAdminController extends \common\components\AdminController
             'model'      => $model,
         ));
     }
-
 
     public function actionView($id)
     {
@@ -174,11 +124,6 @@ class UserAdminController extends \common\components\AdminController
         $model           = new User;
         $model->scenario = User::SCENARIO_CREATE;
         $model->status = "active";
-
-        if (!isset($_POST['User']))
-        {
-            $model->send_email = true;
-        }
         
         \Yii::$app->controller->page_title = 'Добавить пользователя';
 
@@ -186,9 +131,9 @@ class UserAdminController extends \common\components\AdminController
             "управление пользователями" => Url::toRoute("manage"),
         );
         \yii::$app->controller->breadcrumbs = [
-                    ['Все пользователи' => '/users/user-admin/manage'],
-                    'Новый пользователь',
-                ];
+            ['Все пользователи' => '/users/user-admin/manage'],
+            'Новый пользователь',
+        ];
 
         if (isset($_POST['User']))
         {
@@ -196,18 +141,20 @@ class UserAdminController extends \common\components\AdminController
 
             if ($model->validate())
             {
-                $password = $model->password;
+                $model->sendPassword();
 
                 $model->password = \Yii::$app->security->generatePasswordHash($model->password);
                 $model->activate_code=\Yii::$app->security->generatePasswordHash($model->password.'xdf5sf');
                 
                 $model->save(false);
 
+
                 return $this->redirect(array(
                     '/rbac/role-admin/manage',
                 ));
             }
         }
+        
         $form = new \common\components\BaseForm('/common/modules/users/forms/UserForm', $model);
 
         return $this->render('create', [
@@ -236,6 +183,11 @@ class UserAdminController extends \common\components\AdminController
 
         if($model->load(Yii::$app->request->post()))
         {
+            if($model->send_email)
+            {
+                $model->sendPassword();
+            }
+
             if($model->password)
             {
                 $model->password = $model->password_c = \Yii::$app->security->generatePasswordHash($model->password);

@@ -29,7 +29,7 @@ $not_system_role = '!in_array($data->name, AuthItem::$system_roles)';
 echo AdminGrid::widget([
 	'id' => 'access-grid-roles',
 	'dataProvider' => $dataProvider,
-	'filterModel' => $searchModel,
+	'formatDateValues' => false,
     'rowOptions' => function ($model, $index, $widget, $grid){
         if($model->status == 'blocked')
             //return ['style'=>'background-color:#575d63 !important;'];

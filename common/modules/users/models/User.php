@@ -20,6 +20,7 @@ use yii\data\ActiveDataProvider;
 use himiklab\sortablegrid\SortableGridBehavior;
 use \common\components\validators\RuEmailValidator;
 use \common\modules\messageTemplate\components\Templates;
+use common\models\Settings;
 
 use \common\modules\rbac\models\AuthItem;
 use \common\modules\rbac\models\AuthAssignment;
@@ -183,7 +184,6 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
 				self::SCENARIO_UPDATE,
 				self::SCENARIO_CREATE,
 			]],
-			//array('password', 'unsafe', 'on'  => array(
 			[['password'], 'safe', 'on'  => [
 				self::SCENARIO_UPDATE,
 			]],
@@ -200,12 +200,10 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
 				self::SCENARIO_SEND_NEW_PASSWORD,
 			], 'message' => 'Пароли должны совпадать и состоять из букв латинского алфавита или цифр.'],
 			[['password'], 'safe', 'on' => self::SCENARIO_CSV_IMPORT],
-			//array('phone, mobile_phone, phone_ext, fax', 'PhoneValidator'),
 			['is_deleted, date_delete', 'safe', 'on' => [
 				self::SCENARIO_DELETE,
 			]],
 			[['is_deleted'], 'integer','integerOnly' => true],
-			//array('phone', 'integer'),
 			[['fio'], 'string','min' => 2],
 			[['email'], 'string','max' => 200],
 			[['status'], '\yii\validators\RangeValidator', 'range' => ['active','new','blocked'], 'allowArray' => true],
@@ -214,7 +212,6 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
 			[['csv_file'], 'file', 'mimeTypes' => 'csv', 'on' => [
 				self::SCENARIO_CSV_IMPORT,
 			]],
-//			[['fio', 'phone',' mobile_phone'], 'filter', 'filter' => 'strip_tags'],
 			[['id', 'email', 'status', 'date_create', 'fio'], 'safe', 'on'=> [
 				self::SCENARIO_SEARCH,
 				self::SCENARIO_CREATE,
@@ -238,7 +235,7 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
      */
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id/*, 'status' => self::STATUS_ACTIVE*/]);
+        return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
 	
 	/**
@@ -257,7 +254,7 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['email' => $username/*, 'status' => self::STATUS_ACTIVE*/]);
+        return static::findOne(['email' => $username, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -385,6 +382,16 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
 		return "Пользователи";
 	}
 
+	public function beforeValidate()
+    {
+    	if($this->status == 0)
+    	{
+    		$this->status = static::STATUS_BLOCKED;
+    	}
+
+        return parent::beforeValidate();
+    }
+
 	public function getFullName()
 	{
 		return  $this->name . ' ' . $this->surname;
@@ -393,6 +400,15 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
 	public function setFullName($value)
 	{
 		$this->fullName = $value;
+	}
+
+	public function sendPassword()
+	{
+		return Yii::$app->mailer->compose(['html' => 'sendNewPaaword-html', 'text' => 'sendNewPaaword-text'], ['user' => $this])
+            ->setFrom(Settings::getValue('content-support-email'))
+            ->setTo($this->email)
+            ->setSubject('Данные для входа')
+            ->send();
 	}
 
 	public function getCustomName($user = null)
