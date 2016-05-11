@@ -234,7 +234,7 @@ a:hover {
         <td align="left" valign="top" bgcolor="#FFFFFF" width="20"><img src="<?=Yii::$app->params['frontUrl'];?>/images/letter/spacer.gif" width="20" height="1" border="0" style="display:block;"></td>
 
         <td align="left" valign="middle" bgcolor="#f0f7fc" style="font-family: 'Trebuchet MS',  Arial, Helvetica, sans-serif; color:#1397c1; font-size:14px; mso-line-height-rule:exactly; line-height:18px; padding: 10px 20px;">
-          <a class="btn_resp" style="font-family: 'Trebuchet MS',  Arial, Helvetica, sans-serif; font-size:14px; line-height:18px; text-decoration: none; color:#1397c1;" href="http://taskon.com/account/confirm/1778779/77862870892308611742"><strong>Логин:</strong> <?=$user->email;?></a>
+          <span class="btn_resp" style="font-family: 'Trebuchet MS',  Arial, Helvetica, sans-serif; font-size:14px; line-height:18px; text-decoration: none; color:#1397c1;"><strong>Логин:</strong> <?=$user->email;?></span>
         </td>
 
         <td align="left" valign="top" bgcolor="#FFFFFF" width="20"><img src="<?=Yii::$app->params['frontUrl'];?>/images/letter/spacer.gif" width="20" height="1" border="0" style="display:block;"></td>
@@ -254,7 +254,7 @@ a:hover {
         <td align="left" valign="top" bgcolor="#FFFFFF" width="20"><img src="<?=Yii::$app->params['frontUrl'];?>/images/letter/spacer.gif" width="20" height="1" border="0" style="display:block;"></td>
 
         <td align="left" valign="middle" bgcolor="#f0f7fc" style="font-family: 'Trebuchet MS',  Arial, Helvetica, sans-serif; color:#1397c1; font-size:14px; mso-line-height-rule:exactly; line-height:18px; padding: 10px 20px;">
-          <a class="btn_resp" style="font-family: 'Trebuchet MS',  Arial, Helvetica, sans-serif; font-size:14px; line-height:18px; text-decoration: none; color:#1397c1;" href="http://taskon.com/account/confirm/1778779/77862870892308611742"><strong>Пароль:</strong> <?=$user->password;?></a>
+          <span class="btn_resp" style="font-family: 'Trebuchet MS',  Arial, Helvetica, sans-serif; font-size:14px; line-height:18px; text-decoration: none; color:#1397c1;"><strong>Пароль:</strong> <?=$user->password;?></span>
         </td>
 
         <td align="left" valign="top" bgcolor="#FFFFFF" width="20"><img src="<?=Yii::$app->params['frontUrl'];?>/images/letter/spacer.gif" width="20" height="1" border="0" style="display:block;"></td>
@@ -270,6 +270,13 @@ a:hover {
 <!--end spacer --> 
 
 
+<!--begin spacer -->    
+<table width="600" border="0" cellspacing="0" cellpadding="0" bgcolor="#f7f7f7" class="width270">
+  <tr>
+    <td align="left" valign="top" style="font-size:10px; line-height:10px"><img src="<?=Yii::$app->params['frontUrl'];?>/images/letter/spacer.gif" width="1" height="10" border="0" /></td>
+  </tr>
+</table>
+<!--end spacer --> 
 <!--begin spacer -->    
 <table width="600" border="0" cellspacing="0" cellpadding="0" bgcolor="#f7f7f7" class="width270">
   <tr>
@@ -351,7 +358,7 @@ a:hover {
 
         <td align="center" valign="middle" bgcolor="#0e3242" style="font-family: 'Trebuchet MS',  Arial, Helvetica, sans-serif; color:#ffffff; font-size:14px; mso-line-height-rule:exactly; line-height:24px;">
 
-        Если у Вас есть вопросы обратитесь к администратору сервиса на адрес <?=Html::a(Settings::getValue('content-support-email'), 'mailto:'.Settings::getValue('content-support-email'))?>
+        Если у Вас есть вопросы обратитесь к администратору сервиса<br> на адрес <?=Html::a(Settings::getValue('content-support-email'), 'mailto:'.Settings::getValue('content-support-email'))?>
 
         </td>
 
