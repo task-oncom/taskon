@@ -68,20 +68,17 @@ class SiteController extends Controller
             if($model->user->role == User::ROLE_ADMIN)
             {
                 $model->login();
+                return $this->goBack();
             }
             else
             {
-                return $this->refresh();
+                $model->addError('password', 'Вы не имеете доступ в этот раздел');
             }
-
-            return $this->goBack();
-        } 
-        else 
-        {
-            return $this->render('login', [
-                'model' => $model,
-            ]);
         }
+
+        return $this->render('login', [
+            'model' => $model,
+        ]);
     }
 
     public function actionRecovery()
