@@ -406,7 +406,7 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
 
 	public function sendPassword()
 	{
-		return Yii::$app->mailer->compose(['html' => 'sendNewPaaword-html', 'text' => 'sendNewPaaword-text'], ['user' => $this])
+		return Yii::$app->mailer->compose(['html' => 'sendNewPassword-html', 'text' => 'sendNewPassword-text'], ['user' => $this])
             ->setFrom(Settings::getValue('content-support-email'))
             ->setTo($this->email)
             ->setSubject('Данные для входа')
