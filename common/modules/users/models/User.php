@@ -386,7 +386,7 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
 
 	public function beforeValidate()
     {
-    	if($this->status == 0)
+    	if($this->status != static::STATUS_ACTIVE)
     	{
     		$this->status = static::STATUS_BLOCKED;
     	}
