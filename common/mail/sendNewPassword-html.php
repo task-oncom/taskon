@@ -214,7 +214,7 @@ a:hover {
         <td align="left" valign="top" bgcolor="#FFFFFF" width="20"><img src="<?=Yii::$app->params['frontUrl'];?>/images/letter/spacer.gif" width="20" height="1" border="0" style="display:block;"></td>
 
         <td align="left" valign="middle" bgcolor="#ffffff" style="font-family: 'Trebuchet MS',  Arial, Helvetica, sans-serif; color:#666666; font-size:14px; mso-line-height-rule:exactly; line-height:18px;">
-          Уведомляем Вас о том, что Вы были зарегистрированы на сайте <?=Html::a(Yii::$app->params['frontUrl'], Yii::$app->params['frontUrl'])?>.<br> Для входа используйте следующие пароли доступа:
+          Уведомляем Вас о том, что Вы были зарегистрированы на сайте <?=Settings::getValue('setting-project-name')?>.<br> Для входа используйте следующие пароли доступа:
         </td>
 
         <td align="left" valign="top" bgcolor="#FFFFFF" width="20"><img src="<?=Yii::$app->params['frontUrl'];?>/images/letter/spacer.gif" width="20" height="1" border="0" style="display:block;"></td>
@@ -319,7 +319,7 @@ a:hover {
         <td align="left" valign="top" bgcolor="#FFFFFF" width="20"><img src="<?=Yii::$app->params['frontUrl'];?>/images/letter/spacer.gif" width="20" height="1" border="0" style="display:block;"></td>
 
         <td align="left" valign="middle" bgcolor="#ffffff" style="font-family: 'Trebuchet MS',  Arial, Helvetica, sans-serif; color:#666666; font-size:14px; mso-line-height-rule:exactly; line-height:18px;">
-          С уважением, команда Task-On.
+          С уважением, команда <?=Settings::getValue('setting-project-name')?>.
         </td>
 
         <td align="left" valign="top" bgcolor="#FFFFFF" width="20"><img src="<?=Yii::$app->params['frontUrl'];?>/images/letter/spacer.gif" width="20" height="1" border="0" style="display:block;"></td>

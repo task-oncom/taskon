@@ -56,7 +56,7 @@ class RecoveryForm extends Model
         if ($user->save()) 
         {
             return Yii::$app->mailer->compose(['html' => 'passwordResetToken-html', 'text' => 'passwordResetToken-text'], ['user' => $user])
-                ->setFrom(Settings::getValue('content-support-email'))
+                ->setFrom([Settings::getValue('setting-info-email') => Settings::getValue('setting-from-email')])
                 ->setTo($this->email)
                 ->setSubject('Восстановление пароля')
                 ->send();

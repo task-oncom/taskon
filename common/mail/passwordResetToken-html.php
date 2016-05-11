@@ -175,7 +175,7 @@ a:hover {
         <td align="left" valign="top" bgcolor="#FFFFFF" class="aligncenter">
           <a href=""><img src="<?=Yii::$app->params['frontUrl'];?>/images/letter/logo.jpg" width="51" height="58" alt="Taskon" border="0"/></a>
         </td>
-        <td align="right" valign="middle" bgcolor="#ffffff" style="font-family: 'Trebuchet MS',  Arial, Helvetica, sans-serif; color:#808080; font-size:20px; mso-line-height-rule:exactly; line-height:28px;">Добро пожаловать</td>
+        <td align="right" valign="middle" bgcolor="#ffffff" style="font-family: 'Trebuchet MS',  Arial, Helvetica, sans-serif; color:#808080; font-size:20px; mso-line-height-rule:exactly; line-height:28px;">Сброс пароля</td>
 
         <td align="left" valign="top" bgcolor="#FFFFFF" width="20"><img src="<?=Yii::$app->params['frontUrl'];?>/images/letter/spacer.gif" width="20" height="1" border="0" style="display:block;"></td>
       </tr>
@@ -215,7 +215,7 @@ a:hover {
         <td align="left" valign="top" bgcolor="#FFFFFF" width="20"><img src="<?=Yii::$app->params['frontUrl'];?>/images/letter/spacer.gif" width="20" height="1" border="0" style="display:block;"></td>
 
         <td align="left" valign="middle" bgcolor="#ffffff" style="font-family: 'Trebuchet MS',  Arial, Helvetica, sans-serif; color:#666666; font-size:14px; mso-line-height-rule:exactly; line-height:18px;">
-          Вам был сброшен пароль для сайта <?=Html::a(Yii::$app->params['frontUrl'], Yii::$app->params['frontUrl'])?>.
+          Для Вас был сброшен пароль на сайте <?=Settings::getValue('setting-project-name')?>.
         </td>
 
         <td align="left" valign="top" bgcolor="#FFFFFF" width="20"><img src="<?=Yii::$app->params['frontUrl'];?>/images/letter/spacer.gif" width="20" height="1" border="0" style="display:block;"></td>
@@ -235,7 +235,7 @@ a:hover {
         <td align="left" valign="top" bgcolor="#FFFFFF" width="20"><img src="<?=Yii::$app->params['frontUrl'];?>/images/letter/spacer.gif" width="20" height="1" border="0" style="display:block;"></td>
 
         <td align="left" valign="middle" bgcolor="#ffffff" style="font-family: 'Trebuchet MS',  Arial, Helvetica, sans-serif; color:#666666; font-size:14px; mso-line-height-rule:exactly; line-height:18px;">
-          	Для продолжения работы перейдите по ссылке для ввода нового пароля:
+          	Для того что бы задать новый пароль перейдите по ссылке ниже. Если ссылка не открывается, то скопируйте ее в адресную строку браузера.
         </td>
 
         <td align="left" valign="top" bgcolor="#FFFFFF" width="20"><img src="<?=Yii::$app->params['frontUrl'];?>/images/letter/spacer.gif" width="20" height="1" border="0" style="display:block;"></td>
@@ -290,7 +290,7 @@ a:hover {
         <td align="left" valign="top" bgcolor="#f7f7f7" width="20"><img src="<?=Yii::$app->params['frontUrl'];?>/images/letter/spacer.gif" width="20" height="1" border="0" style="display:block;"></td>
 
         <td align="left" valign="middle" bgcolor="#f7f7f7" style="font-family: 'Trebuchet MS',  Arial, Helvetica, sans-serif; color:#666666; font-size:14px; mso-line-height-rule:exactly; line-height:18px;">
-          В целях безопасности просим Вас не передавать пароль третьим лицам.
+          В целях безопасности просим вас не передавать данную ссылку третьим лицам и не хранить данное письмо после сброса пароля.
         </td>
 
         <td align="left" valign="top" bgcolor="#f7f7f7" width="20"><img src="<?=Yii::$app->params['frontUrl'];?>/images/letter/spacer.gif" width="20" height="1" border="0" style="display:block;"></td>
@@ -320,7 +320,7 @@ a:hover {
         <td align="left" valign="top" bgcolor="#FFFFFF" width="20"><img src="<?=Yii::$app->params['frontUrl'];?>/images/letter/spacer.gif" width="20" height="1" border="0" style="display:block;"></td>
 
         <td align="left" valign="middle" bgcolor="#ffffff" style="font-family: 'Trebuchet MS',  Arial, Helvetica, sans-serif; color:#666666; font-size:14px; mso-line-height-rule:exactly; line-height:18px;">
-          С уважением, команда Task-On.
+          С уважением, команда <?=Settings::getValue('setting-project-name')?>.
         </td>
 
         <td align="left" valign="top" bgcolor="#FFFFFF" width="20"><img src="<?=Yii::$app->params['frontUrl'];?>/images/letter/spacer.gif" width="20" height="1" border="0" style="display:block;"></td>
