@@ -358,7 +358,7 @@ a:hover {
 
         <td align="center" valign="middle" bgcolor="#0e3242" style="font-family: 'Trebuchet MS',  Arial, Helvetica, sans-serif; color:#ffffff; font-size:14px; mso-line-height-rule:exactly; line-height:24px;">
 
-        Если у Вас есть вопросы обратитесь к администратору сервиса<br> на адрес <?=Html::a(Settings::getValue('content-support-email'), 'mailto:'.Settings::getValue('content-support-email'))?>
+        Если у Вас есть вопросы обратитесь к администратору сервиса<br> на адрес <?=Html::a(Settings::getValue('content-support-email'), 'mailto:'.Settings::getValue('content-support-email'), ['style'=>"font-family: 'Trebuchet MS',  Arial, Helvetica, sans-serif; font-size:14px; line-height:24px; color:#1397c1; margin-right: 20px;"])?>
 
         </td>
 
