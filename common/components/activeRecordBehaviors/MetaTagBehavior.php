@@ -27,7 +27,7 @@ class MetaTagBehavior extends Behavior
 
     public function eventInit($event)
     {
-        if(in_array(Yii::$app->controller->action->id, $this->actions))
+        if(Yii::$app->controller && in_array(Yii::$app->controller->action->id, $this->actions))
         {
             $langs = Languages::find()->all();
 
@@ -42,7 +42,7 @@ class MetaTagBehavior extends Behavior
 
     public function eventFind($event)
     {
-        if(in_array(Yii::$app->controller->action->id, $this->actions))
+        if(Yii::$app->controller && in_array(Yii::$app->controller->action->id, $this->actions))
         {
             $langs = Languages::find()->all();
 
