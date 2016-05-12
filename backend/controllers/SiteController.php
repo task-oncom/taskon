@@ -49,7 +49,10 @@ class SiteController extends Controller
     public function actionError()
     {
         $this->layout = "clear";
-        return $this->render('error');
+
+        $exception = Yii::$app->errorHandler->exception;
+
+        return $this->render('error', ['exception' => $exception]);
     }
 
     public function actionLogin()

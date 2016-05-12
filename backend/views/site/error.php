@@ -17,9 +17,9 @@ use common\models\Settings;
 <div id="page-container" class="fade">
     <!-- begin error -->
     <div class="error">
-        <div class="error-code m-b-10">404 <i class="fa fa-warning"></i></div>
+        <div class="error-code m-b-10"><?=($exception?$exception->statusCode:'404')?> <i class="fa fa-warning"></i></div>
         <div class="error-content">
-            <div class="error-message">Произошла какая-то ошибка</div>
+            <div class="error-message"><?=($exception?$exception->getMessage():'Произошла какая-то ошибка')?></div>
             <div class="error-desc m-b-20">
                 Страница не существует или у вас нет прав для ее просмотра.<br />
                 Проверьте введенный URL-адрес страницы или обратитесь в Службу технической поддержки для решения данного вопроса

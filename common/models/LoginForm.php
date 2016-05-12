@@ -44,10 +44,17 @@ class LoginForm extends Model
      */
     public function validatePassword($attribute, $params)
     {
-        if (!$this->hasErrors()) {
+        if (!$this->hasErrors()) 
+        {
             $user = $this->getUser();
-            if (!$user || !$user->validatePassword($this->password)) {
+
+            if (!$user || !$user->validatePassword($this->password)) 
+            {
                 $this->addError($attribute, 'Неверно указан e-mail или пароль. Проверьте правильность ввода.');
+            }
+            elseif($user->status == User::STATUS_BLOCKED)
+            {
+                $this->addError($attribute, 'У Вас нет прав для просмотра данного раздела. Обратитесь к Администратору для изменения параметров авторизации.');
             }
         }
     }
@@ -61,10 +68,15 @@ class LoginForm extends Model
     {
         $user = $this->getUser();
 
-        $user->last_logon = time();
-        $user->save(false, ['last_logon']);
+        if($user)
+        {
+            $user->last_logon = time();
+            $user->save(false, ['last_logon']);
 
-        return Yii::$app->user->login($user, $this->rememberMe ? 3600 * 24 * 30 : 0);
+            return Yii::$app->user->login($user, $this->rememberMe ? 3600 * 24 * 30 : 0);
+        }
+
+        return false;
     }
 
     /**

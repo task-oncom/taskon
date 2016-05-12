@@ -256,7 +256,7 @@ class User extends \common\components\ActiveRecordModel implements IdentityInter
      */
     public static function findByUsername($username)
     {
-        return static::findOne(['email' => $username, 'status' => self::STATUS_ACTIVE]);
+        return static::findOne(['email' => $username/*, 'status' => self::STATUS_ACTIVE*/]);
     }
 
     /**

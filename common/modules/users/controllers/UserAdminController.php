@@ -183,13 +183,13 @@ class UserAdminController extends \common\components\AdminController
 
         if($model->load(Yii::$app->request->post()))
         {
-            if($model->send_email)
-            {
-                $model->sendPassword();
-            }
-
             if($model->password)
             {
+                if($model->send_email)
+                {
+                    $model->sendPassword();
+                }
+            
                 $model->password = $model->password_c = \Yii::$app->security->generatePasswordHash($model->password);
             }
             else

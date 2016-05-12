@@ -26,16 +26,11 @@ abstract class AdminController extends \common\components\BaseController
 			return $this->redirect('/site/login');
         }
 
-		if(Yii::$app->user->identity->role != User::ROLE_ADMIN)
-        {
-			throw new NotSupportedException('The requested page does not exist.');
-        }
-
         $module = $this->getModuleName();
 
-		if($module && !Yii::$app->authManager->checkAccess(Yii::$app->user->id, $module))
+		if(Yii::$app->user->identity->role != User::ROLE_ADMIN || ($module && !Yii::$app->authManager->checkAccess(Yii::$app->user->id, $module)))
     	{
-    		throw new \Exception('There is no access to this page', 403);
+    		throw new \yii\web\HttpException(403, 'У Вас нет прав для просмотра этой страницы');
     	}
     }
 
