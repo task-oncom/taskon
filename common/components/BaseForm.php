@@ -111,7 +111,7 @@ class BaseForm extends \yii\widgets\ActiveForm
                         //$opt['value'] = '';
                         $optEl['template'] = '{label}{input}<div id="'.$element['pwd-id'].'" class="is0 m-t-5"></div>{error}';
                         $tmp = $this->field($this->model, $key, $optEl)->input($element['type'], $opt);
-                        if($element['options']['label'] === false) $tmp = $tmp->label(false);
+                        if(array_key_exists('options', $element) && $element['options']['label'] === false) $tmp = $tmp->label(false);
                         $config['options'][] = $tmp;
                     break;
                     case 'hidden':
