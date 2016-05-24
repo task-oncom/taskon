@@ -6,6 +6,7 @@ use common\modules\reviews\models\Reviews;
 
 return [
     'activeForm'=>[
+        'id' => 'review-form',
 		'options' => [
             'enctype' => 'multipart/form-data'
         ],
