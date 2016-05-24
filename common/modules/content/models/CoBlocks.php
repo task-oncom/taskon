@@ -71,8 +71,8 @@ class CoBlocks extends \common\components\ActiveRecordModel
         return [
             'id' => Yii::t('content', 'ID'),
             'lang' => Yii::t('content', 'Язык'),
-            'title' => Yii::t('content', 'Заголовок'),
-            'name' => Yii::t('content', 'Наименование виджета'),
+            'title' => Yii::t('content', 'Описание инфо-блока'),
+            'name' => Yii::t('content', 'Перменная инфо-блока'),
             'text' => Yii::t('content', 'Текст'),
             'category_id' => 'Категория',
         ];

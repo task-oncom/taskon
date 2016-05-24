@@ -43,6 +43,7 @@ class Faq extends \common\components\ActiveRecordModel
         return [
             'meta' => [
                 'class' => 'common\components\activeRecordBehaviors\MetaTagBehavior',
+                'actions' => ['create', 'update', 'copy']
             ],
             'timestamp' => [
                 'class' => TimestampBehavior::className(),
