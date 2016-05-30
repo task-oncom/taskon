@@ -1,6 +1,10 @@
 <?php
 
+/* @var $this yii\web\View */
+/* @var $model yii\base\DynamicModel */
+
 use yii\helpers\Url;
+use common\models\Settings;
 
 ?>
 
