@@ -137,7 +137,7 @@ class PostController extends BaseController
             if($model->validate())
             {
                 Yii::$app->mailer->compose(['html' => '@common/modules/blog/mail/messageBlog-html', 'text' => '@common/modules/blog/mail/messageBlog-text'], ['model' => $model])
-                    ->setFrom([Settings::getValue('bids-support-email-from') => 'Блог на task-on.com'])
+                    ->setFrom([Settings::getValue('bids-support-email-from') => 'Блог Task-On'])
                     ->setTo(Settings::getValue('article-email'))
                     ->setSubject("Блог. ".($model->form == 'theme'?"Предложить тему":"Статья"))
                     ->send();
