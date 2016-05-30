@@ -136,36 +136,11 @@ class PostController extends BaseController
 
             if($model->validate())
             {
-                try 
-                {
-                    $email = Settings::getValue('article-email');
-
-                    $message = $this->renderPartial('_mail', [
-                        'model' => $model
-                    ]);
-
-                    $headers = "MIME-Version: 1.0\r\n".
-                        "Content-Transfer-Encoding: 8bit\r\n".
-                        "Content-Type: text/html; charset=\"UTF-8\"\r\n".
-                        "X-Mailer: PHP v.".phpversion()."\r\n".
-                        "From: Блог на task-on.com <".Settings::getValue('bids-support-email-from').">\r\n";
-
-                    switch ($model->form) 
-                    {
-                        case 'theme':
-                            $subject = "Блог. Предложить тему";
-                            break;
-                        
-                        case 'article':
-                            $subject = "Блог. Статья";
-                            break;
-                    }
-
-                    @mail($email, $subject, $message, $headers);
-                } 
-                catch (Exception $e) 
-                {
-                }
+                Yii::$app->mailer->compose(['html' => '@common/modules/blog/mail/messageBlog-html', 'text' => '@common/modules/blog/mail/messageBlog-text'], ['model' => $model])
+                    ->setFrom([Settings::getValue('bids-support-email-from') => 'Блог на task-on.com'])
+                    ->setTo(Settings::getValue('article-email'))
+                    ->setSubject("Блог. ".($model->form == 'theme'?"Предложить тему":"Статья"))
+                    ->send();
 
                 return ['success' => true];
             }
