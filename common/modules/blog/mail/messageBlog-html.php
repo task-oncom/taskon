@@ -1,3 +1,9 @@
+<?php
+
+use yii\helpers\Url;
+
+?>
+
 <table height="100%" width="100%" cellpadding="0" cellspacing="0" border="0">
     <tr>
         <td valign="top" align="center" background="">
